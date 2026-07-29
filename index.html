@@ -759,6 +759,41 @@
       ) || "default";
 
     applyTheme(savedTheme);
+
+    async function shareSnowTools() {
+      const shareData = {
+        title: "SNOW TOOLS",
+        text:
+          "❄️ SNOW TOOLS\n\n" +
+          "Snow Manを応援する日々を、少し分かりやすく、" +
+          "少し続けやすくするためのファンメイドツール集です。",
+        url: "https://mado0415.github.io/snow-tools/"
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (error) {
+          if (error.name === "AbortError") {
+            return;
+          }
+        }
+      }
+
+      const xUrl =
+        "https://x.com/intent/post?text=" +
+        encodeURIComponent(
+          shareData.text + "\n\n" + shareData.url
+        );
+
+      window.open(
+        xUrl,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+    
   </script>
 </body>
 </html>
