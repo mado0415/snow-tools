@@ -14,6 +14,7 @@
     :root {
       --accent: #5878a8;
       --accent-soft: #edf3fb;
+      --accent-text: #ffffff;
 
       --background: #f6f8fb;
       --surface: #ffffff;
@@ -53,9 +54,13 @@
         );
     }
 
+    button,
     a {
-      color: inherit;
       font: inherit;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     .page {
@@ -67,8 +72,6 @@
         18px
         calc(48px + env(safe-area-inset-bottom));
     }
-
-    /* 上部 */
 
     .hero {
       padding: 30px 4px 24px;
@@ -100,8 +103,6 @@
       line-height: 1.85;
     }
 
-    /* セクション */
-
     .section {
       margin-top: 26px;
     }
@@ -126,8 +127,6 @@
       color: var(--subtext);
       font-size: 12px;
     }
-
-    /* ツール一覧 */
 
     .tool-list {
       display: grid;
@@ -156,23 +155,23 @@
         box-shadow 0.18s ease;
     }
 
-    a.tool-card:active {
+    .tool-card:not(.is-disabled):active {
       transform: scale(0.985);
     }
 
-    a.tool-card:hover {
+    .tool-card:not(.is-disabled):hover {
       border-color: var(--accent);
       box-shadow: 0 12px 34px rgba(30, 45, 70, 0.12);
     }
 
-    a.tool-card:focus-visible {
+    .tool-card:not(.is-disabled):focus-visible {
       outline: 3px solid var(--accent);
       outline-offset: 3px;
     }
 
     .tool-card.is-disabled {
       cursor: default;
-      opacity: 0.68;
+      opacity: 0.72;
     }
 
     .tool-icon {
@@ -208,16 +207,76 @@
 
       padding: 7px 10px;
 
+      border-radius: 999px;
       color: var(--accent);
       background: var(--accent-soft);
-      border-radius: 999px;
 
       font-size: 11px;
       font-weight: 800;
       white-space: nowrap;
     }
 
-    /* 更新情報 */
+    .settings-card {
+      padding: 20px;
+
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .settings-title {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .settings-description {
+      margin: 7px 0 16px;
+
+      color: var(--subtext);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .color-button {
+      display: grid;
+      place-items: center;
+
+      width: 100%;
+      aspect-ratio: 1;
+      padding: 0;
+
+      border: 2px solid transparent;
+      border-radius: 50%;
+      background: transparent;
+    }
+
+    .color-button::before {
+      content: "";
+
+      width: 34px;
+      height: 34px;
+
+      border-radius: 50%;
+      background: var(--swatch);
+      border: 1px solid rgba(20, 25, 35, 0.14);
+      box-shadow: 0 3px 10px rgba(20, 25, 35, 0.1);
+    }
+
+    .color-button[aria-pressed="true"] {
+      border-color: var(--accent);
+    }
+
+    .color-button:focus-visible {
+      outline: 3px solid var(--accent-soft);
+      outline-offset: 3px;
+    }
 
     .news-list {
       display: grid;
@@ -247,8 +306,6 @@
       line-height: 1.65;
     }
 
-    /* フッター */
-
     footer {
       margin-top: 42px;
       padding-top: 20px;
@@ -257,7 +314,7 @@
       border-top: 1px solid var(--border);
 
       font-size: 12px;
-      line-height: 1.8;
+      line-height: 1.7;
       text-align: center;
     }
 
@@ -346,10 +403,11 @@
           </span>
         </a>
 
-  
-
         <!-- PLAYLIST LAB -->
-        <article class="tool-card is-disabled">
+        <a
+          class="tool-card"
+          href="https://script.google.com/macros/s/AKfycbyvOekvB0uZTA_YzQo6OD-humbPYoKV7-6JUyXc5wp57pLYvlVQrMINT-ZX8De_AUZ_dw/exec"
+        >
           <div
             class="tool-icon"
             aria-hidden="true"
@@ -363,14 +421,15 @@
             </h3>
 
             <p class="tool-description">
-              楽曲の特徴からプレイリスト作りをサポートします。
+              Snow Man楽曲の特徴やアンケート結果から、
+              プレイリスト作りをサポートします。
             </p>
           </div>
 
           <span class="tool-status">
-            準備中
+            開く
           </span>
-        </article>
+        </a>
 
         <!-- SNOW MINUTES -->
         <article class="tool-card is-disabled">
@@ -428,6 +487,32 @@
 
     <section
       class="section"
+      aria-labelledby="color-title"
+    >
+      <div class="settings-card">
+        <h2
+          class="settings-title"
+          id="color-title"
+        >
+          カラー設定
+        </h2>
+
+        <p class="settings-description">
+          選んだ色は、この端末のブラウザに保存されます。
+          今後、SNOW TOOLS内の各ツールでも同じ設定を
+          使えるようにする予定です。
+        </p>
+
+        <div
+          class="color-grid"
+          id="colorGrid"
+          aria-label="アクセントカラーを選択"
+        ></div>
+      </div>
+    </section>
+
+    <section
+      class="section"
       aria-labelledby="news-title"
     >
       <div class="section-heading">
@@ -453,6 +538,16 @@
 
         <article class="news-card">
           <p class="news-date">
+            2026.07.29
+          </p>
+
+          <p class="news-text">
+            PLAYLIST LABへのリンクを追加しました。
+          </p>
+        </article>
+
+        <article class="news-card">
+          <p class="news-date">
             2026.07.28
           </p>
 
@@ -473,5 +568,171 @@
     </footer>
 
   </main>
+
+  <script>
+    const COLOR_STORAGE_KEY = "snowToolsAccent";
+
+    const colorThemes = [
+      {
+        id: "default",
+        label: "標準",
+        accent: "#5878a8",
+        soft: "#edf3fb",
+        text: "#ffffff"
+      },
+      {
+        id: "yellow",
+        label: "黄",
+        accent: "#b28a00",
+        soft: "#fff7cc",
+        text: "#ffffff"
+      },
+      {
+        id: "purple",
+        label: "紫",
+        accent: "#7652a8",
+        soft: "#f2ebfb",
+        text: "#ffffff"
+      },
+      {
+        id: "white",
+        label: "白",
+        accent: "#697386",
+        soft: "#f4f5f7",
+        text: "#ffffff"
+      },
+      {
+        id: "blue",
+        label: "青",
+        accent: "#3478c5",
+        soft: "#eaf4ff",
+        text: "#ffffff"
+      },
+      {
+        id: "orange",
+        label: "オレンジ",
+        accent: "#c4631a",
+        soft: "#fff0e5",
+        text: "#ffffff"
+      },
+      {
+        id: "green",
+        label: "緑",
+        accent: "#397f58",
+        soft: "#e9f6ee",
+        text: "#ffffff"
+      },
+      {
+        id: "black",
+        label: "黒",
+        accent: "#333943",
+        soft: "#eceef1",
+        text: "#ffffff"
+      },
+      {
+        id: "red",
+        label: "赤",
+        accent: "#bf4545",
+        soft: "#fceaea",
+        text: "#ffffff"
+      },
+      {
+        id: "pink",
+        label: "ピンク",
+        accent: "#bf5f87",
+        soft: "#fbeaf1",
+        text: "#ffffff"
+      }
+    ];
+
+    const colorGrid =
+      document.getElementById("colorGrid");
+
+    function applyTheme(themeId) {
+      const theme =
+        colorThemes.find(
+          (item) => item.id === themeId
+        ) || colorThemes[0];
+
+      const root =
+        document.documentElement;
+
+      root.style.setProperty(
+        "--accent",
+        theme.accent
+      );
+
+      root.style.setProperty(
+        "--accent-soft",
+        theme.soft
+      );
+
+      root.style.setProperty(
+        "--accent-text",
+        theme.text
+      );
+
+      document
+        .querySelectorAll(".color-button")
+        .forEach((button) => {
+          const selected =
+            button.dataset.theme === theme.id;
+
+          button.setAttribute(
+            "aria-pressed",
+            String(selected)
+          );
+        });
+
+      localStorage.setItem(
+        COLOR_STORAGE_KEY,
+        theme.id
+      );
+    }
+
+    function createColorButtons() {
+      colorThemes.forEach((theme) => {
+        const button =
+          document.createElement("button");
+
+        button.type = "button";
+        button.className = "color-button";
+        button.dataset.theme = theme.id;
+
+        button.setAttribute(
+          "aria-label",
+          `${theme.label}を選択`
+        );
+
+        button.setAttribute(
+          "aria-pressed",
+          "false"
+        );
+
+        button.style.setProperty(
+          "--swatch",
+          theme.accent
+        );
+
+        button.addEventListener(
+          "click",
+          () => {
+            applyTheme(theme.id);
+          }
+        );
+
+        colorGrid.appendChild(button);
+      });
+    }
+
+    createColorButtons();
+
+    const savedTheme =
+      localStorage.getItem(
+        COLOR_STORAGE_KEY
+      ) || "default";
+
+    applyTheme(savedTheme);
+  </script>
 </body>
 </html>
