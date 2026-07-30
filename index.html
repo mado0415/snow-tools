@@ -278,34 +278,6 @@
       outline-offset: 3px;
     }
 
-    .news-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .news-card {
-      padding: 18px 20px;
-
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-    }
-
-    .news-date {
-      margin: 0 0 5px;
-
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .news-text {
-      margin: 0;
-
-      font-size: 14px;
-      line-height: 1.65;
-    }
-
     footer {
       margin-top: 42px;
       padding-top: 20px;
@@ -374,6 +346,34 @@
       </div>
 
       <div class="tool-list">
+
+        <!-- SNOW ROUTE -->
+        <a
+          class="tool-card"
+          href="https://mado0415.github.io/snow-route/"
+        >
+          <div
+            class="tool-icon"
+            aria-hidden="true"
+          >
+            🗺️
+          </div>
+
+          <div>
+            <h3 class="tool-name">
+              SNOW ROUTE
+            </h3>
+
+            <p class="tool-description">
+              リリースやチャート締切、記念日を
+              ひとつのタイムラインで管理できます。
+            </p>
+          </div>
+
+          <span class="tool-status">
+            開く
+          </span>
+        </a>
 
         <!-- STORE CHECK -->
         <a
@@ -509,89 +509,41 @@
       </div>
     </section>
 
-    <section
-      class="section"
-      aria-labelledby="news-title"
-    >
-      <div class="section-heading">
-        <h2
-          class="section-title"
-          id="news-title"
-        >
-          What's New
-        </h2>
-      </div>
-
-      <div class="news-list">
-
-        <article class="news-card">
-          <p class="news-date">
-            2026.07.29
-          </p>
-
-          <p class="news-text">
-            STORE CHECKを公開しました。
-          </p>
-        </article>
-
-        <article class="news-card">
-          <p class="news-date">
-            2026.07.29
-          </p>
-
-          <p class="news-text">
-            PLAYLIST LABへのリンクを追加しました。
-          </p>
-        </article>
-
-        <article class="news-card">
-          <p class="news-date">
-            2026.07.28
-          </p>
-
-          <p class="news-text">
-            SNOW TOOLSプロジェクトを開始しました。
-          </p>
-        </article>
-
-      </div>
-    </section>
-
     <footer>
-  <p>
-    SNOW TOOLSは非公式のファンメイドプロジェクトです。<br>
-    Snow Manおよび所属事務所、各サービス運営会社とは関係ありません。
-  </p>
+      <p>
+        SNOW TOOLSは非公式のファンメイドプロジェクトです。<br>
+        Snow Manおよび所属事務所、各サービス運営会社とは関係ありません。
+      </p>
 
-  <p style="margin-top:18px;">
-    Created by <strong>まど</strong><br>
+      <p style="margin-top:18px;">
+        Created by <strong>まど</strong><br>
 
-    <a
-      href="https://x.com/mado_no_yuki"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      @mado_no_yuki
-    </a>
+        <a
+          href="https://x.com/mado_no_yuki"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          @mado_no_yuki
+        </a>
 
-    ・
+        ・
 
-    <button
-      onclick="shareSnowTools()"
-      style="
-        background:none;
-        border:none;
-        padding:0;
-        color:inherit;
-        font:inherit;
-        cursor:pointer;
-        text-decoration:underline;
-      "
-    >
-      🤝 このページをシェア
-    </button>
-  </p>
-</footer>
+        <button
+          onclick="shareSnowTools()"
+          style="
+            background:none;
+            border:none;
+            padding:0;
+            color:inherit;
+            font:inherit;
+            cursor:pointer;
+            text-decoration:underline;
+          "
+        >
+          🤝 このページをシェア
+        </button>
+      </p>
+    </footer>
 
   </main>
 
@@ -793,7 +745,6 @@
         "noopener,noreferrer"
       );
     }
-    
   </script>
 </body>
 </html>
