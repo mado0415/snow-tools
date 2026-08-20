@@ -77,13 +77,36 @@
       padding: 30px 4px 24px;
     }
 
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
     .eyebrow {
-      margin: 0 0 8px;
+      margin: 0;
 
       color: var(--accent);
       font-size: 13px;
       font-weight: 800;
       letter-spacing: 0.14em;
+    }
+
+    .tool-count {
+      flex-shrink: 0;
+
+      padding: 6px 9px;
+
+      color: var(--accent);
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.95);
+      border-radius: 999px;
+
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
     }
 
     h1 {
@@ -104,16 +127,20 @@
     }
 
     .section {
-      margin-top: 26px;
+      margin-top: 30px;
     }
 
     .section-heading {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       gap: 16px;
 
       margin-bottom: 12px;
+    }
+
+    .section-heading-main {
+      min-width: 0;
     }
 
     .section-title {
@@ -121,11 +148,12 @@
       font-size: 18px;
     }
 
-    .section-note {
-      margin: 0;
+    .section-description {
+      margin: 4px 0 0;
 
       color: var(--subtext);
       font-size: 12px;
+      line-height: 1.5;
     }
 
     .tool-list {
@@ -155,23 +183,18 @@
         box-shadow 0.18s ease;
     }
 
-    .tool-card:not(.is-disabled):active {
+    .tool-card:active {
       transform: scale(0.985);
     }
 
-    .tool-card:not(.is-disabled):hover {
+    .tool-card:hover {
       border-color: var(--accent);
       box-shadow: 0 12px 34px rgba(30, 45, 70, 0.12);
     }
 
-    .tool-card:not(.is-disabled):focus-visible {
+    .tool-card:focus-visible {
       outline: 3px solid var(--accent);
       outline-offset: 3px;
-    }
-
-    .tool-card.is-disabled {
-      cursor: default;
-      opacity: 0.72;
     }
 
     .tool-icon {
@@ -187,11 +210,34 @@
       font-size: 25px;
     }
 
+    .tool-main {
+      min-width: 0;
+    }
+
+    .tool-heading {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
     .tool-name {
       margin: 0;
 
       font-size: 17px;
       line-height: 1.3;
+    }
+
+    .new-badge {
+      padding: 3px 7px;
+
+      color: var(--accent-text);
+      background: var(--accent);
+      border-radius: 999px;
+
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
     }
 
     .tool-description {
@@ -216,13 +262,67 @@
       white-space: nowrap;
     }
 
+    .settings-wrap {
+      margin-top: 34px;
+    }
+
+    .settings-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+
+      width: 100%;
+      padding: 15px 17px;
+
+      color: var(--text);
+
+      background: rgba(255,255,255,0.74);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+
+      text-align: left;
+    }
+
+    .settings-toggle:hover {
+      border-color: var(--accent);
+    }
+
+    .settings-toggle:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .settings-toggle-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .settings-toggle-icon {
+      color: var(--subtext);
+      font-size: 15px;
+
+      transition: transform 0.2s ease;
+    }
+
+    .settings-toggle[aria-expanded="true"] .settings-toggle-icon {
+      transform: rotate(180deg);
+    }
+
     .settings-card {
+      display: none;
+
+      margin-top: 10px;
       padding: 20px;
 
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 22px;
       box-shadow: var(--shadow);
+    }
+
+    .settings-card.is-open {
+      display: block;
     }
 
     .settings-title {
@@ -294,6 +394,17 @@
       margin: 0;
     }
 
+    .share-button {
+      background: none;
+      border: none;
+      padding: 0;
+
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
     @media (max-width: 430px) {
       .tool-card {
         grid-template-columns: 48px 1fr;
@@ -316,9 +427,16 @@
   <main class="page">
 
     <header class="hero">
-      <p class="eyebrow">
-        FAN-MADE SUPPORT TOOLS
-      </p>
+
+      <div class="hero-top">
+        <p class="eyebrow">
+          FAN-MADE SUPPORT TOOLS
+        </p>
+
+        <span class="tool-count">
+          5 TOOLS
+        </span>
+      </div>
 
       <h1>SNOW TOOLS</h1>
 
@@ -328,21 +446,25 @@
       </p>
     </header>
 
+
+    <!-- 予定・行動 -->
     <section
       class="section"
-      aria-labelledby="tools-title"
+      aria-labelledby="action-title"
     >
       <div class="section-heading">
-        <h2
-          class="section-title"
-          id="tools-title"
-        >
-          Tools
-        </h2>
+        <div class="section-heading-main">
+          <h2
+            class="section-title"
+            id="action-title"
+          >
+            予定・行動
+          </h2>
 
-        <p class="section-note">
-          FAN-MADE
-        </p>
+          <p class="section-description">
+            これからの予定を見たり、日々の応援を楽しんだり。
+          </p>
+        </div>
       </div>
 
       <div class="tool-list">
@@ -359,10 +481,12 @@
             🗺️
           </div>
 
-          <div>
-            <h3 class="tool-name">
-              SNOW ROUTE
-            </h3>
+          <div class="tool-main">
+            <div class="tool-heading">
+              <h3 class="tool-name">
+                SNOW ROUTE
+              </h3>
+            </div>
 
             <p class="tool-description">
               リリースやチャート締切、記念日を
@@ -375,89 +499,6 @@
           </span>
         </a>
 
-        <!-- SNOW MAP -->
-        <a
-          class="tool-card"
-          href="https://mado0415.github.io/snow-map/"
-        >
-          <div
-            class="tool-icon"
-            aria-hidden="true"
-          >
-            🌤️
-          </div>
-
-          <div>
-            <h3 class="tool-name">
-              SNOW MAP
-            </h3>
-
-            <p class="tool-description">
-              朝・昼・夕・夜。
-              時間帯に合わせた風景とSnow Manの楽曲を楽しめます。
-            </p>
-          </div>
-
-          <span class="tool-status">
-            開く
-          </span>
-        </a>
-
-        <!-- STORE CHECK -->
-        <a
-          class="tool-card"
-          href="https://script.google.com/macros/s/AKfycbzbyZuJp6yPkAsp_cL2k5TCBdaQo42x1tUWXPpi7XJRRLZM_9E4qq-O6-3oQA287aZX/exec"
-        >
-          <div
-            class="tool-icon"
-            aria-hidden="true"
-          >
-            📀
-          </div>
-
-          <div>
-            <h3 class="tool-name">
-              STORE CHECK
-            </h3>
-
-            <p class="tool-description">
-              CD販売店がオリコン・Billboard JAPANの
-              公式公開一覧に掲載されているか確認できます。
-            </p>
-          </div>
-
-          <span class="tool-status">
-            開く
-          </span>
-        </a>
-
-        <!-- PLAYLIST LAB -->
-        <a
-          class="tool-card"
-          href="https://script.google.com/macros/s/AKfycbyvOekvB0uZTA_YzQo6OD-humbPYoKV7-6JUyXc5wp57pLYvlVQrMINT-ZX8De_AUZ_dw/exec"
-        >
-          <div
-            class="tool-icon"
-            aria-hidden="true"
-          >
-            🎼
-          </div>
-
-          <div>
-            <h3 class="tool-name">
-              PLAYLIST LAB
-            </h3>
-
-            <p class="tool-description">
-              Snow Man楽曲の特徴やアンケート結果から、
-              プレイリスト作りをサポートします。
-            </p>
-          </div>
-
-          <span class="tool-status">
-            開く
-          </span>
-        </a>
 
         <!-- BINGO -->
         <a
@@ -471,10 +512,12 @@
             🎯
           </div>
 
-          <div>
-            <h3 class="tool-name">
-              BINGO
-            </h3>
+          <div class="tool-main">
+            <div class="tool-heading">
+              <h3 class="tool-name">
+                BINGO
+              </h3>
+            </div>
 
             <p class="tool-description">
               応援タスクをビンゴ形式で楽しめます。
@@ -489,15 +532,181 @@
       </div>
     </section>
 
+
+    <!-- 音楽を楽しむ -->
     <section
       class="section"
-      aria-labelledby="color-title"
+      aria-labelledby="music-title"
     >
-      <div class="settings-card">
-        <h2
-          class="settings-title"
-          id="color-title"
+      <div class="section-heading">
+        <div class="section-heading-main">
+          <h2
+            class="section-title"
+            id="music-title"
+          >
+            音楽を楽しむ
+          </h2>
+
+          <p class="section-description">
+            Snow Manの曲を、いつもと少し違う入口から。
+          </p>
+        </div>
+      </div>
+
+      <div class="tool-list">
+
+        <!-- SNOW MAP -->
+        <a
+          class="tool-card"
+          href="https://mado0415.github.io/snow-map/"
         >
+          <div
+            class="tool-icon"
+            aria-hidden="true"
+          >
+            🌤️
+          </div>
+
+          <div class="tool-main">
+            <div class="tool-heading">
+              <h3 class="tool-name">
+                SNOW MAP
+              </h3>
+
+              <span class="new-badge">
+                NEW
+              </span>
+            </div>
+
+            <p class="tool-description">
+              朝・昼・夕・夜。
+              時間帯に合わせた風景とSnow Manの楽曲を楽しめます。
+            </p>
+          </div>
+
+          <span class="tool-status">
+            開く
+          </span>
+        </a>
+
+
+        <!-- PLAYLIST LAB -->
+        <a
+          class="tool-card"
+          href="https://script.google.com/macros/s/AKfycbyvOekvB0uZTA_YzQo6OD-humbPYoKV7-6JUyXc5wp57pLYvlVQrMINT-ZX8De_AUZ_dw/exec"
+        >
+          <div
+            class="tool-icon"
+            aria-hidden="true"
+          >
+            🎼
+          </div>
+
+          <div class="tool-main">
+            <div class="tool-heading">
+              <h3 class="tool-name">
+                PLAYLIST LAB
+              </h3>
+            </div>
+
+            <p class="tool-description">
+              Snow Man楽曲の特徴やアンケート結果から、
+              プレイリスト作りをサポートします。
+            </p>
+          </div>
+
+          <span class="tool-status">
+            開く
+          </span>
+        </a>
+
+      </div>
+    </section>
+
+
+    <!-- 確認・管理 -->
+    <section
+      class="section"
+      aria-labelledby="check-title"
+    >
+      <div class="section-heading">
+        <div class="section-heading-main">
+          <h2
+            class="section-title"
+            id="check-title"
+          >
+            確認・管理
+          </h2>
+
+          <p class="section-description">
+            応援するときの、ちょっとした確認に。
+          </p>
+        </div>
+      </div>
+
+      <div class="tool-list">
+
+        <!-- STORE CHECK -->
+        <a
+          class="tool-card"
+          href="https://script.google.com/macros/s/AKfycbzbyZuJp6yPkAsp_cL2k5TCBdaQo42x1tUWXPpi7XJRRLZM_9E4qq-O6-3oQA287aZX/exec"
+        >
+          <div
+            class="tool-icon"
+            aria-hidden="true"
+          >
+            📀
+          </div>
+
+          <div class="tool-main">
+            <div class="tool-heading">
+              <h3 class="tool-name">
+                STORE CHECK
+              </h3>
+            </div>
+
+            <p class="tool-description">
+              CD販売店がオリコン・Billboard JAPANの
+              公式公開一覧に掲載されているか確認できます。
+            </p>
+          </div>
+
+          <span class="tool-status">
+            開く
+          </span>
+        </a>
+
+      </div>
+    </section>
+
+
+    <!-- カラー設定 -->
+    <section class="settings-wrap">
+
+      <button
+        class="settings-toggle"
+        id="settingsToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="settingsPanel"
+      >
+        <span class="settings-toggle-title">
+          🎨 カラー設定
+        </span>
+
+        <span
+          class="settings-toggle-icon"
+          aria-hidden="true"
+        >
+          ▼
+        </span>
+      </button>
+
+      <div
+        class="settings-card"
+        id="settingsPanel"
+      >
+        <h2 class="settings-title">
           カラー設定
         </h2>
 
@@ -511,7 +720,9 @@
           aria-label="アクセントカラーを選択"
         ></div>
       </div>
+
     </section>
+
 
     <footer>
       <p>
@@ -533,23 +744,16 @@
         ・
 
         <button
+          class="share-button"
           onclick="shareSnowTools()"
-          style="
-            background:none;
-            border:none;
-            padding:0;
-            color:inherit;
-            font:inherit;
-            cursor:pointer;
-            text-decoration:underline;
-          "
         >
-          🤝 このページをシェア
+          🤝 SNOW TOOLSをシェア
         </button>
       </p>
     </footer>
 
   </main>
+
 
   <script>
     const COLOR_STORAGE_KEY = "snowToolsAccent";
@@ -627,8 +831,10 @@
       }
     ];
 
+
     const colorGrid =
       document.getElementById("colorGrid");
+
 
     function applyTheme(themeId) {
       const theme =
@@ -672,6 +878,7 @@
       );
     }
 
+
     function createColorButtons() {
       colorThemes.forEach((theme) => {
         const button =
@@ -707,6 +914,7 @@
       });
     }
 
+
     createColorButtons();
 
     const savedTheme =
@@ -716,15 +924,48 @@
 
     applyTheme(savedTheme);
 
+
+    const settingsToggle =
+      document.getElementById("settingsToggle");
+
+    const settingsPanel =
+      document.getElementById("settingsPanel");
+
+
+    settingsToggle.addEventListener(
+      "click",
+      () => {
+        const isOpen =
+          settingsToggle.getAttribute(
+            "aria-expanded"
+          ) === "true";
+
+        settingsToggle.setAttribute(
+          "aria-expanded",
+          String(!isOpen)
+        );
+
+        settingsPanel.classList.toggle(
+          "is-open",
+          !isOpen
+        );
+      }
+    );
+
+
     async function shareSnowTools() {
+      const shareText =
+        "❄️ SNOW TOOLS\n\n" +
+        "Snow Manを応援する日々を、少し分かりやすく、" +
+        "少し続けやすくするためのファンメイドツール集です。\n\n" +
+        "#SnowMan #SNOWTOOLS";
+
       const shareData = {
         title: "SNOW TOOLS",
-        text:
-          "❄️ SNOW TOOLS\n\n" +
-          "Snow Manを応援する日々を、少し分かりやすく、" +
-          "少し続けやすくするためのファンメイドツール集です。",
+        text: shareText,
         url: "https://mado0415.github.io/snow-tools/"
       };
+
 
       if (navigator.share) {
         try {
@@ -737,10 +978,13 @@
         }
       }
 
+
       const xUrl =
         "https://x.com/intent/post?text=" +
         encodeURIComponent(
-          shareData.text + "\n\n" + shareData.url
+          shareText +
+          "\n\n" +
+          shareData.url
         );
 
       window.open(
@@ -750,5 +994,6 @@
       );
     }
   </script>
+
 </body>
 </html>
