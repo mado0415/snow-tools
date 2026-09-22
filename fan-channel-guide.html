@@ -9,7 +9,11 @@ h1{font-size:30px;line-height:1.2;margin:8px 0 10px}.lead{font-size:14px;line-he
 .pill{display:inline-block;background:#eef9fd;color:#4d788b;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;margin-bottom:8px}.steps{display:grid;gap:14px;margin-top:12px}.step{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}.num{width:42px;height:42px;border-radius:14px;background:#edf9ff;display:grid;place-items:center;font-weight:900;color:#4a8ead}.step h3{font-size:15px;line-height:1.45;margin:1px 0 4px}.step p{font-size:13px;line-height:1.7;color:var(--muted);margin:0}.mini{margin-top:7px;padding:10px 11px;border-radius:12px;background:#f8fbfc;border:1px solid var(--line);font-size:12px;line-height:1.65;color:#60727c}
 .bigbtn,.subbtn{width:100%;border-radius:16px;padding:15px 16px;font:inherit;font-weight:900}.bigbtn{border:0;background:linear-gradient(#bce9fd,#d8f2ff);color:#245c74}.subbtn{margin-top:8px;background:#fff;border:1px solid var(--line);color:#4b6775}.linkbtn{display:block;text-decoration:none}.callout{margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#f8fbfc;font-size:12px;line-height:1.7;color:#60727c}.privacy{border-color:#efc9c9;background:#fff8f8;color:#7a4b4b}
 details{margin-top:10px;border:1px solid var(--line);border-radius:14px;background:#f8fbfc;overflow:hidden}summary{cursor:pointer;padding:12px 13px;font-size:13px;font-weight:900;color:#4b6775;list-style:none}summary::-webkit-details-marker{display:none}details[open] summary{border-bottom:1px solid var(--line)}.detailsBody{padding:12px 13px;font-size:12px;line-height:1.75;color:#60727c}.reasonText{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 11px;margin:8px 0 12px;color:#435861}
-.hidden{display:none!important}.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,18px);background:#22323a;color:#fff;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:900;opacity:0;transition:.18s;z-index:99}.toast.show{opacity:1;transform:translate(-50%,0)}.footer{text-align:center;font-size:11px;line-height:1.7;color:#87959d;padding:18px 8px 0}
+.hidden{display:none!important}.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,18px);background:#22323a;color:#fff;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:900;opacity:0;transition:.18s;z-index:99}.toast.show{opacity:1;transform:translate(-50%,0)}.guideImg{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);margin-top:10px;box-shadow:0 8px 24px rgba(53,99,120,.08)}
+.imgPair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.imgCaption{font-size:11px;line-height:1.55;color:var(--muted);margin:6px 2px 0}
+@media(max-width:560px){.imgPair{grid-template-columns:1fr}}
+.footer{text-align:center;font-size:11px;line-height:1.7;color:#87959d;padding:18px 8px 0}
 </style></head><body>
 <main class="wrap">
 <section class="hero"><div class="kicker">SNOW MAN × STATIONHEAD</div><h1>Snow Manファンチャンネル申請 📮</h1><p class="lead">申請入力をラクにするブックマークを、最初の1回だけ設定します。<br>このページは説明用なので、あとからいつでも見返せます。</p></section>
@@ -18,8 +22,25 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <section class="card"><h2>設定の流れ</h2><div class="steps">
 <div class="step"><div class="num">1</div><div><h3>設定ページを開く</h3><p>Stationhead ID・メールアドレスを入力します。</p></div></div>
 <div class="step"><div class="num">2</div><div><h3>申請理由を確認</h3><p>登録ページでは、申請理由の例文を確認できます。例文を使う場合は、実際の申請時に3つから選べます。自分で書いた文章を使いたい場合だけ、登録ページであらかじめ入力しておけます。</p></div></div>
-<div class="step"><div class="num">3</div><div><h3>設定ページをブックマーク</h3><p>そのブックマークのアドレスだけを、コピーした申請ボタンに貼り替えます。</p></div></div>
-<div class="step"><div class="num">4</div><div><h3>Stationheadの申請ページで実行</h3><p>登録したブックマークをタップすると、申請理由を選ぶ画面が出て入力を補助します。</p></div></div>
+<div class="step"><div class="num">3</div><div><h3>設定ページをブックマーク</h3><p>Safariの共有メニューからブックマークに保存します。</p>
+<img class="guideImg" src="images/iphone-01-share-sheet.jpg" alt="Safariの共有メニューからブックマークを追加する画面">
+</div></div>
+<div class="step"><div class="num">4</div><div><h3>保存したブックマークを編集</h3><p>「Snow Manファンチャンネル申請」を長押しして「編集」を選び、アドレス欄だけをコピーした申請ボタンに貼り替えます。</p>
+<div class="imgPair">
+<div><img class="guideImg" src="images/iphone-02-bookmark-list.jpg" alt="Snow Manファンチャンネル申請のブックマーク"><div class="imgCaption">保存したブックマークを長押しします。</div></div>
+<div><img class="guideImg" src="images/iphone-03-longpress-edit.jpg" alt="ブックマークの長押しメニューで編集を選ぶ画面"><div class="imgCaption">メニューが出たら「編集」をタップ。</div></div>
+</div>
+<div class="imgPair">
+<div><img class="guideImg" src="images/iphone-04-edit-before.jpg" alt="ブックマークのアドレスを編集する前の画面"><div class="imgCaption">アドレス欄をすべて選択して削除。</div></div>
+<div><img class="guideImg" src="images/iphone-05-edit-after.jpg" alt="申請ボタンをアドレス欄に貼り付けた画面"><div class="imgCaption">コピーした申請ボタンを貼り付けて保存します。</div></div>
+</div>
+</div></div>
+<div class="step"><div class="num">5</div><div><h3>Stationheadの申請ページで実行</h3><p>申請ページを開いたまま、登録した「Snow Manファンチャンネル申請」をタップします。用意された理由を使う場合は、3つから1つ選びます。</p>
+<div class="imgPair">
+<div><img class="guideImg" src="images/iphone-06-reason-picker.jpg" alt="申請理由を3つから選ぶ画面"><div class="imgCaption">使いたい申請理由を1つ選択。</div></div>
+<div><img class="guideImg" src="images/iphone-07-complete.jpg" alt="入力完了メッセージ"><div class="imgCaption">入力後は内容を確認してSubmitします。</div></div>
+</div>
+</div></div>
 </div></section>
 <section class="card"><h2>あとで内容を変えたいとき</h2><p class="lead" style="text-align:left">ID・メール・申請理由を書き直したいときは、この説明ページから設定ページを開き直して新しい申請ボタンをコピーします。保存済みブックマークのアドレスを貼り替えるだけで更新できます。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="subbtn">設定ページを開く</button></a></section>
 <p class="footer">非公式の申請補助ページです。Stationheadやブラウザの仕様変更により動かなくなる場合があります。</p></main></body></html>
