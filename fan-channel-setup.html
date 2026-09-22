@@ -34,10 +34,11 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <section class="card"><h2>② 使っている端末</h2><div class="choicegrid"><button class="choice active" data-device="iphone"><span class="emoji">🍎</span>iPhone / iPad</button><button class="choice" data-device="android"><span class="emoji">🤖</span>Android</button></div></section>
 <section class="card"><h2>③ ブックマーク、使ったことある？</h2><div class="modegrid"><button class="mode active" data-mode="easy"><strong>よく分からない</strong><span>ゆっくり説明</span></button><button class="mode" data-mode="fast"><strong>使ったことある</strong><span>最短手順</span></button></div></section>
 <section class="card"><div class="pill">最初の1回だけ</div><h2>このページを「申請ボタン」に変えます</h2>
+<div id="iphoneBrowserNote" class="mini">以下の手順はSafariの画面を例に説明しています。Safari以外のブラウザでは、メニューの表示や操作が異なる場合があります。</div>
 <div id="iphoneEasy"><div class="steps">
 <div class="step"><div class="num">1</div><div>
 <h3>この設定ページをブックマークに追加</h3>
-<p>ここからの画像は<strong>Safariでの操作例</strong>です。Safariの場合は共有メニューで<strong>「ブックマークに追加」</strong>をタップします。</p>
+<p>Safariの場合は共有メニューで<strong>「ブックマークに追加」</strong>をタップします。</p>
 <img class="helpShot narrow" src="iphone-step1-bookmark-menu-v2.jpeg" alt="Safariの共有メニューでブックマークに追加を選ぶ画面">
 <div class="mini">ブックマーク名は「Snow Manファンチャンネル申請」のままでOKです。</div>
 </div></div>
@@ -135,7 +136,7 @@ const TEMPLATE="javascript:(()=>{const ID=__ID__,MAIL=__EMAIL__,CUSTOM=__CUSTOM_
 let device='iphone',mode='easy';
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove('show'),1400)}
 function build(){const id=document.getElementById('stationId').value.trim().replace(/^@/,'');const mail=document.getElementById('email').value.trim();const custom=document.getElementById('customReason').value.trim();if(!id){showToast('Stationhead IDを入力してください');return null}if(!mail||!mail.includes('@')){showToast('メールアドレスを確認してください');return null}return TEMPLATE.replace('__ID__',JSON.stringify(id)).replace('__EMAIL__',JSON.stringify(mail)).replace('__CUSTOM__',JSON.stringify(custom))}
-function update(){document.querySelectorAll('.choice').forEach(b=>b.classList.toggle('active',b.dataset.device===device));document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));document.getElementById('iphoneEasy').classList.toggle('hidden',!(mode==='easy'&&device==='iphone'));document.getElementById('androidEasy').classList.toggle('hidden',!(mode==='easy'&&device==='android'));document.getElementById('fastGuide').classList.toggle('hidden',mode!=='fast');document.getElementById('fastDeviceText').textContent=device==='iphone'?'Safariの操作例です。Stationheadの申請ページを開いたまま、本のマーク → ブックマーク → 「Snow Manファンチャンネル申請」を1回タップします。':'Stationheadの申請ページを開いたまま、Chromeのアドレスバーに「Snow Manファンチャンネル申請」と入力し、候補のブックマークをタップします。'}
+function update(){document.querySelectorAll('.choice').forEach(b=>b.classList.toggle('active',b.dataset.device===device));document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));document.getElementById('iphoneBrowserNote').classList.toggle('hidden',device!=='iphone');document.getElementById('iphoneEasy').classList.toggle('hidden',!(mode==='easy'&&device==='iphone'));document.getElementById('androidEasy').classList.toggle('hidden',!(mode==='easy'&&device==='android'));document.getElementById('fastGuide').classList.toggle('hidden',mode!=='fast');document.getElementById('fastDeviceText').textContent=device==='iphone'?'Safariの操作例です。Stationheadの申請ページを開いたまま、本のマーク → ブックマーク → 「Snow Manファンチャンネル申請」を1回タップします。':'Stationheadの申請ページを開いたまま、Chromeのアドレスバーに「Snow Manファンチャンネル申請」と入力し、候補のブックマークをタップします。'}
 document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{device=b.dataset.device;update()});document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;update()});
 document.getElementById('copyBtn').onclick=async()=>{const code=build();if(!code)return;let ok=false;try{await navigator.clipboard.writeText(code);ok=true}catch(e){const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{ok=document.execCommand('copy')}catch(_){}ta.remove()}showToast(ok?'あなた専用の申請ボタンをコピーしました':'コピーできませんでした')};
 update();

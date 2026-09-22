@@ -21,7 +21,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 </style></head><body>
 <main class="wrap">
 <section class="hero"><div class="kicker">SNOW MAN × STATIONHEAD</div><h1>Snow Manファンチャンネル申請 📮</h1><p class="lead">申請入力をラクにするブックマークを、最初の1回だけ設定します。<br>このページは説明用なので、あとからいつでも見返せます。</p></section>
-<section class="card"><div class="pill">まずはここから</div><h2>設定は別ページで行います</h2><p class="lead" style="text-align:left">説明ページそのものを書き換えてしまわないように、登録作業だけ別ページに分けています。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="bigbtn" style="margin-top:14px">申請ボタンの設定ページを開く</button></a><div class="callout">設定ページには、ID・メール入力、申請理由の確認・自由入力、<strong>iPhone / iPad（画像はSafariの例）・Androidそれぞれの画像つき登録手順</strong>を載せています。</div></section>
+<section class="card"><div class="pill">まずはここから</div><h2>設定は別ページで行います</h2><p class="lead" style="text-align:left">説明ページそのものを書き換えてしまわないように、登録作業だけ別ページに分けています。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="bigbtn" style="margin-top:14px">申請ボタンの設定ページを開く</button></a><div class="callout">設定ページには、ID・メール入力、申請理由の確認・自由入力、<strong>iPhone / iPad・Androidそれぞれの画像つき登録手順</strong>を載せています。</div></section>
 <section class="card"><h2>ブックマークって？</h2><p class="lead" style="text-align:left">よく見るページを保存しておく機能です。今回はその仕組みを使って、Stationheadの申請欄をまとめて入力する「申請ボタン」を作ります。</p></section>
 <section class="card"><h2>設定の流れ</h2><div class="steps">
 <div class="step"><div class="num">1</div><div><h3>設定ページを開く</h3><p>Stationhead IDと、<strong>Stationheadの登録時に使っているメールアドレス</strong>を入力します。</p></div></div>
