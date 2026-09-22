@@ -44,7 +44,10 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 </div></div>
 <div class="step"><div class="num">2</div><div><h3>この画面の下の方にある「あなた専用の申請ボタンをコピー」を押す</h3><p>ID・メール、必要なら自作の申請理由も入力してから押してください。</p><img class="helpShot narrow" src="iphone-step2-copy-button.jpeg" alt="この画面の下の方にある、あなた専用の申請ボタンをコピーボタン"></div></div>
 <div class="step"><div class="num">3</div><div><h3>保存したブックマークを長押し</h3><p>Safariの場合は<strong>本のマーク → ブックマーク</strong>を開き、<strong>「Snow Manファンチャンネル申請」を長押し → 「編集」</strong>。</p>
+<img class="helpShot narrow" src="iphone-step3-bookmarks-icon.jpeg" alt="Safariの共有メニューにある本のマークのブックマークを選ぶ画面">
+<div class="shotCaption">① 本のマークの「ブックマーク」をタップ。</div>
 <img class="helpShot narrow" src="iphone-step3-longpress-edit.jpeg" alt="保存したブックマークを長押しして編集を選ぶ画面">
+<div class="shotCaption">② 保存したブックマークを長押しして「編集」。</div>
 </div></div>
 <div class="step"><div class="num">4</div><div><h3>「アドレス」の中身だけ貼り替える</h3>
 <p><strong>アドレス欄をタップ → すべて選択 → 削除 → 貼り付け → 保存</strong>。</p>
