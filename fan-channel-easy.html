@@ -3,35 +3,57 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Snow Man Fan Channel かんたん申請</title>
+<meta name="theme-color" content="#eef9ff">
+<title>Snow Manファンチャンネル申請</title>
 <style>
-:root{--bg:#f7fbfe;--card:#fff;--ink:#24333d;--muted:#71808a;--line:#dce9ef;--blue:#d9f1ff;--blue2:#bce6fb;--blue3:#5f9fbe;--shadow:0 12px 32px rgba(53,99,120,.10)}
-*{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;background:linear-gradient(#eef9ff 0,#f8fbfd 45%,#fff 100%);color:var(--ink)}
-.wrap{max-width:720px;margin:auto;padding:22px 16px 60px}.hero{text-align:center;padding:16px 8px 10px}.kicker{font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--blue3)}
-h1{font-size:31px;line-height:1.2;margin:8px 0 10px}.lead{font-size:14px;line-height:1.75;color:var(--muted);margin:0 auto;max-width:560px}
-.card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:14px;box-shadow:var(--shadow)}.card h2{font-size:18px;margin:0 0 12px}
-.choicegrid,.modegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice,.mode{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px 12px;text-align:center;font-weight:900;cursor:pointer}
-.choice .emoji{font-size:30px;display:block;margin-bottom:6px}.choice.active,.mode.active{background:#f1fbff;border-color:#9fd9f3;box-shadow:0 0 0 3px rgba(159,217,243,.18)}
-.mode span{display:block;font-size:12px;color:var(--muted);line-height:1.5;margin-top:3px}
-.bigbtn,.subbtn{width:100%;border-radius:16px;padding:15px 16px;font:inherit;font-weight:900;cursor:pointer}.bigbtn{border:0;background:linear-gradient(#bfeaff,#dcf4ff);color:#245d75}.subbtn{background:#fff;border:1px solid var(--line);color:#4a6674;margin-top:8px}
-.steps{display:grid;gap:12px;margin-top:12px}.step{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}.num{width:42px;height:42px;border-radius:14px;background:#edf9ff;display:grid;place-items:center;font-weight:900;color:#4a8ead}
-.step h3{font-size:15px;margin:2px 0 4px}.step p{font-size:13px;line-height:1.65;color:var(--muted);margin:0}.pill{display:inline-block;background:#eef9fd;color:#4e788c;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;margin-bottom:8px}
-.callout{background:#f8fbfc;border:1px solid var(--line);border-radius:14px;padding:12px 13px;font-size:13px;line-height:1.65;color:#5d707a;margin-top:12px}.hidden{display:none!important}
+:root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--blue:#d8f2ff;--blue2:#bce9fd;--blue3:#5a9cba;--bg:#f7fbfe}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(#eef9ff,#f8fbfd 45%,#fff)}
+.wrap{max-width:720px;margin:auto;padding:22px 16px 60px}.hero{text-align:center;padding:15px 8px 8px}.kicker{font-size:12px;font-weight:900;letter-spacing:.08em;color:var(--blue3)}
+h1{font-size:30px;line-height:1.2;margin:8px 0 10px}.lead{font-size:14px;line-height:1.75;color:var(--muted);margin:0 auto;max-width:560px}
+.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:14px;box-shadow:0 12px 30px rgba(53,99,120,.09)}.card h2{font-size:18px;margin:0 0 12px}
+.field{margin:13px 0}.field label{display:block;font-size:13px;font-weight:900;margin-bottom:6px}.field input{width:100%;border:1px solid #cbdce5;border-radius:14px;padding:13px 14px;font:inherit;color:var(--ink);background:#fff}
+.field .hint{font-size:11px;line-height:1.55;color:var(--muted);margin-top:5px}
+.choicegrid,.modegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice,.mode{border:1px solid var(--line);border-radius:17px;background:#fff;padding:15px 10px;text-align:center;font:inherit;font-weight:900}
+.choice .emoji{display:block;font-size:29px;margin-bottom:5px}.choice.active,.mode.active{background:#f1fbff;border-color:#98d6f2;box-shadow:0 0 0 3px rgba(152,214,242,.17)}
+.mode span{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:3px}
+.pill{display:inline-block;background:#eef9fd;color:#4d788b;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;margin-bottom:8px}
+.steps{display:grid;gap:14px;margin-top:12px}.step{display:grid;grid-template-columns:42px 1fr;gap:12px;align-items:start}.num{width:42px;height:42px;border-radius:14px;background:#edf9ff;display:grid;place-items:center;font-weight:900;color:#4a8ead}
+.step h3{font-size:15px;line-height:1.45;margin:1px 0 4px}.step p{font-size:13px;line-height:1.7;color:var(--muted);margin:0}.mini{margin-top:7px;padding:10px 11px;border-radius:12px;background:#f8fbfc;border:1px solid var(--line);font-size:12px;line-height:1.65;color:#60727c}
+.bigbtn,.subbtn{width:100%;border-radius:16px;padding:15px 16px;font:inherit;font-weight:900}.bigbtn{border:0;background:linear-gradient(#bce9fd,#d8f2ff);color:#245c74}.subbtn{margin-top:8px;background:#fff;border:1px solid var(--line);color:#4b6775}
+.callout{margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#f8fbfc;font-size:12px;line-height:1.7;color:#60727c}
+.preview{padding:12px 13px;border-radius:14px;background:#f4fbff;border:1px solid #cfe9f5;font-size:13px;line-height:1.65}.preview strong{display:block;margin-bottom:3px}.hidden{display:none!important}
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,18px);background:#22323a;color:#fff;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:900;opacity:0;transition:.18s;z-index:99}.toast.show{opacity:1;transform:translate(-50%,0)}
-.footer{font-size:11px;line-height:1.7;text-align:center;color:#89969d;padding:18px 8px 0}
+.footer{text-align:center;font-size:11px;line-height:1.7;color:#87959d;padding:18px 8px 0}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero">
 <div class="kicker">SNOW MAN × STATIONHEAD</div>
-<h1>Fan Channel かんたん申請 📮</h1>
-<p class="lead">最初の1回だけ「申請をラクにするボタン」をブラウザに登録します。<br>次からは申請ページでそのボタンを使うだけ。</p>
+<h1>Snow Manファンチャンネル申請 📮</h1>
+<p class="lead">最初の1回だけ設定すると、次からの申請入力をかなりラクにできます。</p>
 </section>
 
 <section class="card">
-<h2>① どの端末を使っていますか？</h2>
+<h2>① 自分の情報を入れる</h2>
+<div class="field">
+<label for="stationId">Stationhead ID</label>
+<input id="stationId" autocomplete="off" autocapitalize="none" placeholder="@より後ろのID">
+<div class="hint">例：@snowind なら snowind</div>
+</div>
+<div class="field">
+<label for="email">メールアドレス</label>
+<input id="email" type="email" autocomplete="email" placeholder="申請に使うメールアドレス">
+<div class="hint">ここで入力した内容を、あなた専用の「申請ボタン」に組み込みます。このページから外部へ送信・保存はしません。</div>
+</div>
+<div id="personalPreview" class="preview">
+<strong>あなた専用の申請ボタン</strong>
+IDとメールアドレスを入力すると、実行時に毎回入力しなくてよくなります。
+</div>
+</section>
+
+<section class="card">
+<h2>② 使っている端末</h2>
 <div class="choicegrid">
 <button class="choice active" data-device="iphone"><span class="emoji">🍎</span>iPhone / iPad</button>
 <button class="choice" data-device="android"><span class="emoji">🤖</span>Android</button>
@@ -39,80 +61,162 @@ h1{font-size:31px;line-height:1.2;margin:8px 0 10px}.lead{font-size:14px;line-he
 </section>
 
 <section class="card">
-<h2>② ブックマーク、使ったことある？</h2>
+<h2>③ ブックマーク、使ったことある？</h2>
 <div class="modegrid">
-<button class="mode active" data-mode="easy"><strong>よく分からない</strong><span>ゆっくり手順</span></button>
+<button class="mode active" data-mode="easy"><strong>よく分からない</strong><span>ゆっくり説明</span></button>
 <button class="mode" data-mode="fast"><strong>使ったことある</strong><span>最短手順</span></button>
 </div>
 </section>
 
 <section class="card">
-<div class="pill">まずここだけ覚えればOK</div>
-<h2>ブックマーク＝よく見るページを保存しておく機能です</h2>
-<p class="lead" style="text-align:left">今回は、その保存場所に「ページを開く代わりに、申請入力を手伝うボタン」を1個置きます。<strong>コードの意味を理解する必要はありません。</strong></p>
+<div class="pill">最初の1回だけ</div>
+<h2>「申請ボタン」を作ります</h2>
+<p class="lead" style="text-align:left">ブックマークは、ページをあとで開けるように保存しておく機能です。今回はその仕組みを使って、Stationheadの申請入力を手伝うボタンを作ります。</p>
 
 <div id="iphoneEasy">
 <div class="steps">
-<div class="step"><div class="num">1</div><div><h3>このページをSafariのブックマークに保存</h3><p>共有ボタン → 「ブックマークを追加」。名前は仮のままでOK。</p></div></div>
-<div class="step"><div class="num">2</div><div><h3>下の「申請ボタンをコピー」を押す</h3><p>長い文字列は見なくて大丈夫。自動でコピーされます。</p></div></div>
-<div class="step"><div class="num">3</div><div><h3>保存したブックマークを編集</h3><p>名前を「Snow Man申請」にして、アドレス欄を全部消して貼り付けます。</p></div></div>
-<div class="step"><div class="num">4</div><div><h3>Stationheadの申請ページを開く</h3><p>そこで「Snow Man申請」のブックマークを押すと、入力補助が始まります。</p></div></div>
+<div class="step"><div class="num">1</div><div>
+<h3>まず、このページをブックマークに保存</h3>
+<p>Safari下部の共有ボタン <strong>□↑</strong> → <strong>「ブックマークを追加」</strong> → <strong>「保存」</strong>。</p>
+<div class="mini">このページのタイトルを最初から「Snow Manファンチャンネル申請」にしているので、名前は直さなくてOKです。</div>
+</div></div>
+
+<div class="step"><div class="num">2</div><div>
+<h3>下の「あなた専用の申請ボタンをコピー」を押す</h3>
+<p>IDとメールアドレスを入れてから押してください。</p>
+</div></div>
+
+<div class="step"><div class="num">3</div><div>
+<h3>いま保存したブックマークを「編集」する</h3>
+<p>Safariの<strong>本のマーク</strong>をタップ → <strong>ブックマーク</strong>を開く → <strong>編集</strong> → 一覧の<strong>「Snow Manファンチャンネル申請」</strong>をタップします。</p>
+<div class="mini"><strong>ここが大事：</strong>ブックマークを普通にタップして開くのではなく、「編集」を押してから名前をタップします。</div>
+</div></div>
+
+<div class="step"><div class="num">4</div><div>
+<h3>「アドレス」の中身だけ入れ替える</h3>
+<p>編集画面に<strong>名前</strong>と<strong>アドレス</strong>が出ます。<br>
+名前はそのまま。<strong>アドレス欄をタップ → すべて選択 → 削除 → 貼り付け</strong>。</p>
+<div class="mini">貼り付けるのは、STEP 2でコピーした「あなた専用の申請ボタン」です。貼り付けたら<strong>完了</strong>を押します。</div>
+</div></div>
+
+<div class="step"><div class="num">5</div><div>
+<h3>Stationheadの申請ページで使う</h3>
+<p>申請ページを開いた状態で、本のマーク → <strong>「Snow Manファンチャンネル申請」</strong>をタップ。入力補助が動けば設定完了です。</p>
+</div></div>
 </div>
 </div>
 
 <div id="androidEasy" class="hidden">
 <div class="steps">
-<div class="step"><div class="num">1</div><div><h3>このページをChromeでブックマーク</h3><p>右上の︙ → ★で保存します。</p></div></div>
-<div class="step"><div class="num">2</div><div><h3>下の「申請ボタンをコピー」を押す</h3><p>コピーした内容は長いですが、そのままでOK。</p></div></div>
-<div class="step"><div class="num">3</div><div><h3>ブックマークを編集</h3><p>名前を「Snow Man申請」にして、URL欄を全部入れ替えます。</p></div></div>
-<div class="step"><div class="num">4</div><div><h3>申請ページを開いて、アドレスバーに「Snow Man申請」と入力</h3><p>候補に出てきたブックマークを選ぶと入力補助が始まります。</p></div></div>
+<div class="step"><div class="num">1</div><div>
+<h3>このページをChromeのブックマークに保存</h3>
+<p>右上の <strong>︙</strong> → <strong>★</strong> で保存します。</p>
+<div class="mini">ページ名は最初から「Snow Manファンチャンネル申請」なので、そのままでOKです。</div>
+</div></div>
+
+<div class="step"><div class="num">2</div><div>
+<h3>下の「あなた専用の申請ボタンをコピー」を押す</h3>
+<p>IDとメールアドレスを入れてから押してください。</p>
+</div></div>
+
+<div class="step"><div class="num">3</div><div>
+<h3>保存したブックマークを編集</h3>
+<p>Chromeの <strong>︙ → ブックマーク</strong> を開き、保存した<strong>「Snow Manファンチャンネル申請」</strong>の編集画面を開きます。</p>
+</div></div>
+
+<div class="step"><div class="num">4</div><div>
+<h3>URL欄の中身だけ入れ替える</h3>
+<p>名前はそのまま。<strong>URL欄をすべて選択 → 削除 → 貼り付け → 保存</strong>します。</p>
+</div></div>
+
+<div class="step"><div class="num">5</div><div>
+<h3>Stationheadの申請ページで使う</h3>
+<p>申請ページを開いた状態でChromeの<strong>アドレスバー</strong>に「Snow Manファンチャンネル申請」と入力し、候補に出たブックマークをタップします。</p>
+</div></div>
 </div>
 </div>
 
 <div id="fastGuide" class="hidden">
 <div class="steps">
-<div class="step"><div class="num">1</div><div><h3>このページをブックマーク</h3><p>名前は「Snow Man申請」に。</p></div></div>
-<div class="step"><div class="num">2</div><div><h3>申請ボタンをコピーしてURL欄と入れ替え</h3><p>保存したら準備完了。</p></div></div>
-<div class="step"><div class="num">3</div><div><h3>Stationhead申請ページで実行</h3><p id="fastDeviceText">Safariのブックマーク一覧から「Snow Man申請」を押します。</p></div></div>
+<div class="step"><div class="num">1</div><div><h3>このページをブックマークに保存</h3><p>ページ名はそのままでOK。</p></div></div>
+<div class="step"><div class="num">2</div><div><h3>ID・メールを入力して「申請ボタンをコピー」</h3><p>コピーした内容を、保存したブックマークのアドレス / URL欄と入れ替えます。</p></div></div>
+<div class="step"><div class="num">3</div><div><h3>申請ページで実行</h3><p id="fastDeviceText">Safariのブックマークから「Snow Manファンチャンネル申請」をタップします。</p></div></div>
 </div>
 </div>
 
-<button id="copyBtn" class="bigbtn" style="margin-top:16px">📋 申請ボタンをコピー</button>
-<div class="callout">このボタンは<strong>申請内容を自動送信しません</strong>。入力後に内容を確認して、最後のSubmitは自分で押します。</div>
+<button id="copyBtn" class="bigbtn" style="margin-top:16px">📋 あなた専用の申請ボタンをコピー</button>
+<div class="callout">
+このボタンは申請を自動送信しません。Stationhead側で入力内容を確認し、最後のSubmitは自分で押します。
+</div>
 <a href="https://www.stationhead.com/p/request-channel" target="_blank" rel="noopener"><button class="subbtn">Stationheadの申請ページを開く</button></a>
 </section>
 
 <section class="card">
 <div class="pill">2回目から</div>
-<h2>かなりラクになります</h2>
-<p class="lead" style="text-align:left">Stationheadの申請ページを開く → 「Snow Man申請」を実行 → ID・メールアドレスを入力 → 用意された申請理由を選ぶ → 内容を確認してSubmit。</p>
+<h2>毎回のID・メール入力も不要</h2>
+<p class="lead" style="text-align:left">申請ページを開く → 保存した「Snow Manファンチャンネル申請」を実行 → 申請理由を選ぶ → 内容を確認してSubmit、という流れになります。</p>
 </section>
 
-<p class="footer">非公式の申請補助ページです。Stationheadフォーム変更などにより動かなくなる場合があります。</p>
+<p class="footer">非公式の申請補助ページです。Stationheadのフォームやブラウザの仕様変更により動かなくなる場合があります。</p>
 </main>
-<div id="toast" class="toast">コピーしました</div>
+<div id="toast" class="toast"></div>
 
 <script>
-const BOOKMARKLET = "javascript:(async()=>{const set=(e,v)=>{if(!e)return false;const p=e instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;const d=Object.getOwnPropertyDescriptor(p,'value');d?.set?d.set.call(e,v):e.value=v;['input','change','blur'].forEach(x=>e.dispatchEvent(new Event(x,{bubbles:true})));return true};const inputs=[...document.querySelectorAll('input,textarea')];const find=x=>inputs.find(e=>(e.placeholder||'').toLowerCase().includes(x));const id=prompt('Stationhead IDを入力してください');if(!id)return;const email=prompt('メールアドレスを入力してください');if(!email)return;set(find('stationhead'),id);set(find('army'),'Snow Man');set(find('you@example.com'),email);set(find('rihanna'),'Snow Man');const why=['Snow Man has a large and highly engaged fanbase in Japan, with an active presence across music, television, films, and other entertainment. We believe there is strong demand for a dedicated fan channel where fans can come together to support their music on Stationhead.','A dedicated Snow Man fan channel could help introduce Stationhead to many Japanese fans who are not yet familiar with the platform. It would provide an easy and welcoming way for them to discover Stationhead and participate in streaming activities together.','Snow Man has fans not only in Japan but also around the world. A dedicated fan channel would create a welcoming space where Japanese and international fans can connect, enjoy Snow Man’s music together, and support the group through Stationhead.'];const n=prompt('Why?\\n\\n1 = Japan\\n2 = New Stationhead fans\\n3 = Global fan community','1');const ta=[...document.querySelectorAll('textarea')];if(ta[0])set(ta[0],why[(parseInt(n)||1)-1]);set(find('https://')||find('playlist'),'https://open.spotify.com/playlist/4VjiB9FNBsKyd5PP6ybea6?si=d57562db467741b3');const st=find('serena');if(st){for(const id of ['snowmanfan9sima','snowmandream','chochan6969','whatsolike','sn9support','snowman9flash','snowind']){set(st,id);st.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',code:'Enter',bubbles:true}));await new Promise(r=>setTimeout(r,500))}}alert('Snow Man申請の入力が完了しました！内容を確認してSubmitしてください。')})()";
+const TEMPLATE="javascript:(async()=>{const set=(e,v)=>{if(!e)return false;const p=e instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;const d=Object.getOwnPropertyDescriptor(p,'value');d?.set?d.set.call(e,v):e.value=v;['input','change','blur'].forEach(x=>e.dispatchEvent(new Event(x,{bubbles:true})));return true};const inputs=[...document.querySelectorAll('input,textarea')];const find=x=>inputs.find(e=>(e.placeholder||'').toLowerCase().includes(x));const id=__ID__;const email=__EMAIL__;set(find('stationhead'),id);set(find('army'),'Snow Man');set(find('you@example.com'),email);set(find('rihanna'),'Snow Man');const why=['Snow Man has a large and highly engaged fanbase in Japan, with an active presence across music, television, films, and other entertainment. We believe there is strong demand for a dedicated fan channel where fans can come together to support their music on Stationhead.','A dedicated Snow Man fan channel could help introduce Stationhead to many Japanese fans who are not yet familiar with the platform. It would provide an easy and welcoming way for them to discover Stationhead and participate in streaming activities together.','Snow Man has fans not only in Japan but also around the world. A dedicated fan channel would create a welcoming space where Japanese and international fans can connect, enjoy Snow Man’s music together, and support the group through Stationhead.'];const n=prompt('申請理由を選んでください\\\\n\\\\n1 = 日本での大きなファンダム\\\\n2 = Stationheadを新しいファンへ\\\\n3 = 海外ファンとの交流','1');const ta=[...document.querySelectorAll('textarea')];if(ta[0])set(ta[0],why[(parseInt(n)||1)-1]);set(find('https://')||find('playlist'),'https://open.spotify.com/playlist/4VjiB9FNBsKyd5PP6ybea6?si=d57562db467741b3');const st=find('serena');if(st){for(const sid of ['snowmanfan9sima','snowmandream','chochan6969','whatsolike','sn9support','snowman9flash','snowind']){set(st,sid);st.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',code:'Enter',bubbles:true}));await new Promise(r=>setTimeout(r,500))}}alert('入力できる項目を埋めました。内容を確認してSubmitしてください！')})()";
 let device='iphone',mode='easy';
+
+function buildBookmarklet(){
+  const id=document.getElementById('stationId').value.trim().replace(/^@/,'');
+  const email=document.getElementById('email').value.trim();
+  if(!id){showToast('Stationhead IDを入力してください');document.getElementById('stationId').focus();return null;}
+  if(!email || !email.includes('@')){showToast('メールアドレスを確認してください');document.getElementById('email').focus();return null;}
+  return TEMPLATE
+    .replace('__ID__',JSON.stringify(id))
+    .replace('__EMAIL__',JSON.stringify(email));
+}
+
+function updatePreview(){
+  const id=document.getElementById('stationId').value.trim().replace(/^@/,'');
+  const email=document.getElementById('email').value.trim();
+  const box=document.getElementById('personalPreview');
+  if(id || email){
+    box.innerHTML='<strong>あなた専用の申請ボタン</strong>'+
+      (id?'Stationhead ID：'+escapeHtml(id)+'<br>':'')+
+      (email?'メール：'+escapeHtml(email)+'<br>':'')+
+      'この内容を申請ボタンに組み込みます。';
+  }else{
+    box.innerHTML='<strong>あなた専用の申請ボタン</strong>IDとメールアドレスを入力すると、実行時に毎回入力しなくてよくなります。';
+  }
+}
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove('show'),1400)}
+
 function update(){
  document.querySelectorAll('.choice').forEach(b=>b.classList.toggle('active',b.dataset.device===device));
  document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
  document.getElementById('iphoneEasy').classList.toggle('hidden',!(mode==='easy'&&device==='iphone'));
  document.getElementById('androidEasy').classList.toggle('hidden',!(mode==='easy'&&device==='android'));
  document.getElementById('fastGuide').classList.toggle('hidden',mode!=='fast');
- document.getElementById('fastDeviceText').textContent=device==='iphone'?'Safariのブックマーク一覧から「Snow Man申請」を押します。':'Chromeのアドレスバーに「Snow Man申請」と入力し、候補のブックマークを選びます。';
+ document.getElementById('fastDeviceText').textContent=device==='iphone'
+  ? 'Safariのブックマークから「Snow Manファンチャンネル申請」をタップします。'
+  : 'Chromeのアドレスバーに「Snow Manファンチャンネル申請」と入力し、候補のブックマークをタップします。';
 }
+
 document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{device=b.dataset.device;update()});
 document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;update()});
+document.getElementById('stationId').addEventListener('input',updatePreview);
+document.getElementById('email').addEventListener('input',updatePreview);
+
 document.getElementById('copyBtn').onclick=async()=>{
+ const code=buildBookmarklet(); if(!code)return;
  let ok=false;
- try{await navigator.clipboard.writeText(BOOKMARKLET);ok=true}catch(e){
-   const ta=document.createElement('textarea');ta.value=BOOKMARKLET;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+ try{await navigator.clipboard.writeText(code);ok=true}catch(e){
+   const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
    try{ok=document.execCommand('copy')}catch(_){}
    ta.remove();
  }
- const t=document.getElementById('toast');t.textContent=ok?'申請ボタンをコピーしました':'コピーできませんでした';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400);
+ showToast(ok?'あなた専用の申請ボタンをコピーしました':'コピーできませんでした');
 };
 update();
 </script>
