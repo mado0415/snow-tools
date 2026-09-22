@@ -144,3 +144,4 @@ document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{device=b.dataset.
 document.getElementById('copyBtn').onclick=async()=>{const code=build();if(!code)return;let ok=false;try{await navigator.clipboard.writeText(code);ok=true}catch(e){const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{ok=document.execCommand('copy')}catch(_){}ta.remove()}showToast(ok?'あなた専用の申請ボタンをコピーしました':'コピーできませんでした')};
 update();
 </script></body></html>
+
