@@ -33,7 +33,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <img class="helpShot narrow" src="iphone-step3-bookmarks-icon.jpeg" alt="本のマークからブックマークを開く画面">
 <img class="helpShot narrow" src="iphone-step3-longpress-edit.jpeg" alt="長押しして編集する画面">
 </div></div>
-<div class="step"><div class="num">4</div><div><h3>Stationheadの申請ページで実行</h3><p>申請ページを開いたまま、Safariの場合はブックマークから「Snow Manファンチャンネル申請」をタップします。Stationの追加中は画面を触らずに待ち、完了メッセージが出たら内容を確認します。</p>
+<div class="step"><div class="num">4</div><div><h3>Stationheadの申請ページで実行</h3><p>申請ページを開いたまま、Safariの場合はブックマークから「Snow Manファンチャンネル申請」をタップします。Stationの追加中は画面を触らずに待ちます。完了メッセージが出ても追加済み欄の7局を確認し、不足があれば送信前に手動で追加してください。</p>
 <div class="shotGrid">
 <div><img class="helpShot" src="iphone-step5-reason-picker.jpeg" alt="申請理由を選ぶ画面"><div class="shotCaption">例文を使う場合は、その場で1つ選択。</div></div>
 <div><img class="helpShot" src="iphone-step5-progress.jpeg" alt="Station追加の進行画面"><div class="shotCaption">7局を順番に追加中。画面を触らずに待ちます。</div></div>
