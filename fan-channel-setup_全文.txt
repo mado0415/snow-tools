@@ -31,18 +31,18 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <strong>③ 海外ファンとの交流</strong><div class="reasonText">Snow Man has fans not only in Japan but also around the world. A dedicated fan channel would create a welcoming space where Japanese and international fans can connect, enjoy Snow Man’s music together, and support the group through Stationhead.</div>
 <div class="field" style="margin-top:14px"><label for="customReason">自分で書いた申請理由を使いたい場合</label><textarea id="customReason" placeholder="ここに英語の申請理由を書いてください。空欄なら、実行時に上の3つから選びます。"></textarea><div class="hint">ここに文章を入れて申請ボタンを作ると、その文章もブックマークに組み込まれます。実行時の3択は出ません。</div></div>
 </div></details></section>
-<section class="card"><h2>② 使っている端末</h2><div class="choicegrid"><button class="choice active" data-device="iphone"><span class="emoji">🍎</span>iPhone Safari / iPad Safari</button><button class="choice" data-device="android"><span class="emoji">🤖</span>Android</button></div></section>
+<section class="card"><h2>② 使っている端末</h2><div class="choicegrid"><button class="choice active" data-device="iphone"><span class="emoji">🍎</span>iPhone / iPad</button><button class="choice" data-device="android"><span class="emoji">🤖</span>Android</button></div></section>
 <section class="card"><h2>③ ブックマーク、使ったことある？</h2><div class="modegrid"><button class="mode active" data-mode="easy"><strong>よく分からない</strong><span>ゆっくり説明</span></button><button class="mode" data-mode="fast"><strong>使ったことある</strong><span>最短手順</span></button></div></section>
 <section class="card"><div class="pill">最初の1回だけ</div><h2>このページを「申請ボタン」に変えます</h2>
 <div id="iphoneEasy"><div class="steps">
 <div class="step"><div class="num">1</div><div>
-<h3>この設定ページをSafariのブックマークに保存</h3>
-<p>Safariの共有メニューで<strong>「ブックマークに追加」</strong>をタップします。</p>
+<h3>この設定ページをブックマークに追加</h3>
+<p>ここからの画像は<strong>Safariでの操作例</strong>です。Safariの場合は共有メニューで<strong>「ブックマークに追加」</strong>をタップします。</p>
 <img class="helpShot narrow" src="iphone-step1-bookmark-menu-v2.jpeg" alt="Safariの共有メニューでブックマークに追加を選ぶ画面">
 <div class="mini">ブックマーク名は「Snow Manファンチャンネル申請」のままでOKです。</div>
-</div></div></div>
-<div class="step"><div class="num">2</div><div><h3>この画面の下の方にある「あなた専用の申請ボタンをコピー」を押す</h3><p>ID・メール、必要なら自作の申請理由も入力してから押してください。</p></div></div>
-<div class="step"><div class="num">3</div><div><h3>保存したブックマークを長押し</h3><p>Safariの<strong>本のマーク → ブックマーク</strong>を開き、<strong>「Snow Manファンチャンネル申請」を長押し → 「編集」</strong>。</p>
+</div></div>
+<div class="step"><div class="num">2</div><div><h3>この画面の下の方にある「あなた専用の申請ボタンをコピー」を押す</h3><p>ID・メール、必要なら自作の申請理由も入力してから押してください。</p><img class="helpShot narrow" src="iphone-step2-copy-button.jpeg" alt="この画面の下の方にある、あなた専用の申請ボタンをコピーボタン"></div></div>
+<div class="step"><div class="num">3</div><div><h3>保存したブックマークを長押し</h3><p>Safariの場合は<strong>本のマーク → ブックマーク</strong>を開き、<strong>「Snow Manファンチャンネル申請」を長押し → 「編集」</strong>。</p>
 <img class="helpShot narrow" src="iphone-step3-longpress-edit.jpeg" alt="保存したブックマークを長押しして編集を選ぶ画面">
 </div></div>
 <div class="step"><div class="num">4</div><div><h3>「アドレス」の中身だけ貼り替える</h3>
@@ -55,7 +55,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <div class="shotCaption">③ 貼り付けたら右上の「保存」を押します。</div>
 </div></div>
 <div class="step"><div class="num">5</div><div><h3>Stationheadの申請ページで動かす</h3>
-<p>Stationheadの申請ページを開いたまま、Safariの<strong>本のマーク → ブックマーク</strong>を開きます。</p>
+<p>Stationheadの申請ページを開いたまま、Safariの場合は<strong>本のマーク → ブックマーク</strong>を開きます。</p>
 <img class="helpShot narrow" src="iphone-step5-stationhead-bookmark.jpeg" alt="Stationhead申請ページでSafariのブックマークを開く画面">
 <p style="margin-top:10px"><strong>「Snow Manファンチャンネル申請」</strong>を1回タップします。</p>
 <img class="helpShot compact" src="iphone-step5-bookmark-list.jpeg" alt="Snow Manファンチャンネル申請のブックマーク">
@@ -79,6 +79,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <div class="step"><div class="num">2</div><div>
 <h3>申請ボタンをコピー</h3>
 <p>ID・メール、必要なら自作理由も入力してから、<strong>この画面の下の方にある「あなた専用の申請ボタンをコピー」</strong>を押します。</p>
+<img class="helpShot narrow" src="iphone-step2-copy-button.jpeg" alt="この画面の下の方にある、あなた専用の申請ボタンをコピーボタン">
 </div></div>
 
 <div class="step"><div class="num">3</div><div>
@@ -134,7 +135,7 @@ const TEMPLATE="javascript:(()=>{const ID=__ID__,MAIL=__EMAIL__,CUSTOM=__CUSTOM_
 let device='iphone',mode='easy';
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(()=>t.classList.remove('show'),1400)}
 function build(){const id=document.getElementById('stationId').value.trim().replace(/^@/,'');const mail=document.getElementById('email').value.trim();const custom=document.getElementById('customReason').value.trim();if(!id){showToast('Stationhead IDを入力してください');return null}if(!mail||!mail.includes('@')){showToast('メールアドレスを確認してください');return null}return TEMPLATE.replace('__ID__',JSON.stringify(id)).replace('__EMAIL__',JSON.stringify(mail)).replace('__CUSTOM__',JSON.stringify(custom))}
-function update(){document.querySelectorAll('.choice').forEach(b=>b.classList.toggle('active',b.dataset.device===device));document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));document.getElementById('iphoneEasy').classList.toggle('hidden',!(mode==='easy'&&device==='iphone'));document.getElementById('androidEasy').classList.toggle('hidden',!(mode==='easy'&&device==='android'));document.getElementById('fastGuide').classList.toggle('hidden',mode!=='fast');document.getElementById('fastDeviceText').textContent=device==='iphone'?'Stationheadの申請ページを開いたまま、Safariの本のマーク → ブックマーク → 「Snow Manファンチャンネル申請」を1回タップします。':'Stationheadの申請ページを開いたまま、Chromeのアドレスバーに「Snow Manファンチャンネル申請」と入力し、候補のブックマークをタップします。'}
+function update(){document.querySelectorAll('.choice').forEach(b=>b.classList.toggle('active',b.dataset.device===device));document.querySelectorAll('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));document.getElementById('iphoneEasy').classList.toggle('hidden',!(mode==='easy'&&device==='iphone'));document.getElementById('androidEasy').classList.toggle('hidden',!(mode==='easy'&&device==='android'));document.getElementById('fastGuide').classList.toggle('hidden',mode!=='fast');document.getElementById('fastDeviceText').textContent=device==='iphone'?'Safariの操作例です。Stationheadの申請ページを開いたまま、本のマーク → ブックマーク → 「Snow Manファンチャンネル申請」を1回タップします。':'Stationheadの申請ページを開いたまま、Chromeのアドレスバーに「Snow Manファンチャンネル申請」と入力し、候補のブックマークをタップします。'}
 document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{device=b.dataset.device;update()});document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;update()});
 document.getElementById('copyBtn').onclick=async()=>{const code=build();if(!code)return;let ok=false;try{await navigator.clipboard.writeText(code);ok=true}catch(e){const ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{ok=document.execCommand('copy')}catch(_){}ta.remove()}showToast(ok?'あなた専用の申請ボタンをコピーしました':'コピーできませんでした')};
 update();
