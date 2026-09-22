@@ -23,7 +23,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <section class="hero"><div class="kicker">SNOW MAN × STATIONHEAD</div><h1>申請ボタンを設定 📮</h1><p class="lead">このページをブックマークして、申請入力を手伝うボタンに変えます。</p></section>
 <section class="card"><h2>① 自分の情報を入れる</h2>
 <div class="field"><label for="stationId">Stationhead ID</label><input id="stationId" autocomplete="off" autocapitalize="none" placeholder="@より後ろのID"></div>
-<div class="field"><label for="email">メールアドレス</label><input id="email" type="email" autocomplete="email" placeholder="申請に使うメールアドレス"></div>
+<div class="field"><label for="email">メールアドレス</label><input id="email" type="email" autocomplete="email" placeholder="申請に使うメールアドレス"><div class="hint"><strong>Stationheadの登録時に使っているメールアドレス</strong>を入力してください。</div></div>
 <div class="callout privacy"><strong>⚠️ あなた専用の申請ボタンには、入力したIDとメールアドレスが組み込まれます。</strong><br>コピーした内容や、登録後のブックマークのアドレスは他の人に送ったり公開したりしないでください。スクリーンショットにもアドレス欄を写さないようにしてください。</div>
 <details><summary>申請理由に入る文章を見る</summary><div class="detailsBody">
 <strong>① 日本での大きなファンダム</strong><div class="reasonText">Snow Man has a large and highly engaged fanbase in Japan, with an active presence across music, television, films, and other entertainment. We believe there is strong demand for a dedicated fan channel where fans can come together to support their music on Stationhead.</div>
@@ -37,9 +37,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <div id="iphoneEasy"><div class="steps">
 <div class="step"><div class="num">1</div><div>
 <h3>この設定ページをSafariのブックマークに保存</h3>
-<p>Safari下部の<strong>共有ボタン □↑</strong>をタップします。</p>
-<img class="helpShot narrow" src="iphone-step1-share.jpeg" alt="Safariの共有ボタンを開く画面">
-<p style="margin-top:10px">共有メニューが開いたら、<strong>「ブックマークに追加」</strong>をタップ → <strong>「保存」</strong>。</p>
+<p>共有メニューの<strong>「ブックマークに追加」</strong>をタップ → <strong>「保存」</strong>。</p>
 <img class="helpShot narrow" src="iphone-step1-add-bookmark.jpeg" alt="Safariの共有メニューでブックマークに追加を選ぶ画面">
 <div class="mini">ブックマーク名は「Snow Manファンチャンネル申請」のままでOKです。</div>
 </div></div></div>
@@ -63,18 +61,60 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <img class="helpShot compact" src="iphone-step5-bookmark-list.jpeg" alt="Snow Manファンチャンネル申請のブックマーク">
 <div class="mini">用意された理由を使う場合は3つのボタンが出ます。理由を選んだあとはStationを1局ずつ確認しながら追加します。「Stationを追加しています」の表示が消えるまで画面を触らずお待ちください。自作理由を登録した場合は、その文章でそのまま入力が始まります。</div>
 <div class="shotGrid">
-<div><img class="helpShot" src="iphone-step5-reason-picker.png" alt="申請理由を3つから選ぶ画面"><div class="shotCaption">例文を使う場合は、申請時に1つ選びます。</div></div>
+<div><img class="helpShot" src="iphone-step5-reason-picker.jpeg" alt="申請理由を3つから選ぶ画面"><div class="shotCaption">例文を使う場合は、申請時に1つ選びます。</div></div>
 <div><img class="helpShot" src="iphone-step5-complete.jpeg" alt="入力完了メッセージ"><div class="shotCaption">この画面が出たら、内容を確認してSubmitします。</div></div>
 </div>
 </div></div>
 </div></div>
 <div id="androidEasy" class="hidden"><div class="steps">
-<div class="step"><div class="num">1</div><div><h3>この設定ページをChromeのブックマークに保存</h3><p>右上の <strong>︙ → ★</strong> で保存します。</p></div></div>
-<div class="step"><div class="num">2</div><div><h3>申請ボタンをコピー</h3><p>ID・メール、必要なら自作理由も入力してから下のボタンを押します。</p></div></div>
-<div class="step"><div class="num">3</div><div><h3>保存したブックマークを編集</h3><p>Chromeの<strong>︙ → ブックマーク</strong>から「Snow Manファンチャンネル申請」の編集画面を開きます。</p></div></div>
-<div class="step"><div class="num">4</div><div><h3>URL欄を貼り替える</h3><p><strong>URL欄をすべて選択 → 削除 → 貼り付け → 保存</strong>。</p></div></div>
-<div class="step"><div class="num">5</div><div><h3>申請ページで動かす</h3><p>Stationheadの申請ページを開いたまま、Chromeの<strong>アドレスバーに「Snow Manファンチャンネル申請」と入力</strong>し、候補のブックマークをタップします。</p><div class="mini">Stationは1局ずつ追加できたことを確認しながら進みます。「Stationを追加しています」の表示が消えるまで画面を触らずお待ちください。</div></div></div>
+
+<div class="step"><div class="num">1</div><div>
+<h3>この設定ページをChromeのブックマークに保存</h3>
+<p>右上の<strong>︙</strong>をタップ → 上部の<strong>☆</strong>をタップして保存します。</p>
+<img class="helpShot narrow" src="android-step1-bookmark.png" alt="Chromeのメニューで星をタップしてブックマークに保存する画面">
 </div></div>
+
+<div class="step"><div class="num">2</div><div>
+<h3>申請ボタンをコピー</h3>
+<p>ID・メール、必要なら自作理由も入力してから、下の<strong>「あなた専用の申請ボタンをコピー」</strong>を押します。</p>
+</div></div>
+
+<div class="step"><div class="num">3</div><div>
+<h3>保存したブックマークを編集</h3>
+<p>Chromeの<strong>︙ → ブックマーク</strong>を開きます。<strong>「Snow Manファンチャンネル申請」右側の︙</strong>をタップ → <strong>「編集」</strong>。</p>
+<div class="shotGrid">
+<div><img class="helpShot" src="android-step3-list.png" alt="Chromeのブックマーク一覧で対象ブックマーク右側のメニューを開く画面"></div>
+<div><img class="helpShot" src="android-step3-edit-menu.png" alt="Chromeのブックマークメニューで編集を選ぶ画面"></div>
+</div>
+</div></div>
+
+<div class="step"><div class="num">4</div><div>
+<h3>URL欄を貼り替える</h3>
+<p>URL欄を<strong>すべて選択 → 削除 → 貼り付け</strong>します。</p>
+<div class="shotGrid">
+<div><img class="helpShot" src="android-step4-url-delete.png" alt="Chromeのブックマーク編集画面で元のURLを削除する画面"></div>
+<div><img class="helpShot" src="android-step4-pasted.png" alt="Chromeのブックマーク編集画面に申請ボタンを貼り付けた画面"></div>
+</div>
+<div class="mini"><strong>Androidではここで「保存」を押す操作はありません。</strong> 貼り付けたら、そのまま元のページに戻ればOKです。</div>
+</div></div>
+
+<div class="step"><div class="num">5</div><div>
+<h3>Stationheadの申請ページで動かす</h3>
+<p>Stationheadの申請ページを開き、Chromeの<strong>アドレスバー</strong>に<strong>「Snow Manファンチャンネル申請」</strong>と入力します。候補に出る<strong>★付きのブックマーク</strong>をタップします。</p>
+<div class="shotGrid">
+<div><img class="helpShot" src="android-step5-request-page.png" alt="Stationheadの申請ページをChromeで開いた画面"></div>
+<div><img class="helpShot" src="android-step5-bookmark-search.png" alt="ChromeのアドレスバーからSnow Manファンチャンネル申請のブックマークを選ぶ画面"></div>
+</div>
+<div class="mini">例文を使う場合は、このあと申請理由を1つ選びます。Stationは1局ずつ追加できたことを確認しながら進みます。<strong>「Stationを追加しています」の表示が消えるまで画面を触らずお待ちください。</strong></div>
+
+<div class="shotGrid">
+<div><img class="helpShot" src="android-step5-complete.png" alt="Androidで入力完了のメッセージが表示された画面"><div class="shotCaption">完了メッセージが出たらOKをタップ。</div></div>
+<div><img class="helpShot" src="android-step5-submit.png" alt="7つのStationが追加されSubmit Requestボタンが表示された画面"><div class="shotCaption">7局入っていることと内容を確認して、最後にSubmit Request。</div></div>
+</div>
+</div></div>
+
+</div></div>
+
 <div id="fastGuide" class="hidden"><div class="steps">
 <div class="step"><div class="num">1</div><div><h3>この設定ページをブックマーク</h3><p>名前はそのままでOK。</p></div></div>
 <div class="step"><div class="num">2</div><div><h3>申請ボタンをコピー</h3><p>保存したブックマークのアドレス / URL欄を、コピーした内容に入れ替えます。</p></div></div>
@@ -84,7 +124,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 <div class="callout">申請内容は自動送信されません。入力後に内容を確認し、最後のSubmitは自分で押します。</div>
 <a class="linkbtn" href="https://www.stationhead.com/p/request-channel" target="_blank" rel="noopener"><button class="subbtn">Stationheadの申請ページを開く</button></a>
 </section>
-<section class="card"><div class="pill">あとから変更したいとき</div><h2>ブックマークは作り直さなくてOK</h2><p class="lead" style="text-align:left">この設定ページをもう一度開き、新しいID・メール・申請理由で申請ボタンをコピーします。保存済みの「Snow Manファンチャンネル申請」を長押し → 編集 → アドレス欄を貼り替えれば更新完了です。</p><a class="linkbtn" href="fan-channel-guide.html"><button class="subbtn">説明ページに戻る</button></a></section>
+<section class="card"><div class="pill">あとから変更したいとき</div><h2>ブックマークは作り直さなくてOK</h2><p class="lead" style="text-align:left">この設定ページをもう一度開き、新しいID・メール・申請理由で申請ボタンをコピーします。<br><br><strong>iPhone / iPad：</strong>保存済みの「Snow Manファンチャンネル申請」を長押し → 編集 → アドレス欄を貼り替え。<br><strong>Android：</strong>Chromeのブックマーク一覧で対象ブックマーク右側の︙ → 編集 → URL欄を貼り替えれば更新完了です。</p><a class="linkbtn" href="fan-channel-guide.html"><button class="subbtn">説明ページに戻る</button></a></section>
 <p class="footer">非公式の申請補助ページです。Stationheadやブラウザの仕様変更により動かなくなる場合があります。</p></main>
 <div id="toast" class="toast"></div>
 <script>

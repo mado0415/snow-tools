@@ -21,26 +21,23 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 </style></head><body>
 <main class="wrap">
 <section class="hero"><div class="kicker">SNOW MAN × STATIONHEAD</div><h1>Snow Manファンチャンネル申請 📮</h1><p class="lead">申請入力をラクにするブックマークを、最初の1回だけ設定します。<br>このページは説明用なので、あとからいつでも見返せます。</p></section>
-<section class="card"><div class="pill">まずはここから</div><h2>設定は別ページで行います</h2><p class="lead" style="text-align:left">説明ページそのものを書き換えてしまわないように、登録作業だけ別ページに分けています。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="bigbtn" style="margin-top:14px">申請ボタンの設定ページを開く</button></a><div class="callout">設定ページには、ID・メール入力、申請理由の確認・自由入力、iPhone / Androidそれぞれの登録手順も載っています。</div></section>
+<section class="card"><div class="pill">まずはここから</div><h2>設定は別ページで行います</h2><p class="lead" style="text-align:left">説明ページそのものを書き換えてしまわないように、登録作業だけ別ページに分けています。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="bigbtn" style="margin-top:14px">申請ボタンの設定ページを開く</button></a><div class="callout">設定ページには、ID・メール入力、申請理由の確認・自由入力、<strong>iPhone / iPad・Androidそれぞれの画像つき登録手順</strong>を載せています。</div></section>
 <section class="card"><h2>ブックマークって？</h2><p class="lead" style="text-align:left">よく見るページを保存しておく機能です。今回はその仕組みを使って、Stationheadの申請欄をまとめて入力する「申請ボタン」を作ります。</p></section>
 <section class="card"><h2>設定の流れ</h2><div class="steps">
-<div class="step"><div class="num">1</div><div><h3>設定ページを開く</h3><p>Stationhead ID・メールアドレスを入力します。</p></div></div>
+<div class="step"><div class="num">1</div><div><h3>設定ページを開く</h3><p>Stationhead IDと、<strong>Stationheadの登録時に使っているメールアドレス</strong>を入力します。</p></div></div>
 <div class="step"><div class="num">2</div><div><h3>申請理由を確認</h3><p>登録ページでは申請理由の例文を確認できます。例文を使う場合は、実際の申請時に3つから選びます。自分で書いた文章を使いたい場合だけ、登録ページであらかじめ入力します。</p></div></div>
 <div class="step"><div class="num">3</div><div>
 <h3>設定ページをブックマークして編集</h3>
-<p>まずSafari下部の<strong>共有ボタン □↑</strong>をタップし、共有メニューから<strong>「ブックマークに追加」</strong>を選んで保存します。そのあと、保存した「Snow Manファンチャンネル申請」を長押し → 編集。アドレス欄をコピーした申請ボタンに貼り替えます。</p>
-<div class="shotGrid">
-<div><img class="helpShot" src="iphone-step1-share.jpeg" alt="Safariの共有ボタンを開く画面"></div>
-<div><img class="helpShot" src="iphone-step1-add-bookmark.jpeg" alt="ブックマークに追加を選ぶ画面"></div>
-</div>
+<p>共有メニューから<strong>「ブックマークに追加」</strong>を選んで保存します。そのあと、保存した「Snow Manファンチャンネル申請」を長押し → 編集。アドレス欄をコピーした申請ボタンに貼り替えます。</p>
+<img class="helpShot narrow" src="iphone-step1-add-bookmark.jpeg" alt="ブックマークに追加を選ぶ画面">
 <img class="helpShot narrow" src="iphone-step3-longpress-edit.jpeg" alt="長押しして編集する画面">
 </div></div>
 <div class="step"><div class="num">4</div><div><h3>Stationheadの申請ページで実行</h3><p>申請ページを開いたまま、Safariのブックマークから「Snow Manファンチャンネル申請」をタップします。</p>
 <div class="shotGrid">
-<div><img class="helpShot" src="iphone-step5-reason-picker.png" alt="申請理由を選ぶ画面"><div class="shotCaption">例文を使う場合は、その場で1つ選択。</div></div>
+<div><img class="helpShot" src="iphone-step5-reason-picker.jpeg" alt="申請理由を選ぶ画面"><div class="shotCaption">例文を使う場合は、その場で1つ選択。</div></div>
 <div><img class="helpShot" src="iphone-step5-complete.jpeg" alt="入力完了画面"><div class="shotCaption">入力後は内容を確認してSubmit。</div></div>
 </div>
 </div></div>
 </div></section>
-<section class="card"><h2>あとで内容を変えたいとき</h2><p class="lead" style="text-align:left">ID・メール・申請理由を書き直したいときは、この説明ページから設定ページを開き直して新しい申請ボタンをコピーします。保存済みブックマークのアドレスを貼り替えるだけで更新できます。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="subbtn">設定ページを開く</button></a></section>
+<section class="card"><h2>あとで内容を変えたいとき</h2><p class="lead" style="text-align:left">ID・メール・申請理由を書き直したいときは、この説明ページから設定ページを開き直して新しい申請ボタンをコピーします。メールアドレスを変更する場合も、Stationheadで現在使っているものを入力してください。保存済みブックマークのアドレスを貼り替えるだけで更新できます。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="subbtn">設定ページを開く</button></a></section>
 <p class="footer">非公式の申請補助ページです。Stationheadやブラウザの仕様変更により動かなくなる場合があります。</p></main></body></html>
