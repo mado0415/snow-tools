@@ -24,59 +24,141 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 #faq summary::after{content:'＋';position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:18px;color:#6f8b98}
 #faq details[open] summary::after{content:'−'}
 
+
+.colorSample{display:block;width:100%;max-width:430px;height:auto;border:1px solid var(--line);border-radius:16px;margin-top:10px;box-shadow:0 8px 24px rgba(53,99,120,.08)}
+.colorCode{display:inline-block;padding:3px 8px;border-radius:999px;background:#d6f4ff;color:#31586a;font-weight:900}
+
 </style></head><body>
 <main class="wrap">
-<section class="hero"><div class="kicker">SNOW MAN × STATIONHEAD</div><h1>Snow Manファンチャンネル申請 📮</h1><p class="lead">申請入力をラクにするブックマークを、最初の1回だけ設定します。<br>このページは説明用なので、あとからいつでも見返せます。</p></section>
-<section class="card"><div class="callout" style="border-color:#cfe4f2;background:#f5fbff;color:#466575">
-<strong>📱 Xからこのページを開いた方へ</strong><br>
-Xのアプリ内ブラウザのままだと、ブックマークを作れないことがあります。<br>
-<strong>いったんSafari / Chromeなどのブラウザで開いてから</strong>、下の設定を進めてください。<br><br>
-X内ブラウザの<strong>「…」メニュー</strong>から、<strong>「Safariで開く」「Chromeで開く」「ブラウザで開く」</strong>などを選びます。表示名は端末によって少し異なります。
-</div></section>
-<section class="card"><div class="pill">まずはここから</div><h2>設定は別ページで行います</h2><p class="lead" style="text-align:left">説明ページそのものを書き換えてしまわないように、登録作業だけ別ページに分けています。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="bigbtn" style="margin-top:14px">申請ボタンの設定ページを開く</button></a><div class="callout">設定ページには、ID・メール入力、申請理由の確認・自由入力、<strong>iPhone / iPad・Androidそれぞれの画像つき登録手順</strong>を載せています。</div></section>
-<section class="card"><h2>ブックマークって？</h2><p class="lead" style="text-align:left">よく見るページを保存しておく機能です。今回はその仕組みを使って、Stationheadの申請欄をまとめて入力する「申請ボタン」を作ります。</p></section>
-<section class="card"><h2>設定の流れ</h2><div class="steps">
-<div class="step"><div class="num">1</div><div><h3>設定ページを開く</h3><p>Stationhead IDと、<strong>Stationheadの登録時に使っているメールアドレス</strong>を入力します。</p></div></div>
-<div class="step"><div class="num">2</div><div><h3>申請理由を確認</h3><p>登録ページでは申請理由の例文を確認できます。例文を使う場合は、実際の申請時に3つから選びます。自分で書いた文章を使いたい場合だけ、登録ページであらかじめ入力します。</p></div></div>
-<div class="step"><div class="num">3</div><div>
-<h3>設定ページをブックマークして編集</h3>
-<p>共有メニューから<strong>「ブックマークに追加」</strong>を選んで保存します。そのあと、保存した「Snow Manファンチャンネル申請」を長押し → 編集。アドレス欄をコピーした申請ボタンに貼り替えます。</p>
-<img class="helpShot narrow" src="iphone-step1-add-bookmark.jpeg" alt="ブックマークに追加を選ぶ画面">
-<img class="helpShot narrow" src="iphone-step3-longpress-edit.jpeg" alt="長押しして編集する画面">
-</div></div>
-<div class="step"><div class="num">4</div><div><h3>Stationheadの申請ページで実行</h3><p>申請ページを開いたまま、Safariのブックマークから「Snow Manファンチャンネル申請」をタップします。</p>
-<div class="shotGrid">
-<div><img class="helpShot" src="iphone-step5-reason-picker.jpeg" alt="申請理由を選ぶ画面"><div class="shotCaption">例文を使う場合は、その場で1つ選択。</div></div>
-<div><img class="helpShot" src="iphone-step5-complete.jpeg" alt="入力完了画面"><div class="shotCaption">入力後は内容を確認してSubmit。</div></div>
-</div>
-</div></div>
-</div></section>
+
+<section class="hero">
+  <div class="kicker">SNOW MAN × STATIONHEAD</div>
+  <h1>Snow Manファンチャンネル申請 📮</h1>
+  <p class="lead">
+    StationheadのFan Channel申請を、できるだけ少ない操作で入力できるようにする補助ツールです。
+  </p>
+</section>
+
+<section class="card">
+  <div class="pill">はじめに</div>
+  <h2>このツールでできること</h2>
+  <p class="lead" style="text-align:left">
+    最初の1回だけ「申請ボタン」をブックマークとして設定します。<br>
+    2回目からはStationheadの申請ページでそのブックマークを実行すると、
+    ID・メール・申請理由・Spotifyプレイリスト・Station一覧など、入力できる項目をまとめて補助します。
+  </p>
+
+  <div class="callout" style="margin-top:14px">
+    <strong>入力前に用意するもの</strong><br>
+    ・Stationhead ID<br>
+    ・<strong>Stationhead登録時に使っているメールアドレス</strong><br>
+    ・申請理由（用意された3つから選ぶか、自分で文章を登録できます）
+  </div>
+
+  <div class="callout privacy">
+    <strong>⚠️ 個人情報について</strong><br>
+    作成する申請ボタンには、入力したStationhead IDとメールアドレスが組み込まれます。
+    コピーしたコードやブックマークのアドレス / URLは、他の人に送ったり公開したりしないでください。
+  </div>
+</section>
+
+<section class="card">
+  <div class="pill">Xから開いた方へ</div>
+  <h2>Safari / Chromeで開いてください</h2>
+  <p class="lead" style="text-align:left">
+    Xのアプリ内ブラウザでは、ブックマークを作れないことがあります。
+    X内ブラウザの「…」メニューから
+    <strong>「Safariで開く」「Chromeで開く」「ブラウザで開く」</strong>
+    などを選んでから設定してください。
+  </p>
+</section>
+
+<section class="card">
+  <div class="pill">最初の1回だけ</div>
+  <h2>申請ボタンを設定する</h2>
+  <p class="lead" style="text-align:left">
+    設定ページでは、iPhone / iPad・Androidそれぞれの画像つき手順を見ながら進められます。
+    ブックマークを使ったことがない方向けの「ゆっくり説明」と、慣れている方向けの「最短手順」があります。
+  </p>
+
+  <a class="linkbtn" href="fan-channel-setup.html">
+    <button class="bigbtn" style="margin-top:14px">申請ボタンの設定ページを開く</button>
+  </a>
+</section>
+
+<section class="card">
+  <div class="pill">設定後</div>
+  <h2>使い方は3ステップ</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <div>
+        <h3>Stationheadの申請ページを開く</h3>
+        <p>申請フォームを表示した状態にします。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div>
+        <h3>登録した「Snow Manファンチャンネル申請」を実行</h3>
+        <p>
+          iPhone / iPadはSafariのブックマークから、
+          AndroidはChromeのアドレスバーから★付きブックマークを選びます。
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div>
+        <h3>内容を確認してSubmit</h3>
+        <p>
+          申請理由を選ぶと入力が始まります。
+          「Stationを追加しています」が消えるまでは画面を触らず待ち、
+          最後にフォーム内容を確認してSubmit Requestを押します。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="card" id="faq">
   <div class="pill">うまくいかないとき</div>
   <h2>FAQ</h2>
   <p class="lead" style="text-align:left">
-    まずは当てはまるものを開いて確認してください。
+    当てはまるものだけ開いて確認してください。
   </p>
 
   <details>
     <summary>Xから開いたら、ブックマークを作れません</summary>
     <div class="detailsBody">
-      Xのアプリ内ブラウザのままだと、ブックマークを作れないことがあります。<br><br>
-      X内ブラウザの<strong>「…」メニュー</strong>から、
-      <strong>「Safariで開く」「Chromeで開く」「ブラウザで開く」</strong>などを選び、
-      Safari / Chromeでこのページを開き直してから設定してください。
+      Xのアプリ内ブラウザではなく、Safari / Chromeで開き直してください。
+      X内ブラウザの「…」メニューから
+      <strong>「Safariで開く」「Chromeで開く」「ブラウザで開く」</strong>
+      などを選びます。
     </div>
   </details>
 
   <details>
-    <summary>ブックマークを押しても、この設定ページが開くだけです</summary>
+    <summary>ブックマークを押しても、設定ページが開くだけです</summary>
     <div class="detailsBody">
-      ブックマークの<strong>アドレス / URL欄が、申請ボタンのコードに置き換わっていない</strong>可能性があります。<br><br>
+      ブックマークの<strong>アドレス / URL欄が申請ボタンのコードに置き換わっていない</strong>可能性があります。<br><br>
       設定ページで「あなた専用の申請ボタンをコピー」→
-      保存済みの「Snow Manファンチャンネル申請」を編集 →
-      アドレス / URL欄を<strong>全部消して貼り直して</strong>ください。<br><br>
-      名前欄ではなく、<strong>アドレス / URL欄</strong>を変更します。
+      保存済みブックマークを編集 →
+      <strong>名前ではなくアドレス / URL欄</strong>を全部消して貼り直してください。
+    </div>
+  </details>
+
+  <details>
+    <summary>ブックマークを実行しても何も起きません</summary>
+    <div class="detailsBody">
+      <strong>Stationheadの申請ページを開いた状態</strong>で実行してください。<br><br>
+      iPhone / iPad：Safariのブックマークから「Snow Manファンチャンネル申請」をタップ。<br>
+      Android：Chromeのアドレスバーに「Snow Manファンチャンネル申請」と入力し、
+      候補の<strong>★付きブックマーク</strong>を選びます。<br><br>
+      それでも動かない場合は、設定ページから申請ボタンを再コピーし、
+      ブックマークのアドレス / URL欄を貼り直してください。
     </div>
   </details>
 
@@ -84,30 +166,16 @@ X内ブラウザの<strong>「…」メニュー</strong>から、<strong>「Saf
     <summary>「申請理由を選んでください」が出ません</summary>
     <div class="detailsBody">
       自分で書いた申請理由を登録している場合は正常です。
-      その場合、3択は表示されず、登録した文章でそのまま入力が始まります。<br><br>
-      自作理由を登録していないのに何も起きない場合は、
+      その場合は3択を出さず、登録した文章でそのまま入力が始まります。<br><br>
+      自作理由を登録していないのに出ない場合は、
       ブックマークのアドレス / URL欄が正しく貼り替わっているか確認してください。
     </div>
   </details>
 
   <details>
-    <summary>ブックマークを押しても何も起きません</summary>
+    <summary>Androidでブックマーク編集後の「保存」が見つかりません</summary>
     <div class="detailsBody">
-      <strong>Stationheadの申請ページを開いた状態</strong>で申請ボタンを実行してください。<br><br>
-      iPhone / iPadはSafariのブックマークから
-      「Snow Manファンチャンネル申請」をタップします。<br>
-      AndroidはChromeのアドレスバーに
-      「Snow Manファンチャンネル申請」と入力し、
-      候補に出る<strong>★付きのブックマーク</strong>を選びます。<br><br>
-      それでも動かない場合は、設定ページから申請ボタンをもう一度コピーして、
-      ブックマークのアドレス / URL欄を貼り直してください。
-    </div>
-  </details>
-
-  <details>
-    <summary>Androidでブックマークを編集したあと「保存」が見つかりません</summary>
-    <div class="detailsBody">
-      Android版Chromeでは、今回の編集画面に<strong>「保存」ボタンがない場合があります</strong>。<br><br>
+      Android版Chromeでは「保存」ボタンがない場合があります。
       URL欄に申請ボタンを貼り付けたら、そのまま元の画面へ戻って大丈夫です。
     </div>
   </details>
@@ -115,24 +183,40 @@ X内ブラウザの<strong>「…」メニュー</strong>から、<strong>「Saf
   <details>
     <summary>Stationが途中までしか追加されません / 1局だけ抜けます</summary>
     <div class="detailsBody">
-      Stationは1局ずつ順番に追加しています。
       <strong>「Stationを追加しています」表示が消えるまでは、画面を触らず待ってください。</strong><br><br>
-      現在の申請ボタンは、各Stationが追加されたことを確認してから次へ進みます。
-      追加を確認できない場合は、そのStation名を示すメッセージが出ます。<br><br>
-      その場合は画面を確認し、表示されたStation以降を手動で追加してください。
-      最後に、以下の7局が入っているか確認してください。<br><br>
+      現在の申請ボタンは、1局ずつ追加できたことを確認してから次へ進みます。
+      確認できない場合は、そのStation名を示すメッセージが出ます。<br><br>
+      最後に以下の7局が入っているか確認してください。<br><br>
       snowmanfan9sima / snowmandream / chochan6969 / whatsolike /
       sn9support / snowman9flash / snowind
     </div>
   </details>
 
+  
   <details>
+    <summary>Fan Channelのカラーはどう設定すればいいですか？</summary>
+    <div class="detailsBody">
+      カラーは申請ボタンでは自動入力できないため、<strong>Stationheadのフォームで必ず手動設定</strong>します。<br><br>
+      「What should the color be for Snow Man Fans?」の<strong>スポイト</strong>をタップし、
+      ライトブルー <span class="colorCode">#d6f4ff</span> に近い色を選んでください。<br><br>
+      <img class="colorSample" src="fan-channel-color-example.jpeg" alt="StationheadのFan Channelカラー選択画面。ライトブルー #d6f4ff の目安">
+    </div>
+  </details>
+
+<details>
     <summary>完了メッセージが出ました。もうSubmitしていいですか？</summary>
     <div class="detailsBody">
-      完了メッセージは、<strong>入力できる項目を埋め、Stationの追加確認まで終わった</strong>という意味です。<br><br>
-      そのまま送信せず、Stationheadのフォームを一度確認してください。
-      特に、ID・メールアドレス・申請理由・Spotifyプレイリスト・7局のStationが入っているかを確認し、
-      問題なければ<strong>Submit Request</strong>を押してください。
+      まだそのまま送信せず、フォームを一度確認してください。<br><br>
+      <strong>確認するもの：</strong><br>
+      ・Stationhead ID<br>
+      ・メールアドレス<br>
+      ・申請理由<br>
+      ・Spotifyプレイリスト<br>
+      ・7局のStation<br>
+      ・<strong>Fan Channelのカラー</strong><br><br>
+      カラーは自動入力されないため、<strong>必ず手動で設定</strong>してください。
+      目安はライトブルーの <span class="colorCode">#d6f4ff</span> です。<br><br>
+      すべて確認できたら<strong>Submit Request</strong>を押します。
     </div>
   </details>
 
@@ -140,8 +224,6 @@ X内ブラウザの<strong>「…」メニュー</strong>から、<strong>「Saf
     <summary>メールアドレスはどれを入れればいいですか？</summary>
     <div class="detailsBody">
       <strong>Stationheadの登録時に使っているメールアドレス</strong>を入力してください。
-      あなた専用の申請ボタンにはIDとメールアドレスが組み込まれるため、
-      コピーしたコードやブックマークのアドレス / URLは他の人に共有しないでください。
     </div>
   </details>
 
@@ -149,22 +231,24 @@ X内ブラウザの<strong>「…」メニュー</strong>から、<strong>「Saf
     <summary>ID・メール・自作の申請理由をあとから変更したいです</summary>
     <div class="detailsBody">
       ブックマーク自体を作り直す必要はありません。<br><br>
-      設定ページをもう一度開いて新しい内容を入力 →
+      設定ページで新しい内容を入力 →
       「あなた専用の申請ボタンをコピー」→
       保存済みブックマークのアドレス / URL欄を新しいコードに貼り替えれば更新できます。
     </div>
   </details>
 
   <details>
-    <summary>3つの申請理由の文章を確認してから使いたいです</summary>
+    <summary>3つの申請理由の英文を先に確認したいです</summary>
     <div class="detailsBody">
-      設定ページの<strong>「申請理由に入る文章を見る」</strong>を開くと、
-      3つの英文を事前に確認できます。<br><br>
-      例文を使う場合は、実際の申請時に3つから選べます。
-      自分で文章を書きたい場合は、設定ページの自由入力欄に登録できます。
+      設定ページの<strong>「申請理由に入る文章を見る」</strong>から確認できます。
+      例文を使う場合は申請時に3つから選べます。
+      自分で書く場合は自由入力欄に登録できます。
     </div>
   </details>
 </section>
 
-<section class="card"><h2>あとで内容を変えたいとき</h2><p class="lead" style="text-align:left">ID・メール・申請理由を書き直したいときは、この説明ページから設定ページを開き直して新しい申請ボタンをコピーします。メールアドレスを変更する場合も、Stationheadで現在使っているものを入力してください。保存済みブックマークのアドレスを貼り替えるだけで更新できます。</p><a class="linkbtn" href="fan-channel-setup.html"><button class="subbtn">設定ページを開く</button></a></section>
-<p class="footer">非公式の申請補助ページです。Stationheadやブラウザの仕様変更により動かなくなる場合があります。</p></main></body></html>
+<p class="footer">
+  非公式の申請補助ページです。Stationheadやブラウザの仕様変更により動かなくなる場合があります。
+</p>
+
+</main></body></html>
