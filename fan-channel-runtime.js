@@ -2,38 +2,65 @@
 (() => {
   'use strict';
 
-  const runtimeSrc = document.currentScript && document.currentScript.src
-    ? document.currentScript.src
-    : '';
-  const configUrl = runtimeSrc
-    ? new URL('fan-channel-config.js', runtimeSrc).href
-    : '';
+  // ★ 最初の設定時に、Station一覧管理用Apps Scriptの /exec URLへ置き換えてください。
+  const CONFIG_ENDPOINT = 'PASTE_STATION_ADMIN_WEB_APP_URL_HERE';
 
-  function loadLatestConfig() {
+  const STATIC = {
+    fandom: 'Snow Man Fans',
+    artist: 'Snow Man',
+    color: '#d6f4ff',
+    spotify: 'https://open.spotify.com/playlist/4VjiB9FNBsKyd5PP6ybea6',
+    requestUrl: 'https://www.stationhead.com/p/request-channel',
+    aggregateUrl: 'https://script.google.com/macros/s/AKfycbw_JVS1QPuwgaUueW-B7-zr6gW95AJYUSqxDB_h9Gpv9YKmnpZ8HEyo-FHI0DZjSSnSDg/exec',
+    shareText: 'Snow Manファンチャンネルの申請をしました❄️ みんなでStationheadでSnow Manを応援しよう！',
+    reasons: [
+      {
+        label: '日本のファンが参加しやすくするため',
+        text: 'Snow Man has a large and highly engaged fanbase in Japan, with an active presence across music, television, films, and other entertainment. We believe there is strong demand for a dedicated fan channel where fans can come together to support their music on Stationhead.'
+      },
+      {
+        label: 'Stationheadを新しく知るファンを増やすため',
+        text: 'A dedicated Snow Man fan channel could help introduce Stationhead to many Japanese fans who are not yet familiar with the platform. It would provide an easy and welcoming way for them to discover Stationhead and participate in streaming activities together.'
+      },
+      {
+        label: '日本と海外のファンが交流できる場を作るため',
+        text: 'Snow Man has fans not only in Japan but also around the world. A dedicated fan channel would create a welcoming space where Japanese and international fans can connect, enjoy Snow Man’s music together, and support the group through Stationhead.'
+      }
+    ]
+  };
+
+  function loadStations() {
     return new Promise((resolve, reject) => {
-      if (!configUrl) {
-        reject(new Error('config-url'));
+      if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?|$)/.test(CONFIG_ENDPOINT)) {
+        reject(new Error('endpoint-not-set'));
         return;
       }
-      try { delete window.SMFC_CONFIG; } catch (_) { window.SMFC_CONFIG = undefined; }
-      document.getElementById('smfc-config-loader')?.remove();
-      const s = document.createElement('script');
-      s.id = 'smfc-config-loader';
-      s.src = configUrl + (configUrl.includes('?') ? '&' : '?') + 'v=' + Date.now();
-      s.onload = () => {
-        const cfg = window.SMFC_CONFIG;
-        s.remove();
-        if (!cfg || !Array.isArray(cfg.stations) || !cfg.stations.length) {
+      const callbackName = '__smfcCfg' + Date.now() + Math.random().toString(36).slice(2);
+      const script = document.createElement('script');
+      let timer;
+      const cleanup = () => {
+        clearTimeout(timer);
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+        script.remove();
+      };
+      window[callbackName] = payload => {
+        if (!payload || !payload.ok || !Array.isArray(payload.stations) || !payload.stations.length) {
+          cleanup();
           reject(new Error('config-invalid'));
           return;
         }
-        resolve(cfg);
+        const stations = [...new Set(payload.stations
+          .map(v => String(v || '').trim().replace(/^@/, ''))
+          .filter(Boolean))];
+        cleanup();
+        if (!stations.length) reject(new Error('config-empty'));
+        else resolve({ stations, revision: payload.revision || 0, updatedAt: payload.updatedAt || '' });
       };
-      s.onerror = () => {
-        s.remove();
-        reject(new Error('config-load'));
-      };
-      (document.head || document.documentElement).appendChild(s);
+      script.onerror = () => { cleanup(); reject(new Error('config-load')); };
+      const sep = CONFIG_ENDPOINT.includes('?') ? '&' : '?';
+      script.src = CONFIG_ENDPOINT + sep + 'action=config&callback=' + encodeURIComponent(callbackName) + '&v=' + Date.now();
+      (document.head || document.documentElement).appendChild(script);
+      timer = setTimeout(() => { cleanup(); reject(new Error('config-timeout')); }, 12000);
     });
   }
 
@@ -48,19 +75,19 @@
       return;
     }
 
-    let CFG;
+    let stationConfig;
     try {
-      CFG = await loadLatestConfig();
+      stationConfig = await loadStations();
     } catch (e) {
-      alert('申請ツールの共通設定を読み込めませんでした。通信状態を確認して、もう一度お試しください。');
+      alert('対象Stationの最新一覧を読み込めませんでした。通信状態を確認して、もう一度お試しください。');
       return;
     }
 
-    const STATIONS = CFG.stations.map(v => String(v).trim().replace(/^@/, '')).filter(Boolean);
-    const REASONS = Array.isArray(CFG.reasons) ? CFG.reasons : [];
-    const COLOR = CFG.color || '#d6f4ff';
-    const REQUEST_URL = CFG.requestUrl || 'https://www.stationhead.com/p/request-channel';
-    const AGG = CFG.aggregateUrl || '';
+    const STATIONS = stationConfig.stations;
+    const REASONS = STATIC.reasons;
+    const COLOR = STATIC.color;
+    const REQUEST_URL = STATIC.requestUrl;
+    const AGG = STATIC.aggregateUrl;
 
     const Q = s => [...D.querySelectorAll('input,textarea')]
       .find(e => (e.placeholder || '').toLowerCase().includes(s));
@@ -87,7 +114,7 @@
       const o = P('<b style="font-size:20px">❄️ Snow Manファンチャンネル申請完了</b><div style="margin-top:14px;display:grid;gap:8px"><button id="sx" style="padding:12px;border:0;border-radius:10px;font-size:15px">𝕏 申請したことをシェアする</button><button id="sl" style="padding:12px;border:0;border-radius:10px;font-size:15px">🔗 申請ページのリンクをコピー</button><button id="sc" style="padding:10px;border:0;background:transparent;font-size:14px">閉じる</button></div>');
       o.id = 'sd';
       D.getElementById('sx').onclick = () => {
-        location.href = 'https://x.com/intent/post?text=' + encodeURIComponent((CFG.shareText || 'Snow Manファンチャンネルの申請をしました❄️') + ' ' + REQUEST_URL);
+        location.href = 'https://x.com/intent/post?text=' + encodeURIComponent(STATIC.shareText + ' ' + REQUEST_URL);
       };
       D.getElementById('sl').onclick = () => navigator.clipboard.writeText(REQUEST_URL)
         .then(() => alert('コピーしました！'), () => prompt('コピーしてください', REQUEST_URL));
@@ -123,20 +150,18 @@
       const label = [...D.querySelectorAll('p')].find(p => p.textContent.trim() === 'Co-Hosts');
       const ul = label?.nextElementSibling;
       if (ul?.tagName !== 'UL') return [];
-      return [...ul.children]
-        .map(li => li.querySelector('img[alt]')?.alt?.toLowerCase())
-        .filter(Boolean);
+      return [...ul.children].map(li => li.querySelector('img[alt]')?.alt?.toLowerCase()).filter(Boolean);
     };
     const hasStation = name => coHostList().includes(name.toLowerCase());
 
     const fill = async why => {
       watchSubmission();
       V(Q('stationhead'), ID);
-      V(Q('army'), CFG.fandom || 'Snow Man Fans');
+      V(Q('army'), STATIC.fandom);
       V(Q('you@example.com'), MAIL);
-      V(Q('rihanna'), CFG.artist || 'Snow Man');
+      V(Q('rihanna'), STATIC.artist);
       V(D.querySelector('textarea'), why);
-      V(Q('https://') || Q('playlist'), CFG.spotify || '');
+      V(Q('https://') || Q('playlist'), STATIC.spotify);
 
       D.getElementById('smfc-progress')?.remove();
       const progress = P('');
@@ -168,14 +193,10 @@
         const station = STATIONS[i];
         status.textContent = '確認中 ' + (i + 1) + ' / ' + STATIONS.length + '\n@' + station + '\n完了まで画面を触らずお待ちください';
         if (stationPresent(station)) continue;
-
         let added = false;
         for (let attempt = 0; attempt < 3 && !added; attempt += 1) {
           let input = Q('serena');
-          if (!input) {
-            await W(800);
-            input = Q('serena');
-          }
+          if (!input) { await W(800); input = Q('serena'); }
           if (!input) break;
           V(input, station);
           await W(800);
@@ -185,40 +206,27 @@
           added = stationPresent(station);
           progress.hidden = false;
         }
-
-        if (!added) {
-          stop();
-          return;
-        }
+        if (!added) { stop(); return; }
       }
 
-      if (STATIONS.some(n => !stationPresent(n))) {
-        stop();
-        return;
-      }
-
+      if (STATIONS.some(n => !stationPresent(n))) { stop(); return; }
       progress.remove();
       alert(STATIONS.length + '局すべて追加できました。🎨 Fan Channelのカラーを ' + COLOR + ' に設定し、内容を確認してからSubmitしてください！');
     };
 
-    if (CUSTOM) {
-      fill(CUSTOM);
-      return;
-    }
+    if (CUSTOM) { fill(CUSTOM); return; }
 
     D.getElementById('smfc-helper')?.remove();
     const overlay = P('<b style="font-size:20px">申請理由を選んでください</b><p style="font-size:13px;line-height:1.6;margin:8px 0 12px">使いたい理由を1つ選んでください。</p><div style="font-size:13px;line-height:1.7;margin:0 0 12px;padding:9px 10px;border-radius:10px;background:#f5fbff">🎨 <b>カラー設定も忘れずに</b><br>Submit前に Fan Channel のカラーを <span style="display:inline-block;width:14px;height:14px;background:' + COLOR + ';border:1px solid #9ccfe5;border-radius:2px;vertical-align:-2px"></span> <b>' + COLOR + '</b> に設定してください。</div>');
     overlay.id = 'smfc-helper';
     const box = overlay.firstChild;
-
     REASONS.forEach((r, i) => {
       const button = N('button');
-      button.textContent = (i + 1) + ' ' + (r.label || ('理由' + (i + 1)));
+      button.textContent = (i + 1) + ' ' + r.label;
       button.style = 'display:block;width:100%;margin:8px 0;padding:12px;border:1px solid #cfe5ef;border-radius:10px;background:#f8fcff;text-align:left;font-size:15px';
-      button.onclick = () => { overlay.remove(); fill(r.text || ''); };
+      button.onclick = () => { overlay.remove(); fill(r.text); };
       box.append(button);
     });
-
     const cancel = N('button');
     cancel.textContent = 'キャンセル';
     cancel.style = 'width:100%;padding:10px;border:0;background:transparent;font-size:14px';
