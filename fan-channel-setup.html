@@ -20,7 +20,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 .colorCode{display:inline-block;padding:3px 8px;border-radius:999px;background:#d6f4ff;color:#31586a;font-weight:900}
 </style></head><body>
 <main class="wrap">
-<section class="hero"><div class="kicker">SNOW MAN × STATIONHEAD · AUTO UPDATE</div><h1>申請ボタンを設定 📮</h1><p class="lead">このページをブックマークして、申請入力を手伝うボタンに変えます。</p></section>
+<section class="hero"><div class="kicker">SNOW MAN × STATIONHEAD</div><h1>申請ボタンを設定 📮</h1><p class="lead">このページをブックマークして、申請入力を手伝うボタンに変えます。</p></section>
 <section class="card"><div class="callout" style="border-color:#cfe4f2;background:#f5fbff;color:#466575">
 <strong>📱 Xからこのページを開いた方へ</strong><br>
 Xのアプリ内ブラウザのままだと、ブックマークを作れないことがあります。<br>
@@ -28,9 +28,9 @@ Xのアプリ内ブラウザのままだと、ブックマークを作れない�
 X内ブラウザの<strong>「…」メニュー</strong>から、<strong>「Safariで開く」「Chromeで開く」「ブラウザで開く」</strong>などを選びます。表示名は端末によって少し異なります。
 </div></section>
 <section class="card"><div class="callout" style="border-color:#b9dfc7;background:#f5fff8;color:#40624a">
-<strong>🔄 今回の登録から自動更新に対応します</strong><br>
-この申請ボタンは、実行するたびにGitHub上の最新版を読み込みます。今後、対象Stationが増えたり共通処理を修正したりしても、<strong>保存済みブックマークの貼り替えは原則不要</strong>です。<br><br>
-ブックマークに残るのは、あなたが設定したStationhead ID・メールアドレス・自作理由と、最新版コードの読み込み先です。ID・メールアドレスを読み込みURLへ付けて送信することはありません。
+<strong>🔄 一度登録すれば、今後のStation追加にも自動で対応します</strong><br>
+対象Stationが増えたり、申請ツールの内容を調整したりしても、<strong>保存済みブックマークの貼り替えは原則不要</strong>です。<br><br>
+Stationhead ID・メールアドレス・自作理由は、申請フォームへの入力に使うためブックマーク内に保存されます。対象Station一覧の更新先へ送信することはありません。
 </div></section>
 <section class="card"><h2>① 自分の情報を入れる</h2>
 <div class="field"><label for="stationId">Stationhead ID</label><input id="stationId" autocomplete="off" autocapitalize="none" placeholder="@より後ろのID"></div>
@@ -142,12 +142,12 @@ Fan Channelのカラーは自動入力されません。Stationheadの申請フ�
 <div class="callout" style="border-color:#cfe4f2;background:#f5fbff;color:#466575">
 <strong>📊 申請数の集計について</strong><br>
 Stationheadで申請完了を確認できたとき、全体の申請数を集計するために<strong>カウント1件と送信時刻</strong>を集計先へ送信します。<br>
-Stationhead ID・メールアドレス・申請理由などの入力内容は、集計先には送信しません。共通コードの読み込み先にも、これらをURLパラメータとして送ることはありません。
+Stationhead ID・メールアドレス・申請理由などの入力内容は、集計先には送信しません。対象Station一覧の更新先にも、これらの入力内容は送信しません。
 </div>
 <div class="callout">申請内容は自動送信されません。入力後、まずカラー（#d6f4ff）を手動設定し、ほかの内容も確認してから最後にSubmitしてください。</div>
 <a class="linkbtn" href="https://www.stationhead.com/p/request-channel" target="_blank" rel="noopener"><button class="subbtn">Stationheadの申請ページを開く</button></a>
 </section>
-<section class="card"><div class="pill">今後の更新について</div><h2>Stationが増えても貼り替え不要</h2><p class="lead" style="text-align:left">対象Stationの追加、申請理由などの共通設定、Stationhead側のフォーム変更への対応は、GitHub上の共通ファイルを更新します。<strong>保存済みの申請ブックマークはそのまま使えます。</strong><br><br>ただし、<strong>自分のStationhead ID・メールアドレス・自作の申請理由を変更した場合だけ</strong>、この設定ページで新しい申請ボタンをコピーし、保存済みブックマークのアドレス / URL欄を貼り替えてください。</p><a class="linkbtn" href="fan-channel-guide.html"><button class="subbtn">説明ページに戻る</button></a></section>
+<section class="card"><div class="pill">今後の更新について</div><h2>Stationが増えても貼り替え不要</h2><p class="lead" style="text-align:left">対象Stationの追加や申請ツールの調整は、次回ブックマークを実行したときから自動で反映されます。<strong>保存済みの申請ブックマークはそのまま使えます。</strong><br><br>ただし、<strong>自分のStationhead ID・メールアドレス・自作の申請理由を変更した場合だけ</strong>、この設定ページで新しい申請ボタンをコピーし、保存済みブックマークのアドレス / URL欄を貼り替えてください。</p><a class="linkbtn" href="fan-channel-guide.html"><button class="subbtn">説明ページに戻る</button></a></section>
 <p class="footer">非公式の申請補助ページです。Stationheadやブラウザの仕様変更により動かなくなる場合があります。</p></main>
 <div id="toast" class="toast"></div>
 <script>
@@ -212,7 +212,7 @@ document.getElementById('copyBtn').onclick=async()=>{
     try{ok=document.execCommand('copy')}catch(_){}
     ta.remove();
   }
-  showToast(ok?'自動更新版の申請ボタンをコピーしました（'+code.length+'文字）':'コピーできませんでした');
+  showToast(ok?'あなた専用の申請ボタンをコピーしました（'+code.length+'文字）':'コピーできませんでした');
 };
 
 update();
