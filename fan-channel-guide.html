@@ -24,10 +24,6 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 #faq summary::after{content:'＋';position:absolute;right:13px;top:50%;transform:translateY(-50%);font-size:18px;color:#6f8b98}
 #faq details[open] summary::after{content:'−'}
 
-
-.colorSample{display:block;width:100%;max-width:430px;height:auto;border:1px solid var(--line);border-radius:16px;margin-top:10px;box-shadow:0 8px 24px rgba(53,99,120,.08)}
-.colorCode{display:inline-block;padding:3px 8px;border-radius:999px;background:#d6f4ff;color:#31586a;font-weight:900}
-
 </style></head><body>
 <main class="wrap">
 
@@ -157,8 +153,8 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
       iPhone / iPad：Safariのブックマークから「Snow Manファンチャンネル申請」をタップ。<br>
       Android：Chromeのアドレスバーに「Snow Manファンチャンネル申請」と入力し、
       候補の<strong>★付きブックマーク</strong>を選びます。<br><br>
-      それでも動かない場合は、設定ページから申請ボタンを再コピーし、
-      ブックマークのアドレス / URL欄を貼り直してください。
+      自動更新版は実行時にGitHub上の最新版を読み込むため、まず通信状態を確認してページを再読み込みし、もう一度実行してください。<br><br>
+      それでも動かない場合は、ブックマークのアドレス / URL欄が <strong>javascript:</strong> から始まる申請ボタンになっているか確認し、必要な場合だけ設定ページから再コピーしてください。
     </div>
   </details>
 
@@ -186,37 +182,17 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
       <strong>「Stationを追加しています」表示が消えるまでは、画面を触らず待ってください。</strong><br><br>
       現在の申請ボタンは、1局ずつ追加できたことを確認してから次へ進みます。
       確認できない場合は、そのStation名を示すメッセージが出ます。<br><br>
-      最後に以下の7局が入っているか確認してください。<br><br>
-      snowmanfan9sima / snowmandream / chochan6969 / whatsolike /
-      sn9support / snowman9flash / snowind
+      完了時には、その時点で共通設定に登録されている対象Station数が表示されます。
+      画面の追加済み欄と完了メッセージを確認し、不足があれば送信前に手動で追加してください。
     </div>
   </details>
 
-  
   <details>
-    <summary>Fan Channelのカラーはどう設定すればいいですか？</summary>
-    <div class="detailsBody">
-      カラーは申請ボタンでは自動入力できないため、<strong>Stationheadのフォームで必ず手動設定</strong>します。<br><br>
-      「What should the color be for Snow Man Fans?」の<strong>スポイト</strong>をタップし、
-      ライトブルー <span class="colorCode">#d6f4ff</span> に近い色を選んでください。<br><br>
-      <img class="colorSample" src="fan-channel-color-example.jpeg" alt="StationheadのFan Channelカラー選択画面。ライトブルー #d6f4ff の目安">
-    </div>
-  </details>
-
-<details>
     <summary>完了メッセージが出ました。もうSubmitしていいですか？</summary>
     <div class="detailsBody">
-      まだそのまま送信せず、フォームを一度確認してください。<br><br>
-      <strong>確認するもの：</strong><br>
-      ・Stationhead ID<br>
-      ・メールアドレス<br>
-      ・申請理由<br>
-      ・Spotifyプレイリスト<br>
-      ・7局のStation<br>
-      ・<strong>Fan Channelのカラー</strong><br><br>
-      カラーは自動入力されないため、<strong>必ず手動で設定</strong>してください。
-      目安はライトブルーの <span class="colorCode">#d6f4ff</span> です。<br><br>
-      すべて確認できたら<strong>Submit Request</strong>を押します。
+      送信前に一度フォームを確認してください。
+      ID・メールアドレス・申請理由・Spotifyプレイリスト・その時点の対象Stationが入っていることを確認し、
+      問題なければ<strong>Submit Request</strong>を押します。
     </div>
   </details>
 
@@ -224,6 +200,16 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
     <summary>メールアドレスはどれを入れればいいですか？</summary>
     <div class="detailsBody">
       <strong>Stationheadの登録時に使っているメールアドレス</strong>を入力してください。
+    </div>
+  </details>
+
+  <details>
+    <summary>対象Stationが増えたら、ブックマークをまた貼り替える必要がありますか？</summary>
+    <div class="detailsBody">
+      <strong>自動更新版へ一度切り替えたあとは、原則不要です。</strong><br><br>
+      対象Station一覧や共通の申請処理は、ブックマークを実行するたびにGitHub上の最新版を読み込みます。
+      運営側で対象Stationを追加すれば、保存済みのブックマークにも次回実行時から反映されます。<br><br>
+      ただし、自分のStationhead ID・メールアドレス・自作理由を変更した場合は、設定ページから申請ボタンを再コピーしてください。
     </div>
   </details>
 
@@ -248,7 +234,7 @@ details{margin-top:10px;border:1px solid var(--line);border-radius:14px;backgrou
 </section>
 
 <p class="footer">
-  非公式の申請補助ページです。Stationheadやブラウザの仕様変更により動かなくなる場合があります。
+  非公式の申請補助ページです。自動更新版では共通コードをGitHubから読み込みます。Stationheadやブラウザの仕様変更により一時的に動かなくなる場合があります。
 </p>
 
 </main></body></html>
