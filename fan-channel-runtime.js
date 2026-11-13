@@ -15,6 +15,8 @@
       'https://www.stationhead.com/p/request-channel',
     aggregateUrl:
       'https://script.google.com/macros/s/AKfycbw_JVS1QPuwgaUueW-B7-zr6gW95AJYUSqxDB_h9Gpv9YKmnpZ8HEyo-FHI0DZjSSnSDg/exec',
+    reportUrl:
+      'https://docs.google.com/forms/d/e/1FAIpQLSeg0ANIGuYSiSB6jlCBHQ9df9Yj284mFe9Y7lCarVUwkD3Q3w/viewform',
     shareText:
       'Snow Manファンチャンネルの申請をしました❄️ みんなでStationheadでSnow Manを応援しよう！',
 
@@ -328,7 +330,26 @@
             '<b style="font-size:20px">' +
               '❄️ Snow Manファンチャンネル申請完了' +
             '</b>' +
-            '<div style="margin-top:14px;display:grid;gap:8px">' +
+            '<p style="' +
+              'margin:10px 0 14px;' +
+              'font-size:13px;' +
+              'line-height:1.65;' +
+              'color:#6f7d86' +
+            '">' +
+              '申請状況を把握するため、最後に一報フォームへのご協力をお願いします。' +
+            '</p>' +
+            '<div style="display:grid;gap:8px">' +
+              '<button id="sr" style="' +
+                'padding:13px;' +
+                'border:1px solid #9ccfe5;' +
+                'border-radius:10px;' +
+                'background:#d6f4ff;' +
+                'color:#22313a;' +
+                'font-size:15px;' +
+                'font-weight:800' +
+              '">' +
+                '✅ 申請したことを報告する' +
+              '</button>' +
               '<button id="sx" style="padding:12px;border:0;border-radius:10px;font-size:15px">' +
                 '𝕏 申請したことをシェアする' +
               '</button>' +
@@ -342,6 +363,16 @@
           );
 
           o.id = 'sd';
+
+          D.getElementById(
+            'sr'
+          ).onclick = () => {
+            window.open(
+              STATIC.reportUrl,
+              '_blank',
+              'noopener'
+            );
+          };
 
           D.getElementById(
             'sx'
@@ -774,7 +805,8 @@
             STATIONS.length +
               '局すべて追加できました。🎨 Fan Channelのカラーを ' +
               COLOR +
-              ' に設定し、内容を確認してからSubmitしてください！'
+              ' に設定し、内容を確認してからSubmitしてください！\n\n' +
+              '申請完了後、申請報告フォームへのボタンが表示されます。'
           );
         };
 
@@ -896,3 +928,4 @@
       box.append(cancel);
     };
 })();
+
