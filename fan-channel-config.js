@@ -9,7 +9,6 @@ window.SMFC_CONFIG = {
   color: '#d6f4ff',
   spotify: 'https://open.spotify.com/playlist/4VjiB9FNBsKyd5PP6ybea6',
   requestUrl: 'https://www.stationhead.com/p/request-channel',
-  reportUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeg0ANIGuYSiSB6jlCBHQ9df9Yj284mFe9Y7lCarVUwkD3Q3w/viewform',
 
   // ▼ 対象Stationが増えたら、ここにIDを1行追加するだけです（@は不要）。
   stations: [
@@ -37,6 +36,8 @@ window.SMFC_CONFIG = {
     }
   ],
 
+  // 以前の本番用申請数カウント先。ID・メール・申請理由は送信しません。
+  aggregateUrl: 'https://script.google.com/macros/s/AKfycbw_JVS1QPuwgaUueW-B7-zr6gW95AJYUSqxDB_h9Gpv9YKmnpZ8HEyo-FHI0DZjSSnSDg/exec',
+
   shareText: 'Snow Manファンチャンネルの申請をしました❄️ みんなでStationheadでSnow Manを応援しよう！'
 };
-
