@@ -105,6 +105,7 @@ header p:before{content:none}
 <h2 style="margin-top:19px">曲を追加</h2><div class="row"><input id="newName" placeholder="曲名"><input id="newMin" type="number" inputmode="numeric" placeholder="分" min="0"><input id="newSec" type="number" inputmode="numeric" placeholder="秒" min="0" max="59"><button id="add">追加</button></div><p class="hint">曲名のみでも追加できます。Apple Musicで楽曲を特定できれば再生時間を自動取得します。見つからないときは分・秒を入力してください。</p><h2 style="margin-top:19px">曲データを一括登録</h2><p class="hint">「曲名,3:21」の形式で1行ずつ貼り付け。既存の同名曲は上書きします。</p><textarea id="bulk" rows="3" style="width:100%;border:1px solid #dce6ef;border-radius:10px;padding:10px" placeholder="曲名,3:21&#10;別の曲,4:02"></textarea><div class="actions"><button id="import">一括登録</button><button id="export">曲データをコピー</button><button id="reset">初期データに戻す</button></div></details></section>
 <section class="panel"><details class="details"><summary>⭐ 保存した組み合わせ <span id="favoriteCount" class="muted"></span></summary><div id="favorites" class="favorites"></div></details></section>
 <section class="theme-bar" aria-label="テーマカラー"><details id="themePanelDetails"><summary class="theme-summary"><span>🎨 テーマカラー</span><span><span id="themeCurrentLabel">FSSブルー</span> <span class="caret">⌄</span></span></summary><div class="theme-body"><div class="theme-swatches" id="themeSwatches" role="group" aria-label="テーマの色を選択"></div><div id="themeCustomWrap" class="theme-custom hide"><div class="theme-custom-controls"><label>メイン色 <input type="color" id="themeAccent" value="#69b8d5" aria-label="メインカラー"></label><label>ボタン色 <input type="color" id="themeButton" value="#287e9e" aria-label="ボタンカラー"></label><label>背景色 <input type="color" id="themeBg" value="#f4f8fc" aria-label="背景カラー"></label><button id="themeReset" type="button">FSSに戻す</button></div><p class="hint">色の設定はこのブラウザに保存されます。</p></div></div></details></section>
+<section class="panel"><details class="details" id="backupDetails"><summary>💾 データのバックアップ・復元</summary><p class="hint">追加した曲、選曲対象、保存した組み合わせ、曲ID、時間の設定、テーマカラー、新曲チェックの記録をまとめて保存できます。機種変更やブラウザのデータ消去に備えて、ファイルを安全な場所に保管してください。</p><div class="actions"><button id="backupDownload" type="button">バックアップを保存（JSON）</button><button id="backupPick" type="button">バックアップから復元</button></div><input id="backupFile" type="file" accept=".json,application/json" hidden><p class="hint">復元すると、このブラウザの現在のツールデータをバックアップ内容で置き換えます。復元前に現在のバックアップも保存することをおすすめします。復元後はページを再読み込みします。</p><p id="backupStatus" class="hint" role="status" aria-live="polite"></p></details></section>
 <section class="panel faq-panel" aria-labelledby="faq-title"><h2 id="faq-title">❓ よくある質問</h2><p class="hint">気になる質問をタップすると回答が開きます。</p>
 <details class="details"><summary>Xアプリ内のブラウザでも使える？</summary><p>Xアプリ内ブラウザでは利用しないでください。保存やCSV/TXTのダウンロード、ショートカットの起動などに支障があるため、通常のブラウザからご利用ください。Xのメニューから「ブラウザで開く」などを選び、iPhone・iPadではSafari、AndroidではChromeなどの通常のブラウザで開いてください。Xアプリ内と通常のブラウザでは保存済みの曲や設定が共有されない場合があります。</p></details>
 <details class="details"><summary>はじめて使うときは何をすればいい？</summary><p>「新しい曲をチェック」で現在配信されている曲を確認し、追加したい候補があれば登録してください。そのあと時間を選んで「曲を組み合わせる」を押します。Apple Musicで直接再生・保存する場合は、再生用・保存用それぞれの専用ショートカットを追加してください。</p></details>
@@ -113,9 +114,10 @@ header p:before{content:none}
 <details class="details"><summary>ショートカットは毎回追加する必要がある？</summary><p>いいえ。iPhone・iPadでは、使用したい機能のショートカットを最初に一度追加すれば、以降は通常そのまま使えます。再生用と保存用は別々です。追加リンクはいつでも利用できます。ショートカットを更新・入れ直す場合、以前追加したものは自動更新されません。</p></details>
 <details class="details"><summary>AndroidやSpotifyでも使える？</summary><p>曲の組み合わせ・曲順のコピー・CSV/TXTの保存は利用できます。ただし、このサイトの「Apple Musicで再生」「プレイリストとして保存」はiPhone・iPadのショートカット向けです。Spotifyなどでは曲リストをもとに手動でプレイリストを作るか、外部の転送サービスをご利用ください。</p></details>
 <details class="details"><summary>海外からも利用できる？</summary><p>サイトでの選曲や曲順のコピーは利用できます。楽曲照合は日本向けApple Musicカタログを基準にしており、日本以外のApple Music契約地域でのショートカットによる直接再生・保存は未検証です。</p></details>
+<details class="details"><summary>同じ曲にシングル版・アルバム版がある場合は？</summary><p>未確定の曲IDをApple Musicで初めて検索する場合は、曲名・名義・再生時間が合う候補の中で新しい配信版を優先します。すでに登録・確認済みの曲IDは予告なく切り替えません。ライブ版やリミックスなど明らかに異なるアレンジを「最新版」として自動置換することも避けています。意図した版と違う場合は曲URLから指定してください。</p></details>
 <details class="details"><summary>曲が見つからない・再生できないときは？</summary><p>新曲チェック、曲URLからの追加、または選曲対象の曲の編集をお試しください。曲IDが未確認の曲はショートカットへ送信できません。また、配信地域・曲のバージョン・Apple Musicの提供状況によっては取得に失敗します。ショートカットで全曲を取得できない場合、再生や保存を中止する仕様です。</p></details>
 <details class="details"><summary>指定した時間ぴったりに終わる？</summary><p>必ずしも一致しません。設定時間に近い組み合わせを探す機能です。許容する誤差を超える場合はその旨を表示します。楽曲時間の照合状況や再生環境によって、実際の終了時刻は変わることがあります。</p></details>
-<details class="details"><summary>追加した曲や保存した組み合わせは別の端末にも引き継がれる？</summary><p>自動では引き継がれません。データは基本的に今使っているブラウザ内に保存されます。別のブラウザ・端末や閲覧データを消去した場合は、再度設定が必要になることがあります。</p></details>
+<details class="details"><summary>追加した曲や保存した組み合わせは別の端末にも引き継がれる？</summary><p>自動同期はされません。画面下部の「データのバックアップ・復元」からJSONファイルを保存し、別の端末の同じツールで復元すると、曲・設定・保存した組み合わせなどを引き継げます。ショートカットそのものは別途インストールが必要です。</p></details>
 </section>
 <div class="info"><b>再生時間について</b><br>Appleで照合できた曲はミリ秒単位の再生時間を合計します。未照合曲には登録済みの秒数を使うため、結果は目安です。再生環境や曲のバージョン、クロスフェード、通信状況などによって、実際に音楽が終わる時刻とは異なる場合があります。選んだ順番で再生されるよう、音楽アプリのシャッフル・リピート設定もご確認ください。</div><footer>Snow Music Timer — 非公式・ファン制作。各配信サービスの利用条件に従ってお楽しみください。<div class="creator-credit">制作：<a href="https://x.com/mado_no_yuki" target="_blank" rel="noopener noreferrer">@mado_no_yuki</a>（X）</div></footer></main>
 <script>
@@ -125,6 +127,37 @@ const BASE=[['グッタイム','3:21'],['ALL SUITE','3:12'],['オドロウゼ！
 const EXTRA=[['Sugar', '3:15'], ['Infighter', '3:44'], ['TIKI TIKI', '3:23'], ['Super Sexy', '3:29'], ['Delicious!!!', '3:12'], ['Be Proud！', '3:42'], ['GRATITUDE', '4:59'], ['Acrobatic', '4:12'], ['Boogie Woogie Baby', '4:07'], ['Vanishing Over', '4:02'], ['Ⅸ Guys Snow Man', '3:56'], ['Don’t Hold Back', '3:45'], ['Party! Party! Party!', '3:51'], ['Make It Hot', '3:49'], ['Lock on!', '3:51'], ['Tic Tac Toe', '4:25'], ['Toxic Girl', '3:29'], ['ミッドナイト・トレンディ', '4:59'], ['Brand New Smile', '3:39'], ['BOOM BOOM LIGHT', '3:27'], ['キッタキッテナイ', '4:26'], ['Movin’ up', '3:47'], ['This is LOVE', '4:08'], ['Ready Go Round', '3:54'], ['Super Deeper', '4:30'], ['POWEEEEER', '3:31'], ['Julietta', '4:23'], ['クラクラ', '3:26'], ['8月の青', '4:21'], ['僕という名のドラマ', '4:05'], ['Cry out', '3:55'], ['EMPIRE', '3:22'], ['リンディーララ', '3:07'], ['endless night', '3:40'], ['スタートライン', '4:26'], ['One', '3:41'], ['Wha cha cha', '3:38'], ['DA BOMB', '3:36'], ['SBY', '3:11'], ['TRUE LOVE', '4:25'], ['BOOST', '3:44'], ['Spark!!', '3:15'], ['くちびる', '3:25'], ['悪戯な天使', '4:30'], ['嫉妬ガール', '2:38'], ['SERIOUS', '3:24'], ['Miss Brand-New Friday Night', '4:23'], ['約束は君と', '3:31'], ['Days', '4:26'], ['愛のせいで', '4:43'], ['地球してるぜ', '4:03'], ['サンシャインドリーマー', '3:58'], ['Jack In The Box', '2:57'], ['夏色花火', '4:12']];
 const $=id=>document.getElementById(id), parse=s=>{let m=String(s).trim().match(/^(\d+):(\d\d)$/);return m?Number(m[1])*60+Number(m[2]):null},fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')},escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const load=(k,d)=>{try{let v=JSON.parse(localStorage.getItem(k));return v??d}catch{return d}},store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+// Backup only this app's known keys; never export unrelated site storage.
+const BACKUP_KEYS=['snowtimer_pool_v1','snowtimer_favs_v1','snowtimer_session_v6','snowtimer_music_ids_v1','snowtimer_theme_v13','snowtimer_theme_custom_v14','snowtimer_catalog_checked_v28','snowtimer_catalog_attempted_v32','snowtimer_browser_notice_seen_v38'];
+const BACKUP_SCHEMA=1;
+function makeBackup(){const data={};for(const key of BACKUP_KEYS){const raw=localStorage.getItem(key);if(raw!==null){try{data[key]=JSON.parse(raw)}catch{throw new Error('保存データを読み取れませんでした：'+key)}}}return {app:'Snow Music Timer',schema:BACKUP_SCHEMA,createdAt:new Date().toISOString(),data}}
+function checkBackup(b){
+ if(!b||b.app!=='Snow Music Timer'||b.schema!==BACKUP_SCHEMA||!b.data||typeof b.data!=='object'||Array.isArray(b.data))throw new Error('Snow Music Timerのバックアップファイルではありません。');
+ const data=b.data,keys=Object.keys(data);if(keys.some(k=>!BACKUP_KEYS.includes(k)))throw new Error('対応していないデータが含まれています。');
+ if(!Array.isArray(data.snowtimer_pool_v1)||!Array.isArray(data.snowtimer_favs_v1)||!data.snowtimer_session_v6||typeof data.snowtimer_session_v6!=='object')throw new Error('曲・保存済みデータ・設定が不足しています。');
+ if(data.snowtimer_pool_v1.length>10000||data.snowtimer_favs_v1.length>10000)throw new Error('データ件数が多すぎます。');
+ for(const t of data.snowtimer_pool_v1){if(!t||!Number.isSafeInteger(t.id)||t.id<1||typeof t.name!=='string'||!t.name.trim()||t.name.length>250||!Number.isFinite(t.seconds)||t.seconds<=0||t.seconds>86400||typeof t.enabled!=='boolean')throw new Error('曲データの形式が正しくありません。')}
+ for(const f of data.snowtimer_favs_v1){if(!f||typeof f.name!=='string'||!Array.isArray(f.ids)||f.ids.length>10000||!f.ids.every(Number.isSafeInteger))throw new Error('保存した組み合わせの形式が正しくありません。')}
+ if(data.snowtimer_music_ids_v1!=null&&(typeof data.snowtimer_music_ids_v1!=='object'||Array.isArray(data.snowtimer_music_ids_v1)))throw new Error('曲IDデータの形式が正しくありません。');
+ for(const k of keys){if(JSON.stringify(data[k]).length>3000000)throw new Error('復元データが大きすぎます。')}
+ return data;
+}
+function configureBackup(){
+ const msg=$('backupStatus'),file=$('backupFile');
+ $('backupDownload').addEventListener('click',()=>{try{saveSession();const body=JSON.stringify(makeBackup(),null,2);const blob=new Blob([body],{type:'application/json;charset=utf-8'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='snow-music-timer-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);msg.textContent='バックアップファイルを保存しました。Safariのダウンロード先をご確認ください。'}catch(e){msg.textContent='保存に失敗しました：'+e.message}});
+ $('backupPick').addEventListener('click',()=>file.click());
+ file.addEventListener('change',async()=>{const f=file.files?.[0];if(!f)return;try{
+  if(f.size>5000000)throw new Error('ファイルが大きすぎます（上限5MB）。');
+  const data=checkBackup(JSON.parse(await f.text()));
+  if(!confirm('今の曲データ・設定・保存した組み合わせをバックアップの内容で置き換えます。復元しますか？')){msg.textContent='復元をキャンセルしました。';return}
+  // Stage all payloads and roll back on any storage error.
+  const old={};for(const key of BACKUP_KEYS)old[key]=localStorage.getItem(key);
+  try{for(const key of BACKUP_KEYS){if(Object.prototype.hasOwnProperty.call(data,key))localStorage.setItem(key,JSON.stringify(data[key]));else localStorage.removeItem(key)}}catch(e){for(const key of BACKUP_KEYS){try{if(old[key]===null)localStorage.removeItem(key);else localStorage.setItem(key,old[key])}catch{}}throw new Error('ブラウザに書き込めませんでした。空き容量をご確認ください。')}
+  msg.textContent='復元しました。ページを再読み込みします。';location.reload();
+ }catch(e){msg.textContent='復元できませんでした：'+(e?.message||'ファイルを確認してください')}finally{file.value=''}});
+}
+configureBackup();
+
 // X in-app browser: warn on every visit when identifiable; elsewhere show on first visit only.
 // User-agent detection is best-effort; the FAQ always retains the guidance.
 (function initBrowserNote(){
@@ -323,11 +356,19 @@ async function resolveSongID(song){
    }catch(e){/* Keep the unresolved state rather than substituting a wrong song. */}
   }
  }
- // Prefer exact song duration and expected member credits over other editions.
+ // For unresolved songs, prefer the newest released edition with the same
+ // title/performer, provided it is not a notably different length (remix/live).
+ // Explicit IDs and previously saved versions remain pinned to avoid surprise edits.
+ const today=Date.now();
+ matches=matches.filter(t=>!t.releaseDate||!Number.isFinite(Date.parse(t.releaseDate))||Date.parse(t.releaseDate)<=today);
  matches.sort((a,b)=>{
-  const score=t=>Math.abs(t.trackTimeMillis/1000-song.seconds)+
-   (SOLO_HINTS[song.name]&&!SOLO_HINTS[song.name].some(n=>normalizeSong(t.artistName).includes(normalizeSong(n)))?12:0);
-  return score(a)-score(b);
+  const penalty=t=>(SOLO_HINTS[song.name]&&!SOLO_HINTS[song.name].some(n=>normalizeSong(t.artistName).includes(normalizeSong(n)))?12:0);
+  const aGood=Math.abs(a.trackTimeMillis/1000-song.seconds)<=8&&penalty(a)===0;
+  const bGood=Math.abs(b.trackTimeMillis/1000-song.seconds)<=8&&penalty(b)===0;
+  if(aGood!==bGood)return aGood?-1:1;
+  const ad=Date.parse(a.releaseDate||'')||0,bd=Date.parse(b.releaseDate||'')||0;
+  if(ad!==bd)return bd-ad;
+  return Math.abs(a.trackTimeMillis/1000-song.seconds)+penalty(a)-Math.abs(b.trackTimeMillis/1000-song.seconds)-penalty(b);
  });
  const found=matches[0];
  if(!found)return null;
