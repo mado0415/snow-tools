@@ -69,10 +69,11 @@ header p:before{content:none}
 .theme-custom-controls input[type=color]::-moz-color-swatch{border-radius:50%;border:1px solid #9faabd}
 .platform-note{font-size:12px;line-height:1.65;color:#59687c;margin:7px 0 13px}
 .platform-note strong{color:#24334b}
+#idMissing{padding:7px 0 4px}#idMissing button{font-size:12px;margin:3px 5px 3px 0;max-width:100%;white-space:normal;text-align:left}
 </style></head><body><main><header><div class="fan-label">非公式・ファン制作</div><h1>⛄ Snow Music Timer</h1><p>聴きたい時間に合わせて、Snow Manの曲を組み合わせよう。</p><details class="subscription-note"><summary class="help-summary"><span>🎧 このツールについて</span><span class="caret">⌄</span></summary><div class="note-body"><strong>Snow Manの楽曲を、指定した時間に近い長さで組み合わせる非公式ツールです。</strong> サイト内で音楽は再生されません。再生にはApple Musicなどの音楽配信サービスを利用します。iPhoneでは別途ショートカットを設定するとApple Musicへ曲順を渡せます。Androidではこのショートカットによる直接再生は利用できません。Snow Man・所属事務所・各音楽配信サービスの公式サービスではありません。</div></details></header>
 <section class="panel timer-panel"><div class="timer-face"><span class="timer-caption">SET TIME</span><div class="times"><label><input id="min" aria-label="分" type="number" inputmode="numeric" min="0" max="180" value="10">分</label><b>:</b><label><input id="sec" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="00" aria-label="秒">秒</label></div></div><div class="presets" id="presets"></div><div class="controls"><div><label class="label" for="tolerance">許容する誤差</label><select id="tolerance"><option value="10">±10秒</option><option value="20" selected>±20秒</option><option value="30">±30秒</option><option value="60">±1分</option></select></div><div><label class="label" for="mode">終了時間の優先</label><select id="mode"><option value="closest">指定時間に近い</option><option value="under">指定時間を超えない</option><option value="over">指定時間より短くしない</option></select></div></div><label class="check"><input id="shuffle" type="checkbox" checked>曲順を毎回シャッフル</label><button id="generate" class="primary generate">🎵 曲を組み合わせる</button></section>
 <section class="catalog-strip" id="catalogPanel"><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新しい曲をチェック</button><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span></div><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">未登録候補です。別バージョン・重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">追加はこの端末のブラウザのみに保存されます。全曲が検索で見つかるとは限りません。</p></div></section>
-<section class="panel result-panel" id="result"><div class="resulthead"><div><h2>今回の曲順</h2><span class="muted" id="count">—</span></div><div style="text-align:right"><div class="hint" id="targetLabel" style="margin:0 0 2px">合計再生時間</div><div class="big" id="total">--:--</div><div class="difference" id="difference">生成前</div></div></div><div id="message"></div><ol class="tracks" id="tracks"><li class="empty">時間を指定して「曲を組み合わせる」を押してください。</li></ol><div class="actions"><button id="again">🔄 別の組み合わせ</button><button id="save">☆ 保存</button><button id="copy">曲順をコピー</button></div><div class="exportpanel"><h2>🎧 Apple Musicで聴く（iPhone・iPad）</h2><p class="platform-note" id="platformNote">iPhone・iPadの「ショートカット」アプリを使う機能です。利用にはApple Musicの契約と専用ショートカットの事前設定が必要です。<strong>Androidではこのボタンから直接再生できません。</strong></p><a id="appleShortcut" class="shortcut-button disabled-link" aria-disabled="true" href="#" role="button">▶ Apple Musicで再生</a><a id="appleSaveShortcut" class="shortcut-button secondary-shortcut disabled-link" aria-disabled="true" href="#" role="button">☆ プレイリストとして保存</a><p class="hint" id="shortcutStatus" role="status">先に曲を組み合わせてください。</p><details class="details"><summary>iPhoneの初回設定・利用上の注意</summary><ol class="guide"><li>Apple Musicのサブスクリプションと「ショートカット」アプリが必要です。</li><li>再生には、曲を検索・照合してApple Musicへ渡す「Snow Man Music Timer」ショートカットを事前に追加してください。保存用のショートカットは別途必要です。</li><li>ショートカットは曲名から音源を照合します。曲が見つからない場合や別バージョンが選ばれる場合があります。取得曲数と曲順を確認して利用してください。</li><li>保存用ショートカットは実行するたびに新しいプレイリストを作成します。</li></ol><p class="hint">ショートカットの共有リンクは準備中です。未設定の場合、このページの再生・保存ボタンだけでは動作しません。</p></details><hr style="border:0;border-top:1px solid #dce6ef;margin:17px 0"><h2>ほかの音楽サービスで聴く</h2><p class="hint">AndroidのApple Music利用者やSpotifyなどの利用者は、曲順をコピーして手動でプレイリストを作れます。Soundiizなどの外部転送サービスを使う方法もあります。利用には各サービスでのログイン・連携が必要な場合があり、転送後の曲数・曲順・バージョンを確認してください。</p><div class="actions"><button id="copyImport" class="primary">曲リストをコピー</button><button id="downloadCsv">CSVを保存</button><button id="downloadTxt">TXTを保存</button></div><a href="https://soundiiz.com/ja/" target="_blank" rel="noopener noreferrer">Soundiizを開く ↗</a><details class="details"><summary>取り込み方を見る</summary><ol class="guide"><li>「曲リストをコピー」を押す。</li><li>Soundiizでログインし、「プレイリストをインポート」→「プレーンテキストから」を選ぶ（表記が異なる場合があります）。</li><li>コピーした曲を貼り付け、内容を確認する。</li><li>新しいプレイリストを作成し、保存先としてSpotifyかApple Musicを指定する。</li><li>曲順・バージョン・曲数を確認して再生する。</li></ol><p class="hint">テキスト貼り付けが難しければ、CSVを保存して「ファイルから」で読み込んでください。サービス側で別バージョンに一致する場合があります。</p></details><p id="exportStatus" class="hint" role="status"></p></div><p class="hint">🔒 曲を固定して「別の組み合わせ」を押すと、その曲を残して再選曲します。「入替」はその1曲だけ変更します。🔒は曲と位置を固定します。</p></section>
+<section class="panel result-panel" id="result"><div class="resulthead"><div><h2>今回の曲順</h2><span class="muted" id="count">—</span></div><div style="text-align:right"><div class="hint" id="targetLabel" style="margin:0 0 2px">合計再生時間</div><div class="big" id="total">--:--</div><div class="difference" id="difference">生成前</div></div></div><div id="message"></div><ol class="tracks" id="tracks"><li class="empty">時間を指定して「曲を組み合わせる」を押してください。</li></ol><div class="actions"><button id="again">🔄 別の組み合わせ</button><button id="save">☆ 保存</button><button id="copy">曲順をコピー</button></div><div class="exportpanel"><h2>🎧 Apple Musicで聴く（iPhone・iPad）</h2><p class="platform-note" id="platformNote">iPhone・iPadの「ショートカット」アプリを使う機能です。利用にはApple Musicの契約と専用ショートカットの事前設定が必要です。<strong>Androidではこのボタンから直接再生できません。</strong></p><a id="appleShortcut" class="shortcut-button disabled-link" aria-disabled="true" href="#" role="button">▶ Apple Musicで再生</a><a id="appleSaveShortcut" class="shortcut-button secondary-shortcut disabled-link" aria-disabled="true" href="#" role="button">☆ プレイリストとして保存</a><p class="hint" id="shortcutStatus" role="status">先に曲を組み合わせてください。</p><div id="idMissing" class="hide" aria-live="polite"></div><details class="details"><summary>iPhoneの初回設定・利用上の注意</summary><ol class="guide"><li>Apple Musicのサブスクリプションと「ショートカット」アプリが必要です。</li><li>曲ID対応の「Snow Music Timer ID 再生」ショートカットを追加してください。保存用は別の「Snow Music Timer ID 保存」が必要です。従来の曲名検索用ショートカットでは動きません。</li><li>このバージョンはApple Musicの曲IDをショートカットへ渡します。曲ID未確認の曲は送信せず、画面に表示します。登録前に曲順と曲のバージョンを確認してください。</li><li>保存用ショートカットは実行するたびに新しいプレイリストを作成します。</li></ol><p class="hint">曲ID対応ショートカットの共有リンクは準備中です。旧ショートカットと区別するため、名称を合わせてからお使いください。</p></details><hr style="border:0;border-top:1px solid #dce6ef;margin:17px 0"><h2>ほかの音楽サービスで聴く</h2><p class="hint">AndroidのApple Music利用者やSpotifyなどの利用者は、曲順をコピーして手動でプレイリストを作れます。Soundiizなどの外部転送サービスを使う方法もあります。利用には各サービスでのログイン・連携が必要な場合があり、転送後の曲数・曲順・バージョンを確認してください。</p><div class="actions"><button id="copyImport" class="primary">曲リストをコピー</button><button id="downloadCsv">CSVを保存</button><button id="downloadTxt">TXTを保存</button></div><a href="https://soundiiz.com/ja/" target="_blank" rel="noopener noreferrer">Soundiizを開く ↗</a><details class="details"><summary>取り込み方を見る</summary><ol class="guide"><li>「曲リストをコピー」を押す。</li><li>Soundiizでログインし、「プレイリストをインポート」→「プレーンテキストから」を選ぶ（表記が異なる場合があります）。</li><li>コピーした曲を貼り付け、内容を確認する。</li><li>新しいプレイリストを作成し、保存先としてSpotifyかApple Musicを指定する。</li><li>曲順・バージョン・曲数を確認して再生する。</li></ol><p class="hint">テキスト貼り付けが難しければ、CSVを保存して「ファイルから」で読み込んでください。サービス側で別バージョンに一致する場合があります。</p></details><p id="exportStatus" class="hint" role="status"></p></div><p class="hint">🔒 曲を固定して「別の組み合わせ」を押すと、その曲を残して再選曲します。「入替」はその1曲だけ変更します。🔒は曲と位置を固定します。</p></section>
 <section class="panel"><details class="details"><summary>🎼 選曲対象の曲を編集する <span id="poolCount" class="muted"></span></summary><p class="hint">チェックを外すと選曲対象から外れ、いつでも戻せます。曲データは削除されません。登録曲には未収録の配信曲がある場合があります。曲の長さは配信版と異なる場合があります。</p><div class="row"><button id="all">すべて選ぶ</button><button id="none">すべて外す</button></div><div id="library" class="library"></div><h2 style="margin-top:19px">曲を追加</h2><div class="row"><input id="newName" placeholder="曲名"><input id="newMin" type="number" inputmode="numeric" placeholder="分" min="0"><input id="newSec" type="number" inputmode="numeric" placeholder="秒" min="0" max="59"><button id="add">追加</button></div><p class="hint">登録した曲の時間は選曲計算に使われます。配信サービスで実際の長さを確認して登録してください。</p><h2 style="margin-top:19px">曲データを一括登録</h2><p class="hint">「曲名,3:21」の形式で1行ずつ貼り付け。既存の同名曲は上書きします。</p><textarea id="bulk" rows="3" style="width:100%;border:1px solid #dce6ef;border-radius:10px;padding:10px" placeholder="曲名,3:21&#10;別の曲,4:02"></textarea><div class="actions"><button id="import">一括登録</button><button id="export">曲データをコピー</button><button id="reset">初期データに戻す</button></div></details></section>
 <section class="panel"><details class="details"><summary>⭐ 保存した組み合わせ <span id="favoriteCount" class="muted"></span></summary><div id="favorites" class="favorites"></div></details></section>
 <section class="theme-bar" aria-label="テーマカラー"><details id="themePanelDetails"><summary class="theme-summary"><span>🎨 テーマカラー</span><span><span id="themeCurrentLabel">FSSブルー</span> <span class="caret">⌄</span></span></summary><div class="theme-body"><div class="theme-swatches" id="themeSwatches" role="group" aria-label="テーマの色を選択"></div><div id="themeCustomWrap" class="theme-custom hide"><div class="theme-custom-controls"><label>メイン色 <input type="color" id="themeAccent" value="#69b8d5" aria-label="メインカラー"></label><label>ボタン色 <input type="color" id="themeButton" value="#287e9e" aria-label="ボタンカラー"></label><label>背景色 <input type="color" id="themeBg" value="#f4f8fc" aria-label="背景カラー"></label><button id="themeReset" type="button">FSSに戻す</button></div><p class="hint">色の設定はこのブラウザに保存されます。</p></div></div></details></section>
@@ -136,22 +137,100 @@ for(let n of [3,5,10,15,20,30,45,60]){let b=document.createElement('button');b.t
 $('save').onclick=()=>{if(!result.length)return;let name=prompt('保存する名前',fmt(target())+'のSnow Manタイマー');if(!name)return;fav.unshift({name:name.trim().slice(0,80),ids:result.map(t=>t.id)});fav=fav.slice(0,40);renderFav()};$('copy').onclick=async()=>{if(!result.length)return;let text=`⛄ Snow Man Music Timer｜${fmt(target())}\n合計 ${fmt(result.reduce((a,t)=>a+t.seconds,0))}\n`+result.map((t,i)=>`${i+1}. ${t.name}（${fmt(t.seconds)}）`).join('\n');try{await navigator.clipboard.writeText(text);alert('曲順をコピーしました。')}catch{prompt('下のテキストをコピーしてください',text)}};
 
 function plainList(){return result.map(t=>`Snow Man - ${t.name}`).join('\n')}
-const shortcutName='Snow Man Music Timer';
-function updateShortcutLink(){
- const play=$('appleShortcut'),save=$('appleSaveShortcut'),status=$('shortcutStatus');
- if(!result.length){for(let a of [play,save]){a.href='#';a.classList.add('disabled-link');a.setAttribute('aria-disabled','true')}status.textContent='先に曲を組み合わせてください。';return}
- const list=result.map(t=>'Snow Man '+t.name).join('\n');
- for(let [a,name] of [[play,shortcutName],[save,shortcutName+' 保存']]){
- a.href='shortcuts://run-shortcut?name='+encodeURIComponent(name)+'&input=text&text='+encodeURIComponent(list);
- a.classList.remove('disabled-link');a.setAttribute('aria-disabled','false');}
- status.textContent=`${result.length}曲をショートカットへ渡します。利用前に曲数と曲順をご確認ください。`;
+// iTunes Store track-ID integration: resolve IDs before showing an actionable shortcut link.
+// Never send a partial playlist or silently substitute an unrelated recording.
+const shortcutName='Snow Music Timer ID 再生';
+const shortcutSaveName='Snow Music Timer ID 保存';
+const knownTrackIDs={'We’ll go together':'1804833237','EVOLUTION':'1804833240'}; // tested on iPhone
+const idCache=load('snowtimer_music_ids_v1',{});
+let linkRevision=0;
+function normalizeSong(s){return String(s||'').normalize('NFKC').replace(/[’‘＇`]/g,"'").replace(/[‐‑–—]/g,'-').replace(/\s+/g,' ').trim().toLowerCase()}
+function trackCacheKey(song){return normalizeSong(song.name)+'|'+song.seconds}
+function queryITunes(url){
+ return new Promise((resolve,reject)=>{
+  const cb='snowTimerID'+Math.random().toString(36).slice(2);
+  const script=document.createElement('script');let settled=false;
+  const timer=setTimeout(()=>finish(new Error('timeout')),11000);
+  function finish(error,data){if(settled)return;settled=true;clearTimeout(timer);delete window[cb];script.remove();error?reject(error):resolve(data)}
+  window[cb]=data=>finish(null,data);
+  script.onerror=()=>finish(new Error('network'));
+  script.src=url+(url.includes('?')?'&':'?')+'callback='+encodeURIComponent(cb);
+  document.head.appendChild(script);
+ });
+}
+async function resolveSongID(song){
+ const key=trackCacheKey(song);
+ if(/^\d{8,20}$/.test(String(idCache[key]||'')))return String(idCache[key]);
+ if(/^\d{8,20}$/.test(String(song.trackId||''))){idCache[key]=String(song.trackId);store('snowtimer_music_ids_v1',idCache);return idCache[key]}
+ if(knownTrackIDs[song.name]){idCache[key]=knownTrackIDs[song.name];store('snowtimer_music_ids_v1',idCache);return idCache[key]}
+ const q=encodeURIComponent('Snow Man '+song.name);
+ const data=await queryITunes('https://itunes.apple.com/search?term='+q+'&entity=song&country=JP&limit=100');
+ const candidates=(data?.results||[]).filter(t=>t.kind==='song'&&Number.isSafeInteger(t.trackId)&&normalizeSong(t.trackName)===normalizeSong(song.name)&&normalizeSong(t.artistName)==='snow man');
+ // Prefer the same duration over remixes, edits or live versions.
+ candidates.sort((a,b)=>Math.abs(a.trackTimeMillis/1000-song.seconds)-Math.abs(b.trackTimeMillis/1000-song.seconds));
+ const found=candidates.find(t=>Math.abs(t.trackTimeMillis/1000-song.seconds)<=30);
+ if(!found)return null;
+ idCache[key]=String(found.trackId);store('snowtimer_music_ids_v1',idCache);return idCache[key];
+}
+function setShortcutDisabled(disabled){
+ for(const a of [$('appleShortcut'),$('appleSaveShortcut')]){
+  a.classList.toggle('disabled-link',disabled);a.setAttribute('aria-disabled',String(disabled));
+  if(disabled)a.href='#';
+ }
+}
+async function updateShortcutLink(){
+ const revision=++linkRevision,play=$('appleShortcut'),save=$('appleSaveShortcut'),status=$('shortcutStatus'),missing=$('idMissing');
+ setShortcutDisabled(true);missing.classList.add('hide');missing.replaceChildren();
+ if(!result.length){status.textContent='先に曲を組み合わせてください。';return}
+ status.textContent=`曲IDを確認中（${result.length}曲）…`;
+ const snapshot=[...result];const ids=new Array(snapshot.length).fill(null);
+ // Limit concurrent lookups, and keep the result indexed by the original order.
+ let next=0;
+ await Promise.all(Array.from({length:Math.min(3,snapshot.length)},async()=>{
+  while(next<snapshot.length){const i=next++;try{ids[i]=await resolveSongID(snapshot[i])}catch(e){ids[i]=null}}
+ }));
+ if(revision!==linkRevision)return;
+ const unresolved=snapshot.filter((_,i)=>!ids[i]);
+ if(unresolved.length){
+  status.textContent=`${snapshot.length}曲中${unresolved.length}曲のIDを確認できませんでした。間違った曲や不完全な曲順を送らないため、再生・保存を停止しています。`;
+  missing.classList.remove('hide');
+  const title=document.createElement('p');title.className='hint';title.textContent='ID未確認：'+unresolved.map(t=>t.name).join('、');missing.appendChild(title);
+  const help=document.createElement('p');help.className='hint';help.textContent='Apple Musicの曲URLに含まれる「i=」の後の数字を登録すると、このブラウザで次回から利用できます。';missing.appendChild(help);
+  for(const t of unresolved){
+   const button=document.createElement('button');button.type='button';button.className='iconBtn';button.textContent=t.name+' の曲IDを登録';
+   button.onclick=async()=>{
+    const raw=prompt(t.name+' のApple Music曲ID（URLの i= の後の数字）');if(raw===null)return;
+    const id=raw.trim();if(!/^\d{8,20}$/.test(id)){alert('曲IDは数字で入力してください。');return}
+    button.disabled=true;
+    try{
+     const data=await queryITunes('https://itunes.apple.com/lookup?id='+encodeURIComponent(id)+'&country=JP&entity=song');
+     const item=(data?.results||[]).find(v=>v.kind==='song'&&String(v.trackId)===id);
+     if(!item){alert('このIDの曲を確認できませんでした。');return}
+     if(normalizeSong(item.trackName)!==normalizeSong(t.name)){
+      alert('曲名が一致しません。取得された曲：'+item.artistName+' / '+item.trackName);return
+     }
+     if(!confirm('登録する曲：'+item.artistName+' / '+item.trackName+'\nこの曲で間違いありませんか？'))return;
+     idCache[trackCacheKey(t)]=id;store('snowtimer_music_ids_v1',idCache);updateShortcutLink();
+    }catch(e){alert('曲IDを確認できませんでした。接続をご確認ください。')}
+    finally{button.disabled=false}
+   };
+   missing.appendChild(button);
+  }
+  return;
+ }
+ const list=ids.join('\n');
+ for(const [a,name] of [[play,shortcutName],[save,shortcutSaveName]]){
+  a.href='shortcuts://run-shortcut?name='+encodeURIComponent(name)+'&input=text&text='+encodeURIComponent(list);
+ }
+ setShortcutDisabled(false);
+ status.textContent=`${ids.length}曲の曲IDを確認済み。元の曲順でショートカットへ渡します（曲ID対応版が必要です）。`;
 }
 const isAndroid=/Android/i.test(navigator.userAgent);
 if(isAndroid){
  $('platformNote').innerHTML='<strong>AndroidではApple Musicを利用できますが、このページの「直接再生」「プレイリストとして保存」はiPhone・iPadのショートカット専用です。</strong> 下の「曲リストをコピー」から曲順を取り出し、Apple Musicなどへ手動登録してください。';
  for(const id of ['appleShortcut','appleSaveShortcut']){$(id).style.display='none';}
 }
-for(let id of ['appleShortcut','appleSaveShortcut'])$(id).addEventListener('click',e=>{if(!result.length||isAndroid)e.preventDefault()});
+for(let id of ['appleShortcut','appleSaveShortcut'])$(id).addEventListener('click',e=>{if(!result.length||isAndroid||$(id).classList.contains('disabled-link'))e.preventDefault()});
 
 function quoteCsv(v){return '"'+String(v).replace(/"/g,'""')+'"'}
 function csvList(){return '\uFEFFtitle,artist,duration\r\n'+result.map(t=>[quoteCsv(t.name),quoteCsv('Snow Man'),String(t.seconds)].join(',')).join('\r\n')+'\r\n'}
@@ -190,7 +269,7 @@ $('catalogSelectNone').onclick=()=>$('catalogCandidateList').querySelectorAll('[
 $('catalogAdd').onclick=()=>{
  const chosen=[...$('catalogCandidateList').querySelectorAll('[data-candidate]:checked')].map(n=>catalogCandidates[Number(n.dataset.candidate)]);
  if(!chosen.length){setCatalogStatus('追加する曲を選択してください。');return}
- let count=0;for(const t of chosen)if(upsert(t.name,t.seconds))count++;
+ let count=0;for(const t of chosen)if(upsert(t.name,t.seconds)){count++;if(t.trackId){const added=pool.find(x=>normalizeSong(x.name)===normalizeSong(t.name));if(added){idCache[trackCacheKey(added)]=String(t.trackId)}}}store('snowtimer_music_ids_v1',idCache);
  renderPool();catalogCandidates=[];catalogCandidateRender();
  setCatalogStatus(`${count}曲を追加しました`);
 };
@@ -208,7 +287,7 @@ async function syncCatalog(silent=false){
   for(const t of data.results){
    if(t.kind!=='song'||norm(t.artistName)!=='snow man'||!t.trackName||!Number.isFinite(t.trackTimeMillis)||t.trackTimeMillis<15000)continue;
    const key=norm(t.trackName);if(known.has(key)||found.has(key))continue;
-   found.set(key,{name:t.trackName,seconds:Math.round(t.trackTimeMillis/1000)});
+   found.set(key,{name:t.trackName,seconds:Math.round(t.trackTimeMillis/1000),trackId:t.trackId});
   }
   catalogCandidates=[...found.values()];catalogCandidateRender();
   if(!catalogCandidates.length){if(!silent)setCatalogStatus('新しい候補なし');else setCatalogStatus('');return}
