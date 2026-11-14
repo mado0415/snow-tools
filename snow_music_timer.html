@@ -1102,7 +1102,9 @@ async function discoverVersionUpdates(versionsSeen){
 // song on page load, so the normal timer and first-visit experience stay responsive.
 function renderEditionSongSelect(){
  const sel=$('editionSongSelect'),previous=sel.value;
- const eligible=pool.filter(song=>song.versionSource!=='url');
+ const eligible=pool.filter(song=>song.versionSource!=='url').sort((a,b)=>
+  a.name.localeCompare(b.name,'ja',{numeric:true,sensitivity:'base'}) || String(a.id).localeCompare(String(b.id))
+ );
  sel.innerHTML=eligible.map(song=>`<option value="${song.id}">${escape(song.name)}</option>`).join('');
  if(eligible.some(song=>String(song.id)===previous))sel.value=previous;
 }
