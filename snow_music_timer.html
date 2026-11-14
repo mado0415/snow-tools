@@ -1,0 +1,286 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#eef8fd" id="themeMeta"><title>Snow Music Timer</title><style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#24334b;background:#f4f8fc}*{box-sizing:border-box}body{margin:0}main{max-width:750px;margin:auto;padding:20px 15px 70px}header{padding:18px 5px 15px}h1{font-size:27px;letter-spacing:-.5px;margin:0}h2{font-size:17px;margin:0 0 13px}p{line-height:1.65}small,.muted{color:#64748b}header p{font-size:13px;margin:7px 0 0}.panel{background:white;border:1px solid #e0e9f0;border-radius:20px;padding:20px;margin:12px 0;box-shadow:0 5px 23px #33415509}.label{display:block;font-size:13px;font-weight:650;margin:13px 0 7px}.times{display:flex;align-items:center;gap:12px}.times input{width:100%;font-size:30px;font-weight:750;text-align:center;border:1px solid #dce6ef;border-radius:13px;padding:10px;color:#1d3c53}.times label{text-align:center;flex:1;font-size:12px;color:#64748b}.times label input{display:block;margin-bottom:4px}button,select,input,textarea{font:inherit}button{cursor:pointer;border:1px solid #bdd8e8;background:white;color:#22516b;border-radius:11px;padding:10px 13px;font-weight:650}button.primary{background:#257cb0;color:#fff;border-color:#257cb0}button:disabled{opacity:.45;cursor:not-allowed}.presets,.actions{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}.presets button{flex:1;min-width:55px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.controls select{width:100%;border:1px solid #dce6ef;border-radius:10px;padding:10px;background:white;color:#24334b}.check{font-size:13px;display:flex;align-items:center;gap:7px;margin:13px 0}.generate{width:100%;padding:15px;font-size:16px}.resulthead{display:flex;justify-content:space-between;align-items:center;gap:12px}.big{font-weight:800;font-size:31px;font-variant-numeric:tabular-nums}.difference{font-size:13px}.ok{color:#19734b}.warn{color:#a05b21}.tracks{list-style:none;margin:13px 0;padding:0}.tracks li{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #edf1f5;align-items:center}.num{font-variant-numeric:tabular-nums;color:#64748b;width:21px}.trackname{flex:1;min-width:0;font-weight:550}.duration{font-variant-numeric:tabular-nums;color:#64748b;font-size:13px}.iconBtn{padding:6px 9px;border-radius:8px;font-size:13px}.locked{background:#e7f4ff;border-color:#89c3e5}.empty{padding:24px;text-align:center;color:#64748b;background:#f8fafc;border-radius:12px}.details{margin:0 0 10px}.details summary{cursor:pointer;font-weight:700;padding:8px 0}.library{max-height:310px;overflow:auto;border:1px solid #e2e8f0;border-radius:12px;padding:3px 10px}.library label{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #eef2f7;font-size:14px}.library label span{flex:1}.library em{font-style:normal;color:#64748b;font-size:12px}.row{display:flex;gap:7px;flex-wrap:wrap}.row input{min-width:0;flex:1;padding:10px;border:1px solid #dce6ef;border-radius:10px}.row input[type=number]{width:65px;flex:0 0 65px}.info{font-size:12px;background:#f1f7fb;border-radius:10px;padding:11px;margin-top:12px}.favorites{display:flex;flex-direction:column;gap:7px}.favorite{display:flex;gap:6px;align-items:center;justify-content:space-between;border-bottom:1px solid #edf1f5;padding:8px 0}.favorite span{font-size:13px}.hide{display:none!important}a{color:#186b9c}.hint{font-size:12px;color:#64748b;margin:7px 0}.exportpanel{margin-top:14px;padding:15px;background:#f3f9fd;border-radius:13px}.exportpanel h2{margin:0}.guide{font-size:13px;line-height:1.7;padding-left:21px}.guide li{margin-bottom:5px}#message{font-size:13px;min-height:15px}footer{font-size:12px;color:#64748b;text-align:center;margin:25px 0}@media(max-width:380px){.controls{grid-template-columns:1fr}.panel{padding:16px}.big{font-size:27px}}
+.shortcut-button{display:block;margin-top:12px;padding:14px 16px;border-radius:12px;background:#de447c;color:white;text-align:center;font-size:16px;font-weight:700;text-decoration:none}.shortcut-button.disabled-link{background:#b0bdc8;pointer-events:none}.shortcut-button:active{transform:scale(.99)}.secondary-shortcut{background:#fff;border:1px solid #d6a1bd;color:#9b356a}.secondary-shortcut.disabled-link{background:#f0f0f0;color:#9aa5af}
+.catalog-strip{background:white;border:1px solid #e0e9f0;border-radius:15px;padding:10px 12px;margin:10px 0;box-shadow:0 3px 12px #33415506}.catalog-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.catalog-top button{padding:9px 12px;flex:0 0 auto}.catalog-status{font-size:12px;color:#64748b;flex:1;min-width:0}.catalog-expanded{border-top:1px solid #edf1f5;margin-top:10px;padding-top:9px}.catalog-expanded .actions{margin:10px 0 4px}@media(max-width:380px){.catalog-strip{padding:8px}.catalog-top button{font-size:13px;padding:9px}.catalog-status{font-size:11px}}
+
+/* v11 — timer-inspired theme system */
+:root{--accent:#69b8d5;--accent-strong:#287e9e;--accent-ink:#184e66;--accent-soft:#e6f6fc;--page:#f4f8fc;--ink:#24334b;--line:#e0e9f0;--paper:#fff;--hot:#de447c}
+html{background:var(--page)}body{background:linear-gradient(180deg,var(--accent-soft) 0, var(--page) 360px);min-height:100vh;color:var(--ink)}main{padding:14px 14px 66px}header{padding:6px 4px 8px}header h1{font-size:clamp(24px,6.7vw,33px);letter-spacing:-.8px;margin-bottom:4px}header p{font-size:13px;margin-top:6px}.header-mini{font-size:12px;color:#64748b}
+.panel{border-color:var(--line);border-radius:23px;box-shadow:0 7px 24px #202e3b08}.panel h2{letter-spacing:-.2px}.timer-panel{padding-top:18px}.timer-panel>h2{margin-bottom:4px}.timer-panel .timer-subtitle{font-size:12px;color:#64748b;margin:0 0 12px}.timer-face{width:min(100%,260px);aspect-ratio:1 / 1;height:auto;margin:6px auto 13px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;background:linear-gradient(180deg,#ffffff 0%,var(--accent-soft) 100%);border:9px solid var(--paper);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,white),0 10px 26px #2e4f6314}.timer-face:before{content:"";position:absolute;inset:12px;border-radius:50%;border:3px dashed color-mix(in srgb,var(--accent) 55%,white);opacity:.6;pointer-events:none}.timer-face:after{content:"♫";position:absolute;bottom:28px;font-size:19px;color:var(--accent-strong);opacity:.65}.timer-caption{font-size:12px;font-weight:750;color:var(--accent-ink);margin-bottom:12px;letter-spacing:.1em}.times{gap:0;position:relative;z-index:1;justify-content:center;align-items:flex-start}.times label{flex:none;width:70px;font-size:11px;color:var(--accent-ink)}.times input{width:100%;min-width:0;font-size:36px;border:0;background:transparent;border-radius:8px;padding:0;color:var(--ink);font-variant-numeric:tabular-nums;box-shadow:none}.times input:focus{outline:2px solid var(--accent);outline-offset:3px;background:#ffffff99}.times>b{font-size:35px;margin:0 0 17px;color:var(--accent-strong)}.presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:8px 0 15px}.presets button{min-width:0;border-radius:99px;padding:9px 3px;font-size:13px}.presets button.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}.controls{gap:9px}.controls select{border-radius:12px;min-height:42px}.label{margin-top:8px}.check{font-size:13px}.generate{font-size:17px;padding:16px;border-radius:16px;box-shadow:0 5px 15px color-mix(in srgb,var(--accent) 28%,transparent)}
+button{border-color:color-mix(in srgb,var(--accent) 40%,#dce6ef);color:var(--accent-ink)}button.primary{background:var(--accent-strong);border-color:var(--accent-strong);color:white}button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.locked{background:var(--accent-soft);border-color:var(--accent)}input[type=checkbox]{accent-color:var(--accent-strong)}a{color:var(--accent-strong)}.shortcut-button{background:var(--accent-strong)}.secondary-shortcut{border-color:var(--accent);color:var(--accent-ink)}.catalog-strip{border-radius:18px;border-color:var(--line)}.catalog-top button{font-size:13px;background:var(--accent-soft);border-color:transparent}.result-panel .resulthead{align-items:center}.result-panel .big{font-size:clamp(31px,9vw,47px);letter-spacing:-1px}.result-panel .resulthead>div:last-child{padding:5px 0}.result-panel .difference{font-size:12px;font-weight:750}.result-panel .tracks li{gap:8px}.result-panel .trackname{font-weight:650}.result-panel .duration{font-size:12px}.result-panel .iconBtn{min-height:35px}.result-panel .exportpanel{background:var(--accent-soft);border-radius:16px}.theme-bar{background:#ffffffdd;border:1px solid var(--line);border-radius:18px;padding:0;margin:9px 0 12px;box-shadow:0 4px 18px #273c4608;overflow:hidden}.theme-summary,.help-summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 15px;font-weight:800}.theme-summary::-webkit-details-marker,.help-summary::-webkit-details-marker{display:none}.theme-heading{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:0 15px 0}.theme-heading strong{font-size:13px}.theme-heading span{font-size:11px;color:#64748b}.theme-body{padding:0 15px 15px}.theme-swatches{display:flex;gap:7px;flex-wrap:wrap;margin:4px 0 0}.theme-swatch{border:2px solid #fff;box-shadow:0 0 0 1px #cbd5e1;outline:0;width:30px;height:30px;min-width:30px;padding:0;border-radius:50%;position:relative;background:var(--swatch);color:transparent}.theme-swatch[aria-pressed=true]{box-shadow:0 0 0 3px var(--accent-strong)}.theme-swatch[aria-pressed=true]:after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:var(--checkcolor,#fff);font-size:18px;font-weight:800;text-shadow:0 0 3px #0005}.theme-swatch.custom-trigger{background:conic-gradient(#ff5e7e,#ffb347,#ffe56f,#58d68d,#58a6ff,#a66cff,#ff5e7e);box-shadow:0 0 0 1px #cbd5e1}.theme-custom{margin-top:10px;font-size:12px;color:#64748b}.theme-custom-controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:2px 0}.theme-custom-controls label{display:flex;align-items:center;gap:6px}.theme-custom-controls input[type=color]{width:44px;height:34px;border:0;padding:0;background:transparent}.subscription-note{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:0;margin-top:10px;box-shadow:0 4px 18px #273c4608;overflow:hidden}.note-body{padding:0 15px 15px;font-size:12px;color:#526276;line-height:1.7}.note-body strong{color:var(--ink)}.intro-text{font-size:12px;color:#64748b}.result-panel{scroll-margin-top:15px}.static-dial{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--accent-ink);margin:0 0 12px}.end-note{font-size:12px;border-top:1px solid var(--line);padding-top:12px;color:#64748b;line-height:1.7}footer{margin-bottom:15px}.caret{font-size:14px;color:#64748b;transition:transform .2s ease}.subscription-note[open] .caret,.theme-bar[open] .caret{transform:rotate(180deg)}
+@media(min-width:650px){.timer-panel{display:grid;grid-template-columns:290px 1fr;column-gap:24px}.timer-panel>h2,.timer-panel>.timer-subtitle{grid-column:1/-1}.timer-face{grid-column:1;grid-row:3 / span 5;margin:8px 0 8px}.timer-panel .presets{grid-column:2;grid-row:3;align-self:end}.timer-panel .controls{grid-column:2;grid-row:4;align-self:start}.timer-panel>.check{grid-column:2;grid-row:5}.timer-panel>.generate{grid-column:2;grid-row:6;align-self:start}.times label{width:79px}}
+@media(max-width:380px){.times input{font-size:34px}.timer-face{width:min(100%,238px);height:auto;aspect-ratio:1 / 1}.theme-swatch{width:27px;height:27px;min-width:27px}.result-panel .tracks li{gap:5px}.result-panel .iconBtn{font-size:12px;padding:5px 7px}.panel{padding:15px}}
+
+/* v14: lighter layout, plain dial, clear actions */
+body{background:var(--page)}
+main{padding-top:17px}
+header{padding:4px 6px 10px}
+header h1{font-size:clamp(25px,6.6vw,33px);margin:5px 0 2px}
+.fan-label{display:inline-block;font-size:11px;font-weight:750;letter-spacing:.03em;color:var(--accent-ink);background:var(--accent-soft);border-radius:100px;padding:5px 10px}
+.subscription-note{border:0;background:transparent;box-shadow:none;border-radius:0;margin:4px 0 0;padding:0}
+.help-summary{font-size:12px;font-weight:650;color:#5c6b80;padding:7px 2px;justify-content:flex-start;gap:6px}
+.note-body{padding:8px 3px 12px}
+.panel{border:0;box-shadow:none;background:transparent;border-radius:0;padding:15px 4px;margin:12px 0}
+.timer-panel{padding:8px 5px 13px}
+.timer-face{background:var(--accent-soft);border:4px solid var(--paper);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 30%,white);margin:5px auto 17px}
+.timer-face:before{inset:5px;border:1px dashed var(--accent);opacity:.28}
+.timer-face:after{bottom:30px;opacity:.5}
+.timer-caption{letter-spacing:.15em}
+.catalog-strip{border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;background:transparent;padding:12px 4px;margin:6px 0}
+.catalog-top button{border-radius:99px;background:var(--accent-soft);border:0}
+.result-panel{border-top:1px solid var(--line);padding-top:23px}
+.result-panel .exportpanel{background:var(--accent-soft);border:0;padding:15px;border-radius:16px}
+.panel:has(> details.details){border-top:1px solid var(--line);padding:6px 4px;margin:5px 0}
+.theme-bar{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;margin-top:15px}
+.theme-summary{padding:13px 4px}
+.theme-body{padding:2px 5px 13px}
+.theme-swatch.custom-trigger[aria-pressed=true]{box-shadow:0 0 0 3px var(--accent-strong)}
+.theme-swatch.custom-trigger[aria-pressed=true]:after{color:#263440;text-shadow:0 1px 2px #fff}
+.info{background:transparent;border-top:1px solid var(--line);border-radius:0;padding:15px 5px}
+.shortcut-button{color:#fff;background:var(--accent-strong);border:2px solid var(--accent-strong)}
+.shortcut-button.secondary-shortcut{background:#fff;color:var(--accent-ink);border:2px solid var(--accent-strong)}
+.shortcut-button.disabled-link{background:#a4afbd;color:#fff;border-color:#a4afbd}
+.shortcut-button.secondary-shortcut.disabled-link{background:#fff;color:#64748b;border-color:#a4afbd}
+@media(min-width:650px){.timer-panel{grid-template-columns:290px 1fr}.timer-face{grid-row:1 / span 5}.timer-panel .presets{grid-row:1}.timer-panel .controls{grid-row:2}.timer-panel>.check{grid-row:3}.timer-panel>.generate{grid-row:4}}
+
+/* v16: understated two-tone accents. The clock stays monochromatic. */
+:root{--spark:#d97665;--spark-soft:#fae8e2}
+.timer-face{background:var(--accent-soft)}
+.timer-face:after{content:"♫";color:var(--accent-strong);opacity:.52;font-size:18px;bottom:28px}
+.times>b{color:var(--accent-strong);font-weight:700}
+.timer-caption{color:var(--accent-ink);font-size:11px}
+header p{display:block}
+header p:before{content:none}
+.fan-label{background:color-mix(in srgb,var(--spark) 9%,white);color:#626d7c}
+.presets button.active{border-color:var(--accent);background:var(--accent-soft)}
+.presets button.active:after{content:none}
+.result-panel .resulthead h2:before{content:none}
+.result-panel .tracks .num{color:var(--accent-ink);font-weight:750}
+.result-panel #save{border-color:color-mix(in srgb,var(--spark) 28%,var(--line));color:var(--accent-ink)}
+.result-panel #save:hover{background:color-mix(in srgb,var(--spark) 7%,white)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body><main><header><div class="fan-label">非公式・ファン制作</div><h1>⛄ Snow Music Timer</h1><p>時間を決めて、好きな曲でちょうどよく。</p><details class="subscription-note"><summary class="help-summary"><span>🎧 このツールについて</span><span class="caret">⌄</span></summary><div class="note-body"><strong>音楽サブスクリプションサービスで再生するためのツールです。</strong> このページは音源を配信・再生しません。Apple Musicの直接再生には利用契約とiPhoneショートカットの設定が必要です。Snow Manおよび所属事務所・音楽配信サービスとは無関係のファン制作・非公式コンテンツです。</div></details></header>
+<section class="panel timer-panel"><div class="timer-face"><span class="timer-caption">SET TIME</span><div class="times"><label><input id="min" aria-label="分" type="number" inputmode="numeric" min="0" max="180" value="10">分</label><b>:</b><label><input id="sec" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="00" aria-label="秒">秒</label></div></div><div class="presets" id="presets"></div><div class="controls"><div><label class="label" for="tolerance">許容する誤差</label><select id="tolerance"><option value="10">±10秒</option><option value="20" selected>±20秒</option><option value="30">±30秒</option><option value="60">±1分</option></select></div><div><label class="label" for="mode">終了時間の優先</label><select id="mode"><option value="closest">指定時間に近い</option><option value="under">指定時間を超えない</option><option value="over">指定時間より短くしない</option></select></div></div><label class="check"><input id="shuffle" type="checkbox" checked>曲順を毎回シャッフル</label><button id="generate" class="primary generate">🎵 曲を組み合わせる</button></section>
+<section class="catalog-strip" id="catalogPanel"><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新しい曲をチェック</button><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span></div><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">未登録候補です。別バージョン・重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">追加はこの端末のブラウザのみに保存されます。全曲が検索で見つかるとは限りません。</p></div></section>
+<section class="panel result-panel" id="result"><div class="resulthead"><div><h2>今回の曲順</h2><span class="muted" id="count">—</span></div><div style="text-align:right"><div class="hint" id="targetLabel" style="margin:0 0 2px">合計再生時間</div><div class="big" id="total">--:--</div><div class="difference" id="difference">生成前</div></div></div><div id="message"></div><ol class="tracks" id="tracks"><li class="empty">時間を選んで「曲を組み合わせる」を押してね。</li></ol><div class="actions"><button id="again">🔄 別の組み合わせ</button><button id="save">☆ 保存</button><button id="copy">曲順をコピー</button></div><div class="exportpanel"><h2>🎧 Apple Musicで聴く</h2><p class="hint">現在、ショートカット側で検索した曲が欠ける場合があります。再生前に取得曲数・曲名を照合できるまで、この機能はテスト用です。</p><a id="appleShortcut" class="shortcut-button disabled-link" aria-disabled="true" href="#" role="button">▶ Apple Musicで再生</a><a id="appleSaveShortcut" class="shortcut-button secondary-shortcut disabled-link" aria-disabled="true" href="#" role="button">☆ プレイリストとして保存</a><p class="hint" id="shortcutStatus" role="status">先に曲を組み合わせてください。</p><details class="details"><summary>初回設定とショートカットの配布</summary><ol class="guide"><li><b>再生用：</b>現在動いている「Snow Man Music Timer」ショートカットを使います。最後のアクションが「ミュージックを再生」、入力が「検索した曲」、シャッフルはオフ、リピートはなし。</li><li><b>保存用：</b>再生用ショートカットを複製して名前を<b>Snow Man Music Timer 保存</b>に変更。最後の「ミュージックを再生」を削除し、「検索した曲」で「プレイリストを作成」に変更します。名前は「Snow Man Timer 保存」などに。</li><li>両方とも「ショートカットの入力 → 改行で分割 → 各項目を繰り返す → iTunes Storeで検索 → 曲名・アーティスト照合 → 変数に追加（検索した曲）」の部分は共通です。</li><li>配布時はそれぞれのショートカットをiPhoneの共有メニューから「iCloudリンクをコピー」で共有できます。公開用リンクは作成者の端末から発行する必要があります。</li></ol><p class="hint">検索結果の取りこぼしが確認されているため、現時点ではテスト用です。保存用は実行するたびに新規プレイリストを作成します。</p></details><hr style="border:0;border-top:1px solid #dce6ef;margin:17px 0"><h2>その他の取り込み方法</h2><p class="hint">Spotifyなどには、曲名リストをSoundiizで取り込む方式も使えます（音楽サービスへのログインが必要です）。</p><div class="actions"><button id="copyImport" class="primary">曲リストをコピー</button><button id="downloadCsv">CSVを保存</button><button id="downloadTxt">TXTを保存</button></div><a href="https://soundiiz.com/ja/" target="_blank" rel="noopener noreferrer">Soundiizを開く ↗</a><details class="details"><summary>取り込み方を見る</summary><ol class="guide"><li>「曲リストをコピー」を押す。</li><li>Soundiizでログインし、「プレイリストをインポート」→「プレーンテキストから」を選ぶ（表記が異なる場合があります）。</li><li>コピーした曲を貼り付け、内容を確認する。</li><li>新しいプレイリストを作成し、保存先としてSpotifyかApple Musicを指定する。</li><li>曲順・バージョン・曲数を確認して再生する。</li></ol><p class="hint">テキスト貼り付けが難しければ、CSVを保存して「ファイルから」で読み込んでください。サービス側で別バージョンに一致する場合があります。</p></details><p id="exportStatus" class="hint" role="status"></p></div><p class="hint">🔒 曲を固定して「別の組み合わせ」を押すと、その曲を残して再選曲します。「入替」はその1曲だけ変更します。🔒は曲と位置を固定します。</p></section>
+<section class="panel"><details class="details"><summary>🎼 選曲対象の曲を編集する <span id="poolCount" class="muted"></span></summary><p class="hint">チェックを外すと選曲対象から外れ、いつでも戻せます。曲データは削除されません。公開トラック一覧などから再生時間を確認できた曲を追加しています。全配信曲はまだ網羅していません。配信版・CD版で数秒異なることがあります。</p><div class="row"><button id="all">すべて選ぶ</button><button id="none">すべて外す</button></div><div id="library" class="library"></div><h2 style="margin-top:19px">曲を追加</h2><div class="row"><input id="newName" placeholder="曲名"><input id="newMin" type="number" inputmode="numeric" placeholder="分" min="0"><input id="newSec" type="number" inputmode="numeric" placeholder="秒" min="0" max="59"><button id="add">追加</button></div><p class="hint">登録した曲の時間は選曲計算に使われます。配信サービスで実際の長さを確認して登録してください。</p><h2 style="margin-top:19px">曲データを一括登録</h2><p class="hint">「曲名,3:21」の形式で1行ずつ貼り付け。既存の同名曲は上書きします。</p><textarea id="bulk" rows="3" style="width:100%;border:1px solid #dce6ef;border-radius:10px;padding:10px" placeholder="曲名,3:21&#10;別の曲,4:02"></textarea><div class="actions"><button id="import">一括登録</button><button id="export">曲データをコピー</button><button id="reset">初期データに戻す</button></div></details></section>
+<section class="panel"><details class="details"><summary>⭐ 保存した組み合わせ <span id="favoriteCount" class="muted"></span></summary><div id="favorites" class="favorites"></div></details></section>
+<section class="theme-bar" aria-label="テーマカラー"><details id="themePanelDetails"><summary class="theme-summary"><span>🎨 テーマカラー</span><span><span id="themeCurrentLabel">FSSブルー</span> <span class="caret">⌄</span></span></summary><div class="theme-body"><div class="theme-swatches" id="themeSwatches" role="group" aria-label="テーマの色を選択"></div><div id="themeCustomWrap" class="theme-custom hide"><div class="theme-custom-controls"><label>メイン色 <input type="color" id="themeAccent" value="#69b8d5" aria-label="メインカラー"></label><label>ボタン色 <input type="color" id="themeButton" value="#287e9e" aria-label="ボタンカラー"></label><label>背景色 <input type="color" id="themeBg" value="#f4f8fc" aria-label="背景カラー"></label><button id="themeReset" type="button">FSSに戻す</button></div><p class="hint">色の設定はこのブラウザに保存されます。</p></div></div></details></section>
+<div class="info"><b>タイマーとして使うときの注意</b><br>このツールは曲の長さを合計する「音楽タイマー」です。iPhoneではショートカット経由でApple Musicを直接再生できます（初回設定が必要）。気に入った曲順だけプレイリストとして保存できます。Spotifyへの直接連携は未対応です。シャッフル、クロスフェード、広告、通信・再生の遅延などで実際の終了時刻はずれます。曲をアプリ内に登録するときは表示された曲順どおりに並べてください。</div><footer>Snow Music Timer v16 — ファン制作の非公式ツール。音楽の再生には各配信サービス側の利用条件が適用されます。</footer></main>
+<script>
+(()=>{'use strict';
+const BASE=[['グッタイム','3:21'],['ALL SUITE','3:12'],['オドロウゼ！','3:53'],['奇跡','3:43'],['BANG!!','3:23'],['SAVE YOUR HEART','3:10'],['GO HARD','3:27'],['マドラー','3:18'],['show time...','3:45'],['カリスマックス','2:57'],['D.D.','4:37'],["KISSIN’ MY LIPS",'3:24'],['Stories','3:31'],['Grandeur','3:37'],['HELLO HELLO','4:24'],['Secret Touch','3:50'],['ブラザービート','3:25'],['オレンジkiss','4:20'],['タペストリー','3:58'],['W','4:18'],['Dangerholic','3:51'],['LOVE TRIGGER','3:55'],['We’ll go together','4:31'],['BREAKOUT','3:01'],['君は僕のもの','4:14'],['EVOLUTION','3:41'],['終わらない Memories','3:33'],["Snow Man's Life",'5:27'],['JUICY','3:28'],['ボクとキミと','4:18'],['Happy Birthday','3:44'],['あいことば','4:48'],['slow...','2:56']];
+
+const EXTRA=[['Sugar', '3:15'], ['Infighter', '3:44'], ['TIKI TIKI', '3:23'], ['Super Sexy', '3:29'], ['Delicious!!!', '3:12'], ['Be Proud！', '3:42'], ['GRATITUDE', '4:59'], ['Acrobatic', '4:12'], ['Boogie Woogie Baby', '4:07'], ['Vanishing Over', '4:02'], ['Ⅸ Guys Snow Man', '3:56'], ['Don’t Hold Back', '3:45'], ['Party! Party! Party!', '3:51'], ['Make It Hot', '3:49'], ['Lock on!', '3:51'], ['Tic Tac Toe', '4:25'], ['Toxic Girl', '3:29'], ['ミッドナイト・トレンディ', '4:59'], ['Brand New Smile', '3:39'], ['BOOM BOOM LIGHT', '3:27'], ['キッタキッテナイ', '4:26'], ['Movin’ up', '3:47'], ['This is LOVE', '4:08'], ['Ready Go Round', '3:54'], ['Super Deeper', '4:30'], ['POWEEEEER', '3:31'], ['Julietta', '4:23'], ['クラクラ', '3:26'], ['8月の青', '4:21'], ['僕という名のドラマ', '4:05'], ['Cry out', '3:55'], ['EMPIRE', '3:22'], ['リンディーララ', '3:07'], ['endless night', '3:40'], ['スタートライン', '4:26'], ['One', '3:41'], ['Wha cha cha', '3:38'], ['DA BOMB', '3:36'], ['SBY', '3:11'], ['TRUE LOVE', '4:25'], ['BOOST', '3:44'], ['Spark!!', '3:15'], ['くちびる', '3:25'], ['悪戯な天使', '4:30'], ['嫉妬ガール', '2:38'], ['SERIOUS', '3:24'], ['Miss Brand-New Friday Night', '4:23'], ['約束は君と', '3:31'], ['Days', '4:26'], ['愛のせいで', '4:43'], ['地球してるぜ', '4:03'], ['サンシャインドリーマー', '3:58'], ['Jack In The Box', '2:57'], ['夏色花火', '4:12']];
+const $=id=>document.getElementById(id), parse=s=>{let m=String(s).trim().match(/^(\d+):(\d\d)$/);return m?Number(m[1])*60+Number(m[2]):null},fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')},escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const load=(k,d)=>{try{let v=JSON.parse(localStorage.getItem(k));return v??d}catch{return d}},store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+const DEFAULT_SONGS=[...BASE,...EXTRA.filter(([name])=>!BASE.some(([old])=>old.toLowerCase()===name.toLowerCase()))];
+let pool=load('snowtimer_pool_v1',DEFAULT_SONGS.map(([name,time],i)=>({id:i+1,name,seconds:parse(time),enabled:true})));
+// Merge new defaults into existing v4 library without losing edits/selection/favorites.
+let seen=new Set(pool.map(t=>String(t.name).toLowerCase()));let nextId=Math.max(0,...pool.map(t=>t.id));
+for(const [name,time] of DEFAULT_SONGS){if(!seen.has(name.toLowerCase())){pool.push({id:++nextId,name,seconds:parse(time),enabled:true});seen.add(name.toLowerCase())}}
+let fav=load('snowtimer_favs_v1',[]);
+const savedSession=load('snowtimer_session_v6',null);
+let result=savedSession&&Array.isArray(savedSession.names)?savedSession.names.map(name=>pool.find(t=>t.name===name)).filter(Boolean):[];
+let locked=new Set(savedSession&&Array.isArray(savedSession.locks)?savedSession.locks:[]),lastSignature='';
+const savedPrefs=savedSession?.prefs||{};
+for(const [id,value] of Object.entries(savedPrefs)){const el=$(id);if(el&&value!==null&&value!==undefined){if(el.type==='checkbox')el.checked=!!value;else el.value=String(value)}}
+function saveSession(){store('snowtimer_session_v6',{names:result.map(t=>t.name),locks:[...locked],prefs:{min:$('min').value,sec:$('sec').value,tolerance:$('tolerance').value,mode:$('mode').value,shuffle:$('shuffle').checked}})}
+function target(){let m=Number($('min').value),s=Number($('sec').value);if(!Number.isInteger(m)||!Number.isInteger(s)||m<0||s<0||s>=60)return null;return m*60+s}
+function selected(){return pool.filter(t=>t.enabled&&t.seconds>0)}function rng(a){return a[Math.floor(Math.random()*a.length)]}function shuffle(arr){for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function score(total,aim,mode){let d=total-aim;if(mode==='under'&&d>0)return Math.abs(d)+100000;if(mode==='over'&&d<0)return Math.abs(d)+100000;return Math.abs(d)}
+// Multiple randomized beam searches; each song can appear at most once.
+function solve(aim,excludeId=null){const fixed=result.filter(t=>locked.has(t.id)&&t.id!==excludeId&&pool.some(p=>p.id===t.id&&p.enabled));const fixedSeconds=fixed.reduce((a,t)=>a+t.seconds,0);let candidates=selected().filter(t=>!fixed.some(f=>f.id===t.id)&&t.id!==excludeId);const tol=Number($('tolerance').value),mode=$('mode').value;const space=aim-fixedSeconds;let best=null,bestScore=Infinity;const rounds=16;
+for(let r=0;r<rounds;r++){let arr=shuffle([...candidates]);let beam=[{sum:0,ids:[]}],seenBest=new Set();for(let j=0;j<arr.length;j++){let t=arr[j],next=[...beam];for(let state of beam){let sum=state.sum+t.seconds;if(sum>Math.max(space+tol+65,aim+tol+65))continue;let ids=[...state.ids,t.id];next.push({sum,ids});}
+// Keep diverse sums and short candidate paths. Bucket collisions are randomized.
+shuffle(next);let bySum=new Map();for(let st of next){let prev=bySum.get(st.sum);if(!prev||st.ids.length<prev.ids.length)bySum.set(st.sum,st)}let unique=[...bySum.values()];unique.sort((a,b)=>{let sa=Math.abs(a.sum-space),sb=Math.abs(b.sum-space);return sa-sb});let chosen=unique.slice(0,140);let others=shuffle(unique.slice(140));chosen.push(...others.slice(0,180));beam=chosen;
+for(let state of beam){if(!state.ids.length&&!fixed.length)continue;let total=fixedSeconds+state.sum;let sc=score(total,aim,mode);let sig=state.ids.slice().sort((a,b)=>a-b).join(',');if(sig===lastSignature)sc+=25;if(sc<bestScore||(sc===bestScore&&Math.random()<.25)){bestScore=sc;best={ids:state.ids, fixed, total};}}
+}if(bestScore===0&&r>3)break}
+if(!best){if(fixed.length)best={ids:[],fixed,total:fixedSeconds};else return null}
+let chosen=best.ids.map(id=>pool.find(p=>p.id===id)).filter(Boolean);if($('shuffle').checked)shuffle(chosen);if(best.fixed.length){const pending=[...chosen];if($('shuffle').checked)shuffle(pending);const fixedAt=new Map(result.map((t,i)=>[i,t]).filter(([i,t])=>locked.has(t.id)));const length=Math.max(result.length,fixedAt.size+pending.length);const rebuilt=[];for(let i=0;i<length;i++){if(fixedAt.has(i))rebuilt[i]=fixedAt.get(i);else if(pending.length)rebuilt[i]=pending.shift();else if(i<result.length){const old=result[i];if(old&&!rebuilt.some(t=>t&&t.id===old.id)&&!fixedAt.has(i)&&!pending.some(t=>t.id===old.id))rebuilt[i]=old}}rebuilt.push(...pending);return rebuilt.filter(Boolean)}return chosen}
+function render(){saveSession();updateShortcutLink();let sum=result.reduce((a,t)=>a+t.seconds,0),aim=target(),diff=aim===null?0:sum-aim,tol=Number($('tolerance').value);$('total').textContent=result.length?fmt(sum):'--:--';$('count').textContent=result.length?result.length+'曲':'—';$('targetLabel').textContent=aim===null?'合計再生時間':'合計再生時間（指定 '+fmt(aim)+'）';$('difference').textContent=!result.length?'生成前':diff===0?'誤差0秒・ちょうど！':(diff>0?fmt(diff)+' 長い':fmt(-diff)+' 短い')+(Math.abs(diff)<=tol?'・許容範囲内':'・許容範囲外');$('difference').className='difference '+(Math.abs(diff)<=tol&&($('mode').value==='closest'||$('mode').value==='under'&&diff<=0||$('mode').value==='over'&&diff>=0)?'ok':'warn');$('tracks').innerHTML=result.length?result.map((t,i)=>`<li><span class="num">${i+1}</span><span class="trackname">${escape(t.name)}</span><span class="duration">${fmt(t.seconds)}</span><button class="iconBtn ${locked.has(t.id)?'locked':''}" data-lock="${t.id}" title="固定">${locked.has(t.id)?'🔒':'🔓'}</button><button class="iconBtn" data-replace="${t.id}" title="この曲を入れ替え">入替</button></li>`).join(''):'<li class="empty">曲がありません。</li>';
+let mode=$('mode').value,satisfied=Math.abs(diff)<=tol&&(mode==='closest'||mode==='under'&&diff<=0||mode==='over'&&diff>=0);
+$('message').textContent=!result.length?'':satisfied?'指定条件の範囲に収まりました。':mode==='under'&&diff>0?'注意：指定時間を超えています。現在の登録曲・固定曲では超えない組み合わせを見つけられませんでした。':mode==='over'&&diff<0?'注意：指定時間より短い組み合わせです。':'指定条件に届かず、近い候補を表示しています。';$('message').className=satisfied?'ok':'warn';}
+function replaceOne(id){
+ const index=result.findIndex(t=>t.id===id);
+ if(index<0)return;
+ if(locked.has(id)){alert('この曲は固定中です。先に鍵を外してください。');return}
+ const aim=target(),tol=Number($('tolerance').value),mode=$('mode').value;
+ if(aim===null){alert('時間の指定を確認してください。');return}
+ const others=result.filter((t,i)=>i!==index),sum=others.reduce((a,t)=>a+t.seconds,0);
+ const used=new Set(others.map(t=>t.id));
+ let options=selected().filter(t=>t.id!==id&&!used.has(t.id));
+ const allowed=options.filter(t=>{const diff=sum+t.seconds-aim;return Math.abs(diff)<=tol&&(mode==='closest'||mode==='under'&&diff<=0||mode==='over'&&diff>=0)});
+ if(!allowed.length){$('message').textContent='ほかの曲を変えずに指定時間内へ収まる入替候補がありません。鍵を外して「別の組み合わせ」を試してください。';$('message').className='warn';return}
+ const currentSeconds=result[index].seconds;
+ const scored=allowed.map(t=>({track:t,score:Math.abs(sum+t.seconds-aim)}));
+ const minScore=Math.min(...scored.map(x=>x.score));
+ const near=scored.filter(x=>x.score<=minScore+Math.min(10,tol));
+ const differing=near.filter(x=>x.track.seconds!==currentSeconds);
+ result[index]=rng(differing.length?differing:near).track;
+ render();
+}
+function generate(excludeId=null){let aim=target();if(aim===null||aim<30){alert('30秒以上の有効な時間を入力してください。');return}if(!selected().length){alert('選曲対象の曲がありません。');return}let prev=result.map(t=>t.id).sort((a,b)=>a-b).join(',');let next=solve(aim,excludeId);if(!next){alert('選曲できませんでした。');return}result=next;locked=new Set([...locked].filter(id=>result.some(t=>t.id===id)));lastSignature=prev;render()}
+function renderPool(){let count=selected().length;$('poolCount').textContent=`(${count}/${pool.length}曲)`;$('library').innerHTML=pool.map(t=>`<label><input type="checkbox" data-enable="${t.id}" ${t.enabled?'checked':''}><span>${escape(t.name)}</span><em>${fmt(t.seconds)}</em></label>`).join('')||'<p class="muted">楽曲データがありません。</p>';store('snowtimer_pool_v1',pool)}function renderFav(){ $('favoriteCount').textContent=`(${fav.length}件)`;$('favorites').innerHTML=fav.length?fav.map((f,i)=>`<div class="favorite"><span>${escape(f.name)}<br><small>${f.ids.length}曲</small></span><div class="row"><button data-fload="${i}">開く</button><button data-fdel="${i}">×</button></div></div>`).join(''):'<p class="muted">まだ保存されていません。</p>';store('snowtimer_favs_v1',fav)}
+for(let n of [3,5,10,15,20,30,45,60]){let b=document.createElement('button');b.textContent=n+'分';b.addEventListener('click',()=>{$('min').value=n;$('sec').value='00'});$('presets').appendChild(b)}for(const id of ['min','sec','tolerance','mode','shuffle'])$(id).addEventListener('change',saveSession);$('generate').onclick=()=>{locked.clear();result=[];generate()};$('again').onclick=()=>generate();$('tracks').onclick=e=>{let lock=e.target.closest('[data-lock]'),rep=e.target.closest('[data-replace]');if(lock){let id=Number(lock.dataset.lock);if(locked.has(id))locked.delete(id);else locked.add(id);render()}if(rep){let id=Number(rep.dataset.replace);if(locked.has(id)){alert('この曲は固定中です。先に鍵を外してください。');return}replaceOne(id)}};
+$('save').onclick=()=>{if(!result.length)return;let name=prompt('保存する名前',fmt(target())+'のSnow Manタイマー');if(!name)return;fav.unshift({name:name.trim().slice(0,80),ids:result.map(t=>t.id)});fav=fav.slice(0,40);renderFav()};$('copy').onclick=async()=>{if(!result.length)return;let text=`⛄ Snow Man Music Timer｜${fmt(target())}\n合計 ${fmt(result.reduce((a,t)=>a+t.seconds,0))}\n`+result.map((t,i)=>`${i+1}. ${t.name}（${fmt(t.seconds)}）`).join('\n');try{await navigator.clipboard.writeText(text);alert('曲順をコピーしました。')}catch{prompt('下のテキストをコピーしてください',text)}};
+
+function plainList(){return result.map(t=>`Snow Man - ${t.name}`).join('\n')}
+const shortcutName='Snow Man Music Timer';
+function updateShortcutLink(){
+ const play=$('appleShortcut'),save=$('appleSaveShortcut'),status=$('shortcutStatus');
+ if(!result.length){for(let a of [play,save]){a.href='#';a.classList.add('disabled-link');a.setAttribute('aria-disabled','true')}status.textContent='先に曲を組み合わせてください。';return}
+ const list=result.map(t=>'Snow Man '+t.name).join('\n');
+ for(let [a,name] of [[play,shortcutName],[save,shortcutName+' 保存']]){
+ a.href='shortcuts://run-shortcut?name='+encodeURIComponent(name)+'&input=text&text='+encodeURIComponent(list);
+ a.classList.remove('disabled-link');a.setAttribute('aria-disabled','false');}
+ status.textContent=`${result.length}曲をショートカットへ渡します。Apple Musicで全曲取得できるかは未確認です。`;
+}
+for(let id of ['appleShortcut','appleSaveShortcut'])$(id).addEventListener('click',e=>{if(!result.length)e.preventDefault()});
+
+function quoteCsv(v){return '"'+String(v).replace(/"/g,'""')+'"'}
+function csvList(){return '\uFEFFtitle,artist,duration\r\n'+result.map(t=>[quoteCsv(t.name),quoteCsv('Snow Man'),String(t.seconds)].join(',')).join('\r\n')+'\r\n'}
+function fileName(ext){let aim=target();return 'Snow_Man_Timer_'+(aim===null?'playlist':fmt(aim).replace(':','m')+'s')+'.'+ext}
+function downloadContent(content,name,type){let url=URL.createObjectURL(new Blob([content],{type}));let a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+function exportNotice(message){$('exportStatus').textContent=message}
+$('copyImport').onclick=async()=>{if(!result.length){exportNotice('まずプレイリストを生成してください。');return}let txt=plainList();try{await navigator.clipboard.writeText(txt);exportNotice('コピーしました。Soundiizの「プレーンテキストから」に貼り付けてください。')}catch{let area=document.createElement('textarea');area.value=txt;area.style.width='100%';area.rows=Math.min(result.length+1,12);$('exportStatus').replaceChildren(area);area.focus();area.select()}};
+$('downloadCsv').onclick=()=>{if(!result.length){exportNotice('まずプレイリストを生成してください。');return}downloadContent(csvList(),fileName('csv'),'text/csv;charset=utf-8');exportNotice('CSVを保存しました。Soundiizで「ファイルから」を選んで読み込んでください。')};
+$('downloadTxt').onclick=()=>{if(!result.length){exportNotice('まずプレイリストを生成してください。');return}downloadContent(plainList()+'\n',fileName('txt'),'text/plain;charset=utf-8');exportNotice('TXTを保存しました。Soundiizで取り込めます。')};
+$('library').onchange=e=>{let node=e.target.closest('[data-enable]');if(node){let t=pool.find(t=>t.id===Number(node.dataset.enable));if(t)t.enabled=node.checked;renderPool()}};$('all').onclick=()=>{pool.forEach(t=>t.enabled=true);renderPool()};$('none').onclick=()=>{pool.forEach(t=>t.enabled=false);renderPool()};
+function upsert(name,seconds){name=String(name).trim();if(!name||!Number.isInteger(seconds)||seconds<15||seconds>1800)return false;let t=pool.find(p=>p.name.toLowerCase()===name.toLowerCase());if(t){t.seconds=seconds;t.enabled=true}else pool.push({id:Math.max(0,...pool.map(p=>p.id))+1,name,seconds,enabled:true});return true}
+// Apple iTunes Search API (public, unauthenticated), with JSONP for static-site hosting.
+// The results are suggestions only: this endpoint is not an exhaustive discography feed.
+function catalogLookup(){
+  return new Promise((resolve,reject)=>{
+    const cb='snowTimerCatalog'+Math.random().toString(36).slice(2);
+    const script=document.createElement('script');
+    let finished=false;
+    const cleanup=()=>{delete window[cb];script.remove();clearTimeout(timer)};
+    const finish=(error,value)=>{if(finished)return;finished=true;cleanup();error?reject(error):resolve(value)};
+    const timer=setTimeout(()=>finish(new Error('取得がタイムアウトしました')),12000);
+    window[cb]=data=>finish(null,data);
+    script.onerror=()=>finish(new Error('通信に失敗しました'));
+    script.src='https://itunes.apple.com/lookup?id=1772019148&entity=song&country=JP&limit=200&callback='+encodeURIComponent(cb);
+    document.head.appendChild(script);
+  });
+}
+let catalogCandidates=[];
+function catalogCandidateRender(){
+ const container=$('catalogCandidateList');
+ container.innerHTML=catalogCandidates.map((t,i)=>`<label><input type="checkbox" data-candidate="${i}" checked><span>${escape(t.name)}</span><em>${fmt(t.seconds)}</em></label>`).join('');
+ $('catalogCandidates').classList.toggle('hide',!catalogCandidates.length);
+}
+$('catalogSelectAll').onclick=()=>$('catalogCandidateList').querySelectorAll('[data-candidate]').forEach(x=>x.checked=true);
+$('catalogSelectNone').onclick=()=>$('catalogCandidateList').querySelectorAll('[data-candidate]').forEach(x=>x.checked=false);
+$('catalogAdd').onclick=()=>{
+ const chosen=[...$('catalogCandidateList').querySelectorAll('[data-candidate]:checked')].map(n=>catalogCandidates[Number(n.dataset.candidate)]);
+ if(!chosen.length){setCatalogStatus('追加する曲を選択してください。');return}
+ let count=0;for(const t of chosen)if(upsert(t.name,t.seconds))count++;
+ renderPool();catalogCandidates=[];catalogCandidateRender();
+ setCatalogStatus(`${count}曲を追加しました`);
+};
+function setCatalogStatus(message){const el=$('syncStatus');el.textContent=message;el.classList.toggle('hide',!message)}
+async function syncCatalog(silent=false){
+ const btn=$('syncCatalog'),status=$('syncStatus');
+ if(btn.disabled)return;
+ btn.disabled=true;if(!silent)setCatalogStatus('確認中…');
+ try{
+  const data=await catalogLookup();
+  if(!data||!Array.isArray(data.results))throw new Error('データを読み取れませんでした');
+  const norm=x=>String(x||'').normalize('NFKC').replace(/[’‘]/g,"'").replace(/\s+/g,' ').trim().toLowerCase();
+  const known=new Set(pool.map(t=>norm(t.name)));
+  const found=new Map();
+  for(const t of data.results){
+   if(t.kind!=='song'||norm(t.artistName)!=='snow man'||!t.trackName||!Number.isFinite(t.trackTimeMillis)||t.trackTimeMillis<15000)continue;
+   const key=norm(t.trackName);if(known.has(key)||found.has(key))continue;
+   found.set(key,{name:t.trackName,seconds:Math.round(t.trackTimeMillis/1000)});
+  }
+  catalogCandidates=[...found.values()];catalogCandidateRender();
+  if(!catalogCandidates.length){if(!silent)setCatalogStatus('新しい候補なし');else setCatalogStatus('');return}
+  setCatalogStatus(`候補 ${catalogCandidates.length}曲`);
+ }catch(e){if(!silent)setCatalogStatus('確認できませんでした。再試行してください。')}
+ finally{btn.disabled=false}
+}
+$('syncCatalog').onclick=()=>syncCatalog(false);
+// At most one passive check per local day. Never automatically modify the song database.
+try{
+ const today=new Date().toLocaleDateString('en-CA');
+ const last=localStorage.getItem('snowtimer_catalog_checked_v9');
+ if(last!==today){localStorage.setItem('snowtimer_catalog_checked_v9',today);syncCatalog(true)}
+}catch(e){}
+$('add').onclick=()=>{let name=$('newName').value,m=Number($('newMin').value),s=Number($('newSec').value);if(!upsert(name,m*60+s)){alert('曲名と有効な長さを入力してください');return}['newName','newMin','newSec'].forEach(id=>$(id).value='');renderPool()};$('import').onclick=()=>{let ok=0,invalid=0;for(let line of $('bulk').value.split(/\r?\n/)){if(!line.trim())continue;let match=line.match(/^(.+?)[,，\t](\d+:\d\d)$/);if(!match||!upsert(match[1],parse(match[2])))invalid++;else ok++}renderPool();alert(`${ok}曲登録しました。${invalid?'\n形式を確認できなかった行: '+invalid+'件':''}`)};$('export').onclick=async()=>{let txt=pool.map(t=>`${t.name},${fmt(t.seconds)}`).join('\n');try{await navigator.clipboard.writeText(txt);alert('曲データをコピーしました')}catch{prompt('コピーしてください',txt)}};$('reset').onclick=()=>{if(!confirm('登録曲を初期状態に戻しますか？'))return;pool=DEFAULT_SONGS.map(([name,time],i)=>({id:i+1,name,seconds:parse(time),enabled:true}));renderPool()};$('favorites').onclick=e=>{let a=e.target.closest('[data-fload]'),b=e.target.closest('[data-fdel]');if(a){let f=fav[Number(a.dataset.fload)],found=f.ids.map(id=>pool.find(t=>t.id===id)).filter(Boolean);if(!found.length){alert('保存時の曲が現在の楽曲データにありません');return}result=found;locked.clear();render();$('result').scrollIntoView({behavior:'smooth'});}if(b){fav.splice(Number(b.dataset.fdel),1);renderFav()}};
+
+// Color palette (member colors + FSS). Saved only on this device.
+const THEMES=[
+ {id:'iwamoto',name:'イエロー',accent:'#efc84b',button:'#a97616',bg:'#fffaf0'},
+ {id:'fukazawa',name:'パープル',accent:'#b091dc',button:'#7753a7',bg:'#f8f5fc'},
+ {id:'raul',name:'ホワイト',accent:'#d4dce6',button:'#63758d',bg:'#fbfcfe'},
+ {id:'watanabe',name:'ブルー',accent:'#65a8e6',button:'#376fae',bg:'#f1f8ff'},
+ {id:'mukai',name:'オレンジ',accent:'#f0ac63',button:'#ba6927',bg:'#fff8f0'},
+ {id:'abe',name:'グリーン',accent:'#8cc49e',button:'#39825b',bg:'#f2faf4'},
+ {id:'meguro',name:'ブラック',accent:'#505965',button:'#343c48',bg:'#f2f3f5'},
+ {id:'miyadate',name:'レッド',accent:'#e36a74',button:'#b63b47',bg:'#fff5f5'},
+ {id:'sakuma',name:'ピンク',accent:'#f1a0c2',button:'#bc5a8b',bg:'#fff5fa'},
+ {id:'fss',name:'FSSブルー',accent:'#69b8d5',button:'#287e9e',bg:'#f4f8fc'}
+];
+// Subtle second accent chosen to contrast with each base color, not replace it.
+const SECONDARY={iwamoto:'#8261a6',fukazawa:'#d78a61',raul:'#d9856f',watanabe:'#d98270',mukai:'#26888c',abe:'#d27d79',meguro:'#75b2a8',miyadate:'#318b95',sakuma:'#368f98',fss:'#d47b67'};
+function companionColor(hex){
+ const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+ return (r>g*1.10&&r>b*1.12)||(r>155&&g>100&&b<120)?'#338a94':'#d47b67';
+}
+const lighten=(hex,percent=0.86)=>{const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16));return '#'+rgb.map(x=>Math.round(x+(255-x)*percent).toString(16).padStart(2,'0')).join('')};
+const contrast=(hex)=>{let r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return r*.299+g*.587+b*.114>170?'#283446':'#ffffff'};
+function applyTheme(theme,shouldSave=true){
+ const root=document.documentElement,accent=theme.accent||'#69b8d5',button=theme.button||'#287e9e',bg=theme.bg||'#f4f8fc';
+ const spark=SECONDARY[theme.id]||companionColor(accent);root.style.setProperty('--spark',spark);root.style.setProperty('--spark-soft',lighten(spark,.84));
+ root.style.setProperty('--accent',accent);root.style.setProperty('--accent-strong',button);root.style.setProperty('--accent-ink',button);root.style.setProperty('--accent-soft',lighten(accent,.83));root.style.setProperty('--page',bg);root.style.setProperty('--line',lighten(accent,.70));root.style.setProperty('--ink','#24334b');
+ const meta=$('themeMeta');if(meta)meta.setAttribute('content',bg);
+ $('themeCurrentLabel').textContent=theme.name||'自由設定';
+ if(theme.id==='custom'){$('themeAccent').value=accent;$('themeButton').value=button;$('themeBg').value=bg;}
+ document.querySelectorAll('.theme-swatch').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.theme===theme.id)));
+ if(shouldSave)store('snowtimer_theme_v13',theme);
+}
+const FALLBACK_CUSTOM={id:'custom',name:'自由設定',accent:'#69b8d5',button:'#287e9e',bg:'#f4f8fc'};
+let customTheme=load('snowtimer_theme_custom_v14',FALLBACK_CUSTOM);
+const validColor=v=>typeof v==='string'&&/^#[0-9a-fA-F]{6}$/.test(v);
+if(!customTheme||!validColor(customTheme.accent)||!validColor(customTheme.button)||!validColor(customTheme.bg))customTheme={...FALLBACK_CUSTOM};
+$('themeSwatches').innerHTML=THEMES.map(t=>`<button type="button" class="theme-swatch" data-theme="${t.id}" style="--swatch:${t.accent};--checkcolor:${contrast(t.accent)}" aria-label="${t.name}" title="${t.name}" aria-pressed="false"></button>`).join('')+`<button type="button" class="theme-swatch custom-trigger" data-theme="custom" id="themeCustomToggle" aria-label="自由設定" title="自由設定" aria-pressed="false"></button>`;
+$('themeSwatches').addEventListener('click',e=>{
+ const button=e.target.closest('[data-theme]');if(!button)return;
+ if(button.dataset.theme==='custom'){
+   $('themePanelDetails').open=true;
+   $('themeCustomWrap').classList.remove('hide');
+   applyTheme(customTheme);
+ }else{
+   const t=THEMES.find(x=>x.id===button.dataset.theme);
+   if(t)applyTheme(t);
+   $('themeCustomWrap').classList.add('hide');
+ }
+});
+for(const id of ['themeAccent','themeButton','themeBg'])$(id).addEventListener('input',()=>{
+ customTheme={id:'custom',name:'自由設定',accent:$('themeAccent').value,button:$('themeButton').value,bg:$('themeBg').value};
+ store('snowtimer_theme_custom_v14',customTheme);
+ applyTheme(customTheme);
+});
+$('themeReset').addEventListener('click',()=>applyTheme(THEMES[THEMES.length-1]));
+const initialTheme=load('snowtimer_theme_v13',THEMES[THEMES.length-1]);
+if(initialTheme?.id==='custom'&&validColor(initialTheme.accent)&&validColor(initialTheme.button)&&validColor(initialTheme.bg)){
+  // Preserve the previous custom colors in their own slot upon upgrade.
+  if(!localStorage.getItem('snowtimer_theme_custom_v14')){customTheme={...initialTheme,name:'自由設定'};store('snowtimer_theme_custom_v14',customTheme)}
+  $('themeCustomWrap').classList.remove('hide');
+}
+applyTheme(initialTheme&&validColor(initialTheme.accent)?initialTheme:THEMES[THEMES.length-1],false);
+// Keep seconds visually as two digits while preserving numeric calculations.
+const secField=$('sec');
+function formatSeconds(){const raw=secField.value.trim();if(/^\d{1,2}$/.test(raw)){secField.value=String(Number(raw)).padStart(2,'0')}}
+secField.addEventListener('blur',formatSeconds);
+secField.addEventListener('input',()=>{secField.value=secField.value.replace(/\D/g,'').slice(0,2)});
+formatSeconds();
+
+function highlightPreset(){const current=target();$('presets').querySelectorAll('button').forEach(btn=>{let n=parseInt(btn.textContent,10);btn.classList.toggle('active',current===n*60)})}
+$('min').addEventListener('input',highlightPreset);$('sec').addEventListener('input',highlightPreset);$('presets').addEventListener('click',highlightPreset);highlightPreset();
+
+renderPool();renderFav();render();
+})();
+</script></body></html>
