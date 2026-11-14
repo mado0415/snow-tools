@@ -139,6 +139,7 @@ $('save').onclick=()=>{if(!result.length)return;let name=prompt('保存する名
 function plainList(){return result.map(t=>`Snow Man - ${t.name}`).join('\n')}
 // iTunes Store track-ID integration: resolve IDs before showing an actionable shortcut link.
 // Never send a partial playlist or silently substitute an unrelated recording.
+// v20: English member credits and romanized solo titles supported.
 const shortcutName='Snow Music Timer ID 再生';
 const shortcutSaveName='Snow Music Timer ID 保存';
 const knownTrackIDs={'We’ll go together':'1804833237','EVOLUTION':'1804833240'}; // tested on iPhone
@@ -158,17 +159,73 @@ function queryITunes(url){
   document.head.appendChild(script);
  });
 }
+// Artist names can be romanized or combined on Apple Music, while the site's
+// display title is sometimes Japanese. Never accept a match from title alone.
+const MEMBER_NAMES=['Hikaru Iwamoto','Tatsuya Fukazawa','Raul','Shota Watanabe','Koji Mukai','Ryohei Abe','Ren Meguro','Ryota Miyadate','Daisuke Sakuma'];
+const MEMBER_JP=['岩本照','深澤辰哉','ラウール','渡辺翔太','向井康二','阿部亮平','目黒蓮','宮舘涼太','佐久間大介'];
+// Explicit aliases supported by the official Apple Music member listing.
+const SONG_ALIASES={
+ 'オトノナルホウヘ':['Otono Naru Houe'],
+ 'サンシャインドリーマー':['Sunshine Dreamer'],
+ '星のうた':['hoshinouta'],
+ 'ガラライキュ！':['gararaikyu!']
+};
+const SOLO_HINTS={
+ 'オトノナルホウヘ':['Shota Watanabe'],
+ 'Two':['Shota Watanabe','Ren Meguro'],
+ 'サンシャインドリーマー':['Shota Watanabe']
+};
+function titleVariants(song){return [...new Set([song.name,...(SONG_ALIASES[song.name]||[])].map(normalizeSong))]}
+function artistTokens(raw){return normalizeSong(raw).replace(/[＆&、，,／/・+]/g,' | ').split(/\s+\|\s+/).map(t=>t.trim()).filter(Boolean)}
+function recognizedArtist(raw){
+ const a=normalizeSong(raw);
+ if(a==='snow man')return true;
+ const names=[...MEMBER_NAMES,...MEMBER_JP].map(normalizeSong);
+ if(names.includes(a))return true;
+ // Collaboration artist strings are a combination of recognized member names.
+ // Split on common separators, but not a bare space within a member's name.
+ const parts=artistTokens(raw);
+ return parts.length>1&&parts.every(part=>names.includes(part));
+}
+function validCandidate(t,song){
+ if(t.kind!=='song'||!Number.isSafeInteger(t.trackId)||!Number.isFinite(t.trackTimeMillis))return false;
+ if(!titleVariants(song).includes(normalizeSong(t.trackName)))return false;
+ if(!recognizedArtist(t.artistName))return false;
+ if(Math.abs(t.trackTimeMillis/1000-song.seconds)>30)return false;
+ const hints=SOLO_HINTS[song.name];
+ if(hints){
+  const artist=normalizeSong(t.artistName);
+  const matchingHint=hints.some(name=>artist.includes(normalizeSong(name)));
+  // Solo and unit titles may also be credited to Snow Man on some releases.
+  if(!matchingHint&&artist!=='snow man')return false;
+ }
+ return true;
+}
 async function resolveSongID(song){
  const key=trackCacheKey(song);
  if(/^\d{8,20}$/.test(String(idCache[key]||'')))return String(idCache[key]);
  if(/^\d{8,20}$/.test(String(song.trackId||''))){idCache[key]=String(song.trackId);store('snowtimer_music_ids_v1',idCache);return idCache[key]}
  if(knownTrackIDs[song.name]){idCache[key]=knownTrackIDs[song.name];store('snowtimer_music_ids_v1',idCache);return idCache[key]}
- const q=encodeURIComponent('Snow Man '+song.name);
- const data=await queryITunes('https://itunes.apple.com/search?term='+q+'&entity=song&country=JP&limit=100');
- const candidates=(data?.results||[]).filter(t=>t.kind==='song'&&Number.isSafeInteger(t.trackId)&&normalizeSong(t.trackName)===normalizeSong(song.name)&&normalizeSong(t.artistName)==='snow man');
- // Prefer the same duration over remixes, edits or live versions.
- candidates.sort((a,b)=>Math.abs(a.trackTimeMillis/1000-song.seconds)-Math.abs(b.trackTimeMillis/1000-song.seconds));
- const found=candidates.find(t=>Math.abs(t.trackTimeMillis/1000-song.seconds)<=30);
+ // Use known artist names first for solo/unit tracks, then broader searches.
+ const aliases=SONG_ALIASES[song.name]||[];
+ const hints=SOLO_HINTS[song.name]||[];
+ const queries=[...hints.flatMap(a=>[a+' '+(aliases[0]||song.name),a+' '+song.name]),
+  'Snow Man '+song.name,...aliases.map(a=>'Shota Watanabe '+a),song.name,...aliases];
+ const seen=new Set();let matches=[];
+ for(const term of [...new Set(queries)].slice(0,9)){
+  try{
+   const data=await queryITunes('https://itunes.apple.com/search?term='+encodeURIComponent(term)+'&entity=song&country=JP&limit=100');
+   for(const t of data?.results||[]){if(!seen.has(t.trackId)&&validCandidate(t,song)){seen.add(t.trackId);matches.push(t)}}
+   if(matches.length)break;
+  }catch(e){/* Try a different search phrase if this search fails. */}
+ }
+ // Prefer exact song duration and expected member credits over other editions.
+ matches.sort((a,b)=>{
+  const score=t=>Math.abs(t.trackTimeMillis/1000-song.seconds)+
+   (SOLO_HINTS[song.name]&&!SOLO_HINTS[song.name].some(n=>normalizeSong(t.artistName).includes(normalizeSong(n)))?12:0);
+  return score(a)-score(b);
+ });
+ const found=matches[0];
  if(!found)return null;
  idCache[key]=String(found.trackId);store('snowtimer_music_ids_v1',idCache);return idCache[key];
 }
@@ -195,7 +252,7 @@ async function updateShortcutLink(){
   status.textContent=`${snapshot.length}曲中${unresolved.length}曲のIDを確認できませんでした。間違った曲や不完全な曲順を送らないため、再生・保存を停止しています。`;
   missing.classList.remove('hide');
   const title=document.createElement('p');title.className='hint';title.textContent='ID未確認：'+unresolved.map(t=>t.name).join('、');missing.appendChild(title);
-  const help=document.createElement('p');help.className='hint';help.textContent='Apple Musicの曲URLに含まれる「i=」の後の数字を登録すると、このブラウザで次回から利用できます。';missing.appendChild(help);
+  const help=document.createElement('p');help.className='hint';help.textContent='別名義・英字曲名も検索しています。見つからない場合のみ、Apple Musicの曲URLに含まれる「i=」の後の数字を登録してください。';missing.appendChild(help);
   for(const t of unresolved){
    const button=document.createElement('button');button.type='button';button.className='iconBtn';button.textContent=t.name+' の曲IDを登録';
    button.onclick=async()=>{
