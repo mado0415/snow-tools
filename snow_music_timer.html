@@ -85,7 +85,8 @@ const BASE=[['グッタイム','3:21'],['ALL SUITE','3:12'],['オドロウゼ！
 const EXTRA=[['Sugar', '3:15'], ['Infighter', '3:44'], ['TIKI TIKI', '3:23'], ['Super Sexy', '3:29'], ['Delicious!!!', '3:12'], ['Be Proud！', '3:42'], ['GRATITUDE', '4:59'], ['Acrobatic', '4:12'], ['Boogie Woogie Baby', '4:07'], ['Vanishing Over', '4:02'], ['Ⅸ Guys Snow Man', '3:56'], ['Don’t Hold Back', '3:45'], ['Party! Party! Party!', '3:51'], ['Make It Hot', '3:49'], ['Lock on!', '3:51'], ['Tic Tac Toe', '4:25'], ['Toxic Girl', '3:29'], ['ミッドナイト・トレンディ', '4:59'], ['Brand New Smile', '3:39'], ['BOOM BOOM LIGHT', '3:27'], ['キッタキッテナイ', '4:26'], ['Movin’ up', '3:47'], ['This is LOVE', '4:08'], ['Ready Go Round', '3:54'], ['Super Deeper', '4:30'], ['POWEEEEER', '3:31'], ['Julietta', '4:23'], ['クラクラ', '3:26'], ['8月の青', '4:21'], ['僕という名のドラマ', '4:05'], ['Cry out', '3:55'], ['EMPIRE', '3:22'], ['リンディーララ', '3:07'], ['endless night', '3:40'], ['スタートライン', '4:26'], ['One', '3:41'], ['Wha cha cha', '3:38'], ['DA BOMB', '3:36'], ['SBY', '3:11'], ['TRUE LOVE', '4:25'], ['BOOST', '3:44'], ['Spark!!', '3:15'], ['くちびる', '3:25'], ['悪戯な天使', '4:30'], ['嫉妬ガール', '2:38'], ['SERIOUS', '3:24'], ['Miss Brand-New Friday Night', '4:23'], ['約束は君と', '3:31'], ['Days', '4:26'], ['愛のせいで', '4:43'], ['地球してるぜ', '4:03'], ['サンシャインドリーマー', '3:58'], ['Jack In The Box', '2:57'], ['夏色花火', '4:12']];
 const $=id=>document.getElementById(id), parse=s=>{let m=String(s).trim().match(/^(\d+):(\d\d)$/);return m?Number(m[1])*60+Number(m[2]):null},fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')},escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const load=(k,d)=>{try{let v=JSON.parse(localStorage.getItem(k));return v??d}catch{return d}},store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
-const DEFAULT_SONGS=[...BASE,...EXTRA.filter(([name])=>!BASE.some(([old])=>old.toLowerCase()===name.toLowerCase()))];
+const ADDITIONAL_VERIFIED=[['オトノナルホウヘ','3:32'],['Two','4:35']];
+const DEFAULT_SONGS=[...BASE,...EXTRA.filter(([name])=>!BASE.some(([old])=>old.toLowerCase()===name.toLowerCase())),...ADDITIONAL_VERIFIED];
 let pool=load('snowtimer_pool_v1',DEFAULT_SONGS.map(([name,time],i)=>({id:i+1,name,seconds:parse(time),enabled:true})));
 // Merge new defaults into existing v4 library without losing edits/selection/favorites.
 let seen=new Set(pool.map(t=>String(t.name).toLowerCase()));let nextId=Math.max(0,...pool.map(t=>t.id));
@@ -139,10 +140,16 @@ $('save').onclick=()=>{if(!result.length)return;let name=prompt('保存する名
 function plainList(){return result.map(t=>`Snow Man - ${t.name}`).join('\n')}
 // iTunes Store track-ID integration: resolve IDs before showing an actionable shortcut link.
 // Never send a partial playlist or silently substitute an unrelated recording.
-// v20: English member credits and romanized solo titles supported.
+// v21: confirmed solo/unit song IDs plus album-catalog lookup fallback.
 const shortcutName='Snow Music Timer ID 再生';
 const shortcutSaveName='Snow Music Timer ID 保存';
-const knownTrackIDs={'We’ll go together':'1804833237','EVOLUTION':'1804833240'}; // tested on iPhone
+// Direct song IDs confirmed from Apple Music song URLs. These take priority over
+// older local search caches, which might contain a different recording.
+const knownTrackIDs={
+ 'We’ll go together':'1804833237', 'EVOLUTION':'1804833240',
+ 'オトノナルホウヘ':'1804833314', // THE BEST 2020 - 2025, Shota Watanabe
+ 'Two':'6769372001' // i DO ME, Shota Watanabe & Ren Meguro
+};
 const idCache=load('snowtimer_music_ids_v1',{});
 let linkRevision=0;
 function normalizeSong(s){return String(s||'').normalize('NFKC').replace(/[’‘＇`]/g,"'").replace(/[‐‑–—]/g,'-').replace(/\s+/g,' ').trim().toLowerCase()}
@@ -203,9 +210,9 @@ function validCandidate(t,song){
 }
 async function resolveSongID(song){
  const key=trackCacheKey(song);
- if(/^\d{8,20}$/.test(String(idCache[key]||'')))return String(idCache[key]);
+ if(knownTrackIDs[song.name])return knownTrackIDs[song.name];
  if(/^\d{8,20}$/.test(String(song.trackId||''))){idCache[key]=String(song.trackId);store('snowtimer_music_ids_v1',idCache);return idCache[key]}
- if(knownTrackIDs[song.name]){idCache[key]=knownTrackIDs[song.name];store('snowtimer_music_ids_v1',idCache);return idCache[key]}
+ if(/^\d{8,20}$/.test(String(idCache[key]||'')))return String(idCache[key]);
  // Use known artist names first for solo/unit tracks, then broader searches.
  const aliases=SONG_ALIASES[song.name]||[];
  const hints=SOLO_HINTS[song.name]||[];
@@ -218,6 +225,20 @@ async function resolveSongID(song){
    for(const t of data?.results||[]){if(!seen.has(t.trackId)&&validCandidate(t,song)){seen.add(t.trackId);matches.push(t)}}
    if(matches.length)break;
   }catch(e){/* Try a different search phrase if this search fails. */}
+ }
+ // Search songs inside verified Snow Man albums as a fallback. Search engines
+ // sometimes omit solo/unit tracks from results even when catalogued on Apple Music.
+ if(!matches.length){
+  const albumIDs=['1804833044','6769371796'];
+  for(const albumID of albumIDs){
+   try{
+    const data=await queryITunes('https://itunes.apple.com/lookup?id='+albumID+'&entity=song&country=JP&limit=200');
+    for(const t of data?.results||[]){
+     if(!seen.has(t.trackId)&&validCandidate(t,song)){seen.add(t.trackId);matches.push(t)}
+    }
+    if(matches.length)break;
+   }catch(e){/* Keep the unresolved state rather than substituting a wrong song. */}
+  }
  }
  // Prefer exact song duration and expected member credits over other editions.
  matches.sort((a,b)=>{
@@ -252,7 +273,7 @@ async function updateShortcutLink(){
   status.textContent=`${snapshot.length}曲中${unresolved.length}曲のIDを確認できませんでした。間違った曲や不完全な曲順を送らないため、再生・保存を停止しています。`;
   missing.classList.remove('hide');
   const title=document.createElement('p');title.className='hint';title.textContent='ID未確認：'+unresolved.map(t=>t.name).join('、');missing.appendChild(title);
-  const help=document.createElement('p');help.className='hint';help.textContent='別名義・英字曲名も検索しています。見つからない場合のみ、Apple Musicの曲URLに含まれる「i=」の後の数字を登録してください。';missing.appendChild(help);
+  const help=document.createElement('p');help.className='hint';help.textContent='確認済みIDを優先し、別名義・英字曲名・公式アルバム内の曲も検索しています。未確認の曲は誤登録せず停止します。';missing.appendChild(help);
   for(const t of unresolved){
    const button=document.createElement('button');button.type='button';button.className='iconBtn';button.textContent=t.name+' の曲IDを登録';
    button.onclick=async()=>{
@@ -263,7 +284,7 @@ async function updateShortcutLink(){
      const data=await queryITunes('https://itunes.apple.com/lookup?id='+encodeURIComponent(id)+'&country=JP&entity=song');
      const item=(data?.results||[]).find(v=>v.kind==='song'&&String(v.trackId)===id);
      if(!item){alert('このIDの曲を確認できませんでした。');return}
-     if(normalizeSong(item.trackName)!==normalizeSong(t.name)){
+     if(!titleVariants(t).includes(normalizeSong(item.trackName))){
       alert('曲名が一致しません。取得された曲：'+item.artistName+' / '+item.trackName);return
      }
      if(!confirm('登録する曲：'+item.artistName+' / '+item.trackName+'\nこの曲で間違いありませんか？'))return;
