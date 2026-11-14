@@ -99,7 +99,7 @@ header p:before{content:none}
 </style></head><body><main><header><div class="fan-label">非公式・ファン制作</div><h1>⛄ Snow Music Timer</h1><p>聴きたい時間に合わせて、Snow Manの曲を組み合わせよう。</p><details class="subscription-note"><summary class="help-summary"><span>🎧 このツールについて</span><span class="caret">⌄</span></summary><div class="note-body"><strong>Snow Manの楽曲を、指定した時間に近い長さで組み合わせる非公式ツールです。</strong> サイト内で音楽は再生されません。再生にはApple Musicなどの音楽配信サービスを利用します。iPhoneでは別途ショートカットを設定するとApple Musicへ曲順を渡せます。Androidではこのショートカットによる直接再生は利用できません。Snow Man・所属事務所・各音楽配信サービスの公式サービスではありません。</div></details></header>
 <aside class="browser-note" id="browserNote" role="note" hidden><span id="browserNoteText"><strong>📱 Xアプリ内では利用しないでください。</strong> Safari・Chromeなどの通常のブラウザで開いてください。</span><button class="browser-note-close" id="browserNoteClose" type="button" aria-label="注意を閉じる">×</button></aside>
 <section class="panel timer-panel"><div class="timer-face"><span class="timer-caption">SET TIME</span><div class="times"><label><input id="min" aria-label="分" type="number" inputmode="numeric" min="0" max="180" value="10">分</label><b>:</b><label><input id="sec" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="00" aria-label="秒">秒</label></div></div><div class="presets" id="presets"></div><div class="controls"><div><label class="label" for="tolerance">許容する誤差</label><select id="tolerance"><option value="10">±10秒</option><option value="20" selected>±20秒</option><option value="30">±30秒</option><option value="60">±1分</option></select></div><div><label class="label" for="mode">終了時間の優先</label><select id="mode"><option value="closest">指定時間に近い</option><option value="under">指定時間を超えない</option><option value="over">指定時間より短くしない</option></select></div></div><label class="check"><input id="shuffle" type="checkbox" checked>曲順を毎回シャッフル</label><button id="generate" class="primary generate">🎵 曲を組み合わせる</button></section>
-<section class="catalog-strip" id="catalogPanel"><details class="catalog-guide" id="catalogGuide"><summary>はじめて使う方へ <span class="catalog-guide-hint">初回は配信曲の確認が必要</span></summary><p id="catalogFirstUse" class="catalog-onboarding" role="status"><strong>初回は必ず配信曲を確認してください。</strong> このページに初めから入っているのは制作時点の曲です。公開後の新曲・ソロ・ユニット曲は、自動追加されません。外部アーティスト名義の曲などは、曲URLから個別に追加できます。下のボタンで確認し、候補を選んで追加してください。<span id="catalogCheckedAt"></span></p></details><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新しい曲をチェック（初回必須）</button><button id="catalogForceFresh" type="button" class="hide">最新情報で再確認</button></div><p id="catalogCacheNotice" class="hint hide" role="status" aria-live="polite"></p><details class="catalog-url-details" id="catalogUrlDetails"><summary>🔗 その他の曲をURLで追加 <span aria-hidden="true">⌄</span></summary><div class="url-import" id="urlImport"><p class="hint">外部アーティスト名義の曲など、通常の新曲チェックで探さない曲はこちらから。Apple Musicの「曲」を共有してURLを貼り付けてください。曲名・名義・長さ・曲IDを取得します。</p><div class="row"><input id="musicTrackUrl" type="url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://music.apple.com/jp/album/…?i=…" aria-label="Apple Musicの曲URL"><button type="button" id="inspectTrackUrl">曲情報を取得</button></div><p class="hint" id="trackUrlStatus" role="status" aria-live="polite"></p><div id="trackUrlPreview" class="track-url-preview hide"><p><strong id="trackUrlTitle"></strong><span id="trackUrlArtist" class="url-subline"></span><span id="trackUrlAlbum" class="url-subline"></span><span id="trackUrlDuration" class="url-subline"></span></p><div class="actions"><button type="button" id="confirmTrackUrl" class="primary">この曲を登録</button><button type="button" id="cancelTrackUrl">キャンセル</button></div></div><p class="hint">URLを指定した曲だけ登録します。外部アーティスト名義の曲は自動検索しません。追加データはこのブラウザに保存されます。</p></div></details><details class="catalog-url-details" id="editionCheckDetails"><summary>🔄 配信バージョンを詳しく確認 <span aria-hidden="true">⌄</span></summary><div class="url-import"><p class="hint">通常の新曲チェックで候補が出なかった曲も、曲名から個別に探せます。現在の収録作品の発売日と比較し、新しい通常版が見つかった場合だけ候補を表示します。勝手に変更されることはありません。</p><div class="row"><select id="editionSongSelect" aria-label="配信版を確認する曲" style="flex:1 1 200px;min-width:0;max-width:100%"></select><button id="editionCheckButton" type="button">この曲を確認</button></div><p id="editionCheckStatus" class="hint" role="status" aria-live="polite"></p><div id="editionCheckResults" class="hide"></div><p class="hint">Apple Music日本向けの公開検索による確認です。検索できても全配信版の網羅は保証できません。外部楽曲をURL登録した曲は対象外です。</p></div></details><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">Snow Man・ソロ・ユニット名義の未登録候補です。別バージョンや重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">初期登録曲は公開時点のものです。初めて使うときは「新しい曲をチェック」を押し、候補を確認して必要な曲を追加してください。追加した曲はこの端末のブラウザに保存されます。未配信の曲は不足に数えません。公開検索で配信中の全曲を取得できるとは限りません。</p></div><div id="catalogVersionPanel" class="hide catalog-expanded"><p class="hint"><strong>🔄 登録済み曲の新しい配信版候補</strong><br>新曲チェックで見つかった同名・同名義の別配信版を、収録アルバムの発売日で比較します。見つからない場合は「配信バージョンを詳しく確認」もお試しください。ライブ版・リミックスなどは対象外です。現在の版は確認するまで変更しません。</p><div id="catalogVersionList" class="library" style="max-height:300px"></div><p class="hint">変更しない候補は「この候補を表示しない」で片付けられます。同じ配信版は次回も出ませんが、さらに新しい版が見つかれば別の候補として表示します。</p><div class="actions"><button id="catalogVersionSelectAll" type="button">すべて選択</button><button id="catalogVersionSelectNone" type="button">すべて解除</button><button id="catalogApplyVersions" type="button" class="primary">選択した版に切り替える</button></div><p class="hint">曲の登録IDと順番は維持されます。曲ID・再生時間が切り替わり、以降の再生・保存に反映されます。曲URLから指定した外部楽曲は対象外です。</p></div><details id="catalogDiagnostics" class="details hide"><summary>検索できなかった照会を確認</summary><p class="hint">下記は曲数ではなく、Appleへの検索・アルバム照会の失敗件数です。下のボタンで失敗した照会だけを再試行できます。</p><ul id="catalogFailures" style="font-size:12px;color:#64748b;padding-left:20px;line-height:1.6"></ul><button type="button" id="catalogRetryFailed">失敗した照会だけ再試行</button><span id="catalogRetryStatus" class="hint" role="status" aria-live="polite"></span></details></section>
+<section class="catalog-strip" id="catalogPanel"><details class="catalog-guide" id="catalogGuide"><summary>はじめて使う方へ <span class="catalog-guide-hint">初回は配信曲の確認が必要</span></summary><p id="catalogFirstUse" class="catalog-onboarding" role="status"><strong>初回は必ず配信曲を確認してください。</strong> このページに初めから入っているのは制作時点の曲です。公開後の新曲・ソロ・ユニット曲は、自動追加されません。外部アーティスト名義の曲などは、曲URLから個別に追加できます。下のボタンで確認し、候補を選んで追加してください。<span id="catalogCheckedAt"></span></p></details><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新しい曲をチェック（初回必須）</button><button id="catalogForceFresh" type="button" class="hide">最新情報で再確認</button></div><p id="catalogCacheNotice" class="hint hide" role="status" aria-live="polite"></p><details class="catalog-url-details" id="catalogUrlDetails"><summary>🔗 その他の曲をURLで追加 <span aria-hidden="true">⌄</span></summary><div class="url-import" id="urlImport"><p class="hint">外部アーティスト名義の曲など、通常の新曲チェックで探さない曲はこちらから。Apple Musicの「曲」を共有してURLを貼り付けてください。曲名・名義・長さ・曲IDを取得します。</p><div class="row"><input id="musicTrackUrl" type="url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://music.apple.com/jp/album/…?i=…" aria-label="Apple Musicの曲URL"><button type="button" id="inspectTrackUrl">曲情報を取得</button></div><p class="hint" id="trackUrlStatus" role="status" aria-live="polite"></p><div id="trackUrlPreview" class="track-url-preview hide"><p><strong id="trackUrlTitle"></strong><span id="trackUrlArtist" class="url-subline"></span><span id="trackUrlAlbum" class="url-subline"></span><span id="trackUrlDuration" class="url-subline"></span></p><div class="actions"><button type="button" id="confirmTrackUrl" class="primary">この曲を登録</button><button type="button" id="cancelTrackUrl">キャンセル</button></div></div><p class="hint">URLを指定した曲だけ登録します。外部アーティスト名義の曲は自動検索しません。追加データはこのブラウザに保存されます。</p></div></details><details class="catalog-url-details" id="editionCheckDetails"><summary>🔄 配信バージョンを詳しく確認 <span aria-hidden="true">⌄</span></summary><div class="url-import"><p class="hint">通常の新曲チェックで候補が出なかった曲も、曲名から個別に探せます。現在の収録作品の発売日と比較し、新しい通常版が見つかった場合だけ候補を表示します。勝手に変更されることはありません。</p><div class="row"><select id="editionSongSelect" aria-label="配信版を確認する曲" style="flex:1 1 200px;min-width:0;max-width:100%"></select><button id="editionCheckButton" type="button">この曲を確認</button></div><p id="editionCheckStatus" class="hint" role="status" aria-live="polite"></p><div id="editionCheckResults" class="hide"></div><p class="hint">Apple Music日本向けの公開検索による確認です。検索できても全配信版の網羅は保証できません。外部楽曲をURL登録した曲は対象外です。</p></div></details><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">Snow Manのアルバムと、確認済みのソロ・ユニット曲からたどれる配信作品の候補です。別バージョンや重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">初期登録曲は公開時点のものです。初めて使うときは「新しい曲をチェック」を押し、候補を確認して必要な曲を追加してください。追加した曲はこの端末のブラウザに保存されます。未配信の曲は不足に数えません。既存曲の名義からたどれない新しいソロ・ユニット名義や外部アーティストの曲は、見つからないことがあります。Apple Musicの曲URLから追加できます。</p></div><div id="catalogVersionPanel" class="hide catalog-expanded"><p class="hint"><strong>🔄 登録済み曲の新しい配信版候補</strong><br>新曲チェックで見つかった同名・同名義の別配信版を、収録アルバムの発売日で比較します。見つからない場合は「配信バージョンを詳しく確認」もお試しください。ライブ版・リミックスなどは対象外です。現在の版は確認するまで変更しません。</p><div id="catalogVersionList" class="library" style="max-height:300px"></div><p class="hint">変更しない候補は「この候補を表示しない」で片付けられます。同じ配信版は次回も出ませんが、さらに新しい版が見つかれば別の候補として表示します。</p><div class="actions"><button id="catalogVersionSelectAll" type="button">すべて選択</button><button id="catalogVersionSelectNone" type="button">すべて解除</button><button id="catalogApplyVersions" type="button" class="primary">選択した版に切り替える</button></div><p class="hint">曲の登録IDと順番は維持されます。曲ID・再生時間が切り替わり、以降の再生・保存に反映されます。曲URLから指定した外部楽曲は対象外です。</p></div><details id="catalogDiagnostics" class="details hide"><summary>検索できなかった照会を確認</summary><p class="hint">下記は曲数ではなく、Appleへの検索・アルバム照会の失敗件数です。下のボタンで失敗した照会だけを再試行できます。</p><ul id="catalogFailures" style="font-size:12px;color:#64748b;padding-left:20px;line-height:1.6"></ul><button type="button" id="catalogRetryFailed">失敗した照会だけ再試行</button><span id="catalogRetryStatus" class="hint" role="status" aria-live="polite"></span></details></section>
 <section class="panel result-panel" id="result"><div class="resulthead"><div><h2>今回の曲順</h2><span class="muted" id="count">—</span></div><div style="text-align:right"><div class="hint" id="targetLabel" style="margin:0 0 2px">合計再生時間</div><div class="big" id="total">--:--</div><div class="difference" id="difference">生成前</div></div></div><div id="message"></div><p class="hint" id="precisionStatus">未照合曲は登録された秒数で計算しています。</p><ol class="tracks" id="tracks"><li class="empty">時間を指定して「曲を組み合わせる」を押してください。</li></ol><div class="actions"><button id="again">🔄 別の組み合わせ</button><button id="save">☆ 保存</button><button id="copy">曲順をコピー</button></div><div class="exportpanel"><h2>🎧 Apple Musicで聴く（iPhone・iPad）</h2><p class="platform-note" id="platformNote">iPhone・iPadの「ショートカット」アプリを使う機能です。利用にはApple Musicの契約と専用ショートカットの事前設定が必要です。<strong>日本以外のApple Music契約地域での直接再生・保存は未検証です。</strong> Androidではこのボタンから直接再生できません。</p><div class="shortcut-install"><span class="shortcut-install-label">📲 専用ショートカットを追加（初回設定）</span><div class="shortcut-install-links"><a href="https://www.icloud.com/shortcuts/4d27054a0a464d2e839810f27d363853" target="_blank" rel="noopener noreferrer">▶ 再生用を追加 ↗</a><a href="https://www.icloud.com/shortcuts/9aa2bfa50730426b9df8b83cb77d720c" target="_blank" rel="noopener noreferrer">☆ 保存用を追加 ↗</a></div></div><a id="appleShortcut" class="shortcut-button disabled-link" aria-disabled="true" href="#" role="button">▶ Apple Musicで再生</a><a id="appleSaveShortcut" class="shortcut-button secondary-shortcut disabled-link" aria-disabled="true" href="#" role="button">☆ プレイリストとして保存</a><p class="hint" id="shortcutStatus" role="status">先に曲を組み合わせてください。初回は上の専用ショートカットの追加も必要です。</p><div id="idMissing" class="hide" aria-live="polite"></div><details class="details"><summary>iPhoneの初回設定・利用上の注意</summary><ol class="guide"><li>Apple Musicのサブスクリプションと「ショートカット」アプリが必要です。</li><li>曲ID対応の「Snow Music Timer ID 再生」ショートカットを追加してください。保存用は別の「Snow Music Timer ID 保存」が必要です。従来の曲名検索用ショートカットでは動きません。</li><li>このバージョンはApple Musicの曲IDをショートカットへ渡します。曲ID未確認の曲は送信せず、画面に表示します。日本向けカタログで曲IDを取得しているため、日本以外の契約地域では再生・保存できない曲がある可能性があります。登録前に曲順と曲のバージョンを確認してください。</li><li>保存用ショートカットには、プレイリスト名と曲IDを区切って渡します。名前は「Snow Music Timer｜設定時間｜保存日時」（例：Snow Music Timer｜10分｜11/14 19:25）になります。<strong>従来の曲IDのみ対応版では保存できないため、名前付き入力に対応したショートカットが必要です。</strong>実行するたびに新しいプレイリストを作成します。</li></ol><p class="hint">初めて利用する場合は、上の「再生用を追加」「保存用を追加」から、利用したい機能のショートカットをインストールしてください。ショートカットを追加した後に、曲順を組み合わせて再生・保存ボタンを押します。今後ショートカットが更新された場合、古い共有リンクやインストール済みのショートカットには自動反映されません。</p></details><hr style="border:0;border-top:1px solid #dce6ef;margin:17px 0"><h2>ほかの音楽サービスで聴く</h2><p class="hint">AndroidのApple Music利用者やSpotifyなどの利用者は、曲順をコピーして手動でプレイリストを作れます。Soundiizなどの外部転送サービスを使う方法もあります。利用には各サービスでのログイン・連携が必要な場合があり、転送後の曲数・曲順・バージョンを確認してください。</p><div class="actions"><button id="copyImport" class="primary">曲リストをコピー</button><button id="downloadCsv">CSVを保存</button><button id="downloadTxt">TXTを保存</button></div><a href="https://soundiiz.com/ja/" target="_blank" rel="noopener noreferrer">Soundiizを開く ↗</a><details class="details"><summary>取り込み方を見る</summary><ol class="guide"><li>「曲リストをコピー」を押す。</li><li>Soundiizでログインし、「プレイリストをインポート」→「プレーンテキストから」を選ぶ（表記が異なる場合があります）。</li><li>コピーした曲を貼り付け、内容を確認する。</li><li>新しいプレイリストを作成し、保存先としてSpotifyかApple Musicを指定する。</li><li>曲順・バージョン・曲数を確認して再生する。</li></ol><p class="hint">テキスト貼り付けが難しければ、CSVを保存して「ファイルから」で読み込んでください。サービス側で別バージョンに一致する場合があります。</p></details><p id="exportStatus" class="hint" role="status"></p></div><p class="hint">🔒 曲を固定して「別の組み合わせ」を押すと、その曲を残して再選曲します。「入替」はその1曲だけ変更します。🔒は曲と位置を固定します。</p></section>
 <section class="panel"><details class="details"><summary>🎼 選曲対象の曲を編集する <span id="poolCount" class="muted"></span></summary><p class="hint">チェックを外すと選曲対象から外れ、いつでも戻せます。曲データは削除されません。曲の追加は上の「新しい曲をチェック」または「その他の曲をURLで追加」から行えます。曲の長さは配信版と異なる場合があります。</p><div class="row"><button id="all">すべて選ぶ</button><button id="none">すべて外す</button></div><div id="library" class="library"></div>
 <div class="duration-audit">
@@ -113,7 +113,7 @@ header p:before{content:none}
 <section class="panel"><details class="details" id="backupDetails"><summary>💾 データのバックアップ・復元</summary><p class="hint">追加した曲、選曲対象、保存した組み合わせ、曲ID、時間の設定、テーマカラー、新曲チェックの記録をまとめて保存できます。機種変更やブラウザのデータ消去に備えて、ファイルを安全な場所に保管してください。</p><div class="actions"><button id="backupDownload" type="button">バックアップを保存（JSON）</button><button id="backupPick" type="button">バックアップから復元</button></div><input id="backupFile" type="file" accept=".json,application/json" hidden><p class="hint">復元すると、このブラウザの現在のツールデータをバックアップ内容で置き換えます。復元前に現在のバックアップも保存することをおすすめします。復元後はページを再読み込みします。</p><p id="backupStatus" class="hint" role="status" aria-live="polite"></p></details></section>
 <section class="panel faq-panel" aria-labelledby="faq-title"><h2 id="faq-title">❓ よくある質問</h2><p class="hint">気になる質問をタップすると回答が開きます。</p>
 <details class="details"><summary>Xアプリ内のブラウザでも使える？</summary><p>Xアプリ内ブラウザでは利用しないでください。保存やCSV/TXTのダウンロード、ショートカットの起動などに支障があるため、通常のブラウザからご利用ください。Xのメニューから「ブラウザで開く」などを選び、iPhone・iPadではSafari、AndroidではChromeなどの通常のブラウザで開いてください。Xアプリ内と通常のブラウザでは保存済みの曲や設定が共有されない場合があります。</p></details>
-<details class="details"><summary>はじめて使うときは何をすればいい？</summary><p>「新しい曲をチェック」で現在配信されている曲を確認し、追加したい候補があれば登録してください。そのあと時間を選んで「曲を組み合わせる」を押します。Apple Musicで直接再生・保存する場合は、再生用・保存用それぞれの専用ショートカットを追加してください。</p></details>
+<details class="details"><summary>はじめて使うときは何をすればいい？</summary><p>「新しい曲をチェック」でSnow Manのアルバムや既知のソロ・ユニット名義の配信曲を確認し、追加したい候補があれば登録してください。そのあと時間を選んで「曲を組み合わせる」を押します。Apple Musicで直接再生・保存する場合は、再生用・保存用それぞれの専用ショートカットを追加してください。</p></details>
 <details class="details"><summary>新曲は自動で追加される？</summary><p>いいえ。最初から登録されているのは制作時点の曲です。新しく配信された曲を探すには「新しい曲をチェック」を押してください。検索結果は自動で全曲登録されるわけではなく、候補を確認して追加する方式です。追加した曲は、そのブラウザの保存データに記録されます。検索結果は6時間だけ再利用します。配信直後など、今すぐ最新情報を取得したいときは「最新情報で再確認」を押してください。</p></details>
 <details class="details"><summary>外部アーティスト名義の曲も使える？</summary><p>Apple Musicの曲ページのURLがあれば、「その他の曲をURLで追加」から曲情報を取得して登録できます。新曲チェックでは外部アーティスト名義の曲を網羅的には探しません。</p></details>
 <details class="details"><summary>ショートカットは毎回追加する必要がある？</summary><p>いいえ。iPhone・iPadでは、使用したい機能のショートカットを最初に一度追加すれば、以降は通常そのまま使えます。再生用と保存用は別々です。追加リンクはいつでも利用できます。ショートカットを更新・入れ直す場合、以前追加したものは自動更新されません。</p></details>
@@ -631,7 +631,10 @@ function upsert(name,seconds){name=String(name).trim();if(!name||!Number.isInteg
 // The results are suggestions only: this endpoint is not an exhaustive discography feed.
 // v25: scan the public Japanese iTunes catalog for group, solo and unit credits.
 // This is candidate discovery, not an exhaustive or authoritative discography.
-const CATALOG_ARTISTS=['Snow Man',...MEMBER_NAMES];
+// v48: avoid the unreliable artist-name search endpoint during normal discovery.
+// Discover known solo/unit artist IDs from verified track IDs, then follow their
+// album catalogs via Apple's ID lookup API. This only covers identifiable credits.
+const SOLO_ARTIST_SEED_IDS=['1804833314','6769372001','6769350418'];
 // External collaborations are intentionally excluded from general discovery.
 // Add an individually verified collaboration using its Apple Music song URL below.
 const CATALOG_CHECK_KEY='snowtimer_catalog_checked_v28';
@@ -649,6 +652,9 @@ const sleepCatalog=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 // song/settings data and from the user's exportable backup.
 const CATALOG_CACHE_KEY='snowtimer_itunes_response_cache_v45';
 const CATALOG_CACHE_TTL=6*60*60*1000;
+// Album track listings are largely stable; discover brand-new albums from the short-lived album index.
+const CATALOG_ALBUM_CACHE_TTL=24*60*60*1000;
+function catalogCacheTTL(url){return /\/lookup\?id=\d+&entity=song(?:&|$)/.test(url)?CATALOG_ALBUM_CACHE_TTL:CATALOG_CACHE_TTL}
 const CATALOG_CACHE_MAX_ENTRIES=75;
 const CATALOG_CACHE_MAX_CHARS=2100000;
 let catalogResponseCache=load(CATALOG_CACHE_KEY,{});
@@ -659,7 +665,7 @@ let catalogNetworkRequests=0;
 function pruneCatalogCache(){
  const now=Date.now();
  for(const [url,item] of Object.entries(catalogResponseCache)){
-  if(!item||!Number.isFinite(item.savedAt)||now-item.savedAt>CATALOG_CACHE_TTL||now<item.savedAt||!item.data||!Array.isArray(item.data.results))delete catalogResponseCache[url];
+  if(!item||!Number.isFinite(item.savedAt)||now-item.savedAt>catalogCacheTTL(url)||now<item.savedAt||!item.data||!Array.isArray(item.data.results))delete catalogResponseCache[url];
  }
  const entries=Object.entries(catalogResponseCache).sort((a,b)=>b[1].savedAt-a[1].savedAt);
  for(let i=CATALOG_CACHE_MAX_ENTRIES;i<entries.length;i++)delete catalogResponseCache[entries[i][0]];
@@ -680,14 +686,14 @@ function saveCatalogResponse(url,data){
 function catalogCachedResult(url){
  if(catalogForceNetwork)return null;
  const value=catalogResponseCache[url];
- if(!value||Date.now()-value.savedAt>CATALOG_CACHE_TTL||Date.now()<value.savedAt)return null;
+ if(!value||Date.now()-value.savedAt>catalogCacheTTL(url)||Date.now()<value.savedAt)return null;
  return value.data;
 }
 function renderCatalogCacheNotice(){
  const el=$('catalogCacheNotice'),fresh=$('catalogForceFresh');
  const hits=catalogCacheHits,network=catalogNetworkRequests;
  fresh.classList.toggle('hide',!hits);
- if(hits){el.textContent=`前回の検索結果を${hits}件再利用しました（最大6時間）。新しく配信された曲を今すぐ調べたい場合は「最新情報で再確認」を押してください。${network?' 新規照会 '+network+'件。':''}`;el.classList.remove('hide')}
+ if(hits){el.textContent=`以前の検索結果を${hits}件再利用しました（検索一覧は最大6時間、アルバム収録曲は最大24時間）。新しく配信された曲を今すぐ調べたい場合は「最新情報で再確認」を押してください。${network?' 新規照会 '+network+'件。':''}`;el.classList.remove('hide')}
  else{el.textContent='';el.classList.add('hide')}
 }
 
@@ -943,27 +949,14 @@ async function finishCatalogScan(state){
 async function runCatalogTasks(state,taskList){
  const btn=$('syncCatalog'),retry=$('catalogRetryFailed');btn.disabled=true;retry.disabled=true;
  let next=0,finished=0;const failed=[];
- // All artistTerm searches use the same endpoint. If the first two fail with
- // the same browser/network problem, do not waste minutes trying the other
- // eight. Preserve skipped tasks for the explicit retry button instead.
- const artistHealth={transportFailures:0,disabled:false};
+ // The standard catalog uses ID-based lookups only. Failures are reported
+ // honestly and can be retried; no artist-name searches run automatically.
  try{
   await Promise.all(Array.from({length:2},async()=>{
    while(next<taskList.length){
     const task=taskList[next++];
-    if(task.artistSearch&&artistHealth.disabled){
-     failed.push({...task,skipped:true,reason:'同じ検索経路で通信失敗が続いたため未照会。再試行できます'});
-    }else try{
-     await task.run();
-     if(task.artistSearch)artistHealth.transportFailures=0;
-    }catch(e){
-     const reason=itunesErrorLabel(e);
-     failed.push({...task,skipped:false,reason});
-     if(task.artistSearch){
-      const transport=String(e?.detail||'').includes('TypeError')&&String(e?.detail||'').includes('スクリプトが読み込めませんでした');
-      if(transport&&++artistHealth.transportFailures>=2)artistHealth.disabled=true;
-     }
-    }
+    try{await task.run()}
+    catch(e){failed.push({...task,skipped:false,reason:itunesErrorLabel(e)})}
     finished++;
     setCatalogStatus(`確認中… ${finished}/${taskList.length}件の照会処理（曲数ではありません）／未登録候補 ${state.found.size}曲`);
     // The shared catalogFetch queue already limits the request cadence.
@@ -1017,9 +1010,39 @@ async function scanCatalog(silent=false,forceFresh=false){
    }});
   }
  }});
- for(const artist of CATALOG_ARTISTS)tasks.push({label:'アーティスト '+artist,artistSearch:true,run:async()=>{
-  const data=await catalogFetch('https://itunes.apple.com/search?term='+encodeURIComponent(artist)+'&media=music&entity=song&attribute=artistTerm&country=JP&limit=200');
-  (data?.results||[]).forEach(accept);
+ // ID lookup is more reliable than artistTerm queries, which repeatedly failed
+ // in iPhone Safari. Follow artist IDs of already verified solo/unit recordings.
+ // One batch lookup identifies reachable artist accounts without loose name matches.
+ tasks.push({label:'登録済みソロ・ユニット曲の名義を確認',run:async()=>{
+  const verifiedIds=[...new Set([
+   ...SOLO_ARTIST_SEED_IDS,
+   ...pool.filter(s=>s.artist&&recognizedArtist(s.artist)&&normalizeSong(s.artist)!=='snow man')
+           .map(s=>String(s.trackId||idCache[trackCacheKey(s)]||''))
+  ].filter(x=>/^\d{8,20}$/.test(x)))].slice(0,25);
+  if(!verifiedIds.length)return;
+  const data=await catalogFetch('https://itunes.apple.com/lookup?id='+verifiedIds.join(',')+'&entity=song&country=JP&limit=200');
+  const artistIds=new Map();
+  for(const song of data?.results||[]){
+   if(song.kind!=='song'||!recognizedArtist(song.artistName)||normalizeSong(song.artistName)==='snow man'||!Number.isSafeInteger(song.artistId))continue;
+   const id=String(song.artistId);
+   if(!artistIds.has(id))artistIds.set(id,song.artistName);
+  }
+  for(const [artistId,artistName] of [...artistIds].slice(0,12)){
+   const label='既知のソロ・ユニット名義 '+artistName+'（ID '+artistId+'）';
+   tasks.push({label,run:async()=>{
+    const albums=await catalogFetch('https://itunes.apple.com/lookup?id='+artistId+'&entity=album&country=JP&limit=200');
+    const ids=[...new Set((albums?.results||[])
+     .filter(t=>t.wrapperType==='collection'&&Number.isSafeInteger(t.collectionId)&&(!t.releaseDate||Date.parse(t.releaseDate)<=now))
+     .map(t=>String(t.collectionId)))].slice(0,35);
+    for(const id of ids){
+     const albumLabel='アルバムID '+id;
+     if(!tasks.some(t=>t.label===albumLabel))tasks.push({label:albumLabel,run:async()=>{
+      const songs=await catalogFetch('https://itunes.apple.com/lookup?id='+id+'&entity=song&country=JP&limit=200');
+      (songs?.results||[]).forEach(accept);state.albumsScanned++;
+     }});
+    }
+   }});
+  }
  }});
  if(!silent)setCatalogStatus('新しい配信曲を検索しています…');
  await runCatalogTasks(state,tasks);
