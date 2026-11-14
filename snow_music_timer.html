@@ -119,7 +119,7 @@ header p:before{content:none}
 <p class="hint"><strong>見つからない曲がある場合：</strong>転送結果の<strong>「スキップした曲を表示」</strong>から検索し、曲名・収録作品・長さを確かめて追加してください。YouTube Musicは「嫉妬ガール - Jealous girl」のように曲名が異なる場合があります。<strong>新しいプレイリストを何度も作り直す前に、スキップ曲を補う</strong>のがおすすめです。</p>
 <p class="hint"><strong>料金と後片付け：</strong>プレイリストは無料プランで1件ずつ転送できます（1回200曲まで）。まとめて削除する機能などは有料の場合がありますが、不要なプレイリストは1件ずつ削除できます。転送先の音楽アプリ側にも残っていないか確認してください。</p>
 <p class="hint">※転送先によってアーティスト名の日本語・ローマ字表記を切り替えます。見つからない曲は「✏️ 見つからない曲の書き出し名を調整」で今回の曲順だけ変更できます。サービスごとの検索仕様や配信地域によって照合に失敗する場合があります。</p></details><p class="hint" style="font-size:11px;margin:8px 0 2px;opacity:.75">書き出し機能：v65</p><p id="exportStatus" class="hint" role="status" style="white-space:pre-wrap;overflow-wrap:anywhere"></p></div><p class="hint">🔒 曲を固定して「別の組み合わせ」を押すと、その曲を残して再選曲します。「入替」はその1曲だけ変更します。🔒は曲と位置を固定します。</p></section>
-<section class="catalog-strip" id="catalogPanel"><details class="catalog-guide" id="catalogGuide"><summary>はじめて使う方へ <span class="catalog-guide-hint">初回は配信曲の確認が必要</span></summary><p id="catalogFirstUse" class="catalog-onboarding" role="status"><strong>初回は必ず配信曲を確認してください。</strong> このページに初めから入っているのは制作時点の曲です。公開後の新曲・ソロ・ユニット曲は、自動追加されません。外部アーティスト名義の曲などは、曲URLから個別に追加できます。下のボタンで確認し、候補を選んで追加してください。初回の確認には数分かかることがあります。検索中はこのページを開いたままにしてください。<span id="catalogCheckedAt"></span></p></details><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新曲をチェック（初回必須）</button><button id="catalogForceFresh" type="button" class="hide">🔄 配信直後の新曲を探す</button></div><p class="hint" id="catalogModeHelp">「新曲をチェック」＝初めて使うときや普段の確認（前に調べた情報も使うので速め）。「配信直後の新曲を探す」＝新しい曲が配信されたとき（Appleから新しい情報を取り直す）。</p><details class="catalog-url-details" id="catalogFullDetails"><summary>全作品を再照会（時間がかかります） <span aria-hidden="true">⌄</span></summary><p class="hint">通常の新曲チェックでは過去に確認した古い作品を再取得せず、新しい作品と最近の作品を中心に確認します。昔のアルバムの収録曲が後から変わった場合などは、こちらで全作品を再照会できます。数分かかる場合があります。</p><button id="catalogForceAll" type="button">全作品を最新情報で確認</button></details><p id="catalogRunHint" class="hint" role="status" aria-live="polite"></p><p id="catalogCacheNotice" class="hint hide" role="status" aria-live="polite"></p><details class="catalog-url-details" id="catalogUrlDetails"><summary>🔗 その他の曲をURLで追加 <span aria-hidden="true">⌄</span></summary><div class="url-import" id="urlImport"><p class="hint">外部アーティスト名義の曲など、通常の新曲チェックで探さない曲はこちらから。Apple Musicの「曲」を共有してURLを貼り付けてください。曲名・名義・長さ・曲IDを取得します。</p><div class="row"><input id="musicTrackUrl" type="url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://music.apple.com/jp/album/…?i=…" aria-label="Apple Musicの曲URL"><button type="button" id="inspectTrackUrl">曲情報を取得</button></div><p class="hint" id="trackUrlStatus" role="status" aria-live="polite"></p><div id="trackUrlPreview" class="track-url-preview hide"><p><strong id="trackUrlTitle"></strong><span id="trackUrlArtist" class="url-subline"></span><span id="trackUrlAlbum" class="url-subline"></span><span id="trackUrlDuration" class="url-subline"></span></p><div class="actions"><button type="button" id="confirmTrackUrl" class="primary">この曲を登録</button><button type="button" id="cancelTrackUrl">キャンセル</button></div></div><p class="hint">URLを指定した曲だけ登録します。外部アーティスト名義の曲は自動検索しません。追加データはこのブラウザに保存されます。</p></div></details><details class="catalog-url-details" id="editionCheckDetails"><summary>🔄 配信バージョンを詳しく確認 <span aria-hidden="true">⌄</span></summary><div class="url-import"><p class="hint">現在使っている収録アルバムと、取得済みのカタログにある同名曲の別収録版を一覧で比較できます。古い版も表示し、切り替えはご自身で選んだ場合だけ行います。</p><div class="row"><select id="editionSongSelect" aria-label="配信版を確認する曲" style="flex:1 1 200px;min-width:0;max-width:100%"></select><button id="editionCheckButton" type="button">この曲を確認</button></div><p id="editionCheckStatus" class="hint" role="status" aria-live="polite"></p><div id="editionCheckResults" class="hide"></div><p class="hint">新曲チェックで取得した収録曲の履歴から比較します。曲IDが未確定の場合は候補から選んで登録できます。初回は「新曲をチェック」を済ませてください。掲載作品をすべて網羅するものではありません。外部楽曲をURL登録した曲は対象外です。</p></div></details><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span><div id="catalogVersionNotice" class="version-update-notice hide" role="status" aria-live="polite"><strong id="catalogVersionNoticeText"></strong><button id="catalogVersionJump" type="button">候補を確認する</button></div><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">Snow Manのアルバムと、確認済みのソロ・ユニット曲からたどれる配信作品の候補です。同名曲が複数の作品にある場合、取得できた中で新しい通常版の収録作品を優先しています。別バージョンや重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">表示される収録元はAppleから取得できた作品の範囲で選んでいます。初期登録曲は公開時点のものです。初めて使うときは「新しい曲をチェック」を押し、候補を確認して必要な曲を追加してください。追加した曲はこの端末のブラウザに保存されます。未配信の曲は不足に数えません。既存曲の名義からたどれない新しいソロ・ユニット名義や外部アーティストの曲は、見つからないことがあります。Apple Musicの曲URLから追加できます。</p></div><div id="catalogVersionPanel" class="hide catalog-expanded"><p class="hint"><strong>🔄 登録済み曲の新しい配信版候補</strong><br>新曲チェックで見つかった同名・同名義の別配信版を、収録アルバムの発売日で比較します。見つからない場合は「配信バージョンを詳しく確認」もお試しください。ライブ版・リミックスなどは対象外です。現在の版は確認するまで変更しません。</p><div id="catalogVersionList" class="library" style="max-height:300px"></div><p class="hint">変更しない候補は「この候補を表示しない」で片付けられます。同じ配信版は次回も出ませんが、さらに新しい版が見つかれば別の候補として表示します。</p><div class="actions"><button id="catalogVersionSelectAll" type="button">すべて選択</button><button id="catalogVersionSelectNone" type="button">すべて解除</button><button id="catalogApplyVersions" type="button" class="primary">選択した版に切り替える</button></div><p class="hint">曲の登録IDと順番は維持されます。曲ID・再生時間が切り替わり、以降の再生・保存に反映されます。曲URLから指定した外部楽曲は対象外です。</p></div><details id="catalogDiagnostics" class="details hide"><summary>検索できなかった照会を確認</summary><p class="hint">下記は曲数ではなく、Appleへの検索・アルバム照会の失敗件数です。下のボタンで失敗した照会だけを再試行できます。</p><ul id="catalogFailures" style="font-size:12px;color:#64748b;padding-left:20px;line-height:1.6"></ul><button type="button" id="catalogRetryFailed">失敗した照会だけ再試行</button><span id="catalogRetryStatus" class="hint" role="status" aria-live="polite"></span></details></section>
+<section class="catalog-strip" id="catalogPanel"><details class="catalog-guide" id="catalogGuide"><summary>はじめて使う方へ <span class="catalog-guide-hint">初回は配信曲の確認が必要</span></summary><p id="catalogFirstUse" class="catalog-onboarding" role="status"><strong>初回は必ず配信曲を確認してください。</strong> このページに初めから入っているのは制作時点の曲です。公開後の新曲・ソロ・ユニット曲は、自動追加されません。外部アーティスト名義の曲などは、曲URLから個別に追加できます。下のボタンで確認し、候補を選んで追加してください。初回の確認には数分かかることがあります。検索中はこのページを開いたままにしてください。<span id="catalogCheckedAt"></span></p></details><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新曲をチェック（初回必須）</button><button id="catalogForceFresh" type="button" class="hide">🔄 配信直後の新曲を探す</button></div><p class="hint" id="catalogModeHelp">「新曲をチェック」＝初めて使うときや普段の確認（前に調べた情報も使うので速め）。「配信直後の新曲を探す」＝新しい曲が配信されたとき（Appleから新しい情報を取り直す）。</p><details class="catalog-url-details" id="catalogFullDetails"><summary>全作品を再照会（時間がかかります） <span aria-hidden="true">⌄</span></summary><p class="hint">通常の新曲チェックでは過去に確認した古い作品を再取得せず、新しい作品と最近の作品を中心に確認します。昔のアルバムの収録曲が後から変わった場合などは、こちらで全作品を再照会できます。数分かかる場合があります。</p><button id="catalogForceAll" type="button">全作品を最新情報で確認</button></details><p id="catalogRunHint" class="hint" role="status" aria-live="polite"></p><p id="catalogCacheNotice" class="hint hide" role="status" aria-live="polite"></p><details class="catalog-url-details" id="catalogUrlDetails"><summary>🔗 その他の曲をURLで追加 <span aria-hidden="true">⌄</span></summary><div class="url-import" id="urlImport"><p class="hint">外部アーティスト名義の曲など、通常の新曲チェックで探さない曲はこちらから。Apple Musicの「曲」を共有してURLを貼り付けてください。曲名・名義・長さ・曲IDを取得します。</p><div class="row"><input id="musicTrackUrl" type="url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://music.apple.com/jp/album/…?i=…" aria-label="Apple Musicの曲URL"><button type="button" id="inspectTrackUrl">曲情報を取得</button></div><p class="hint" id="trackUrlStatus" role="status" aria-live="polite"></p><div id="trackUrlPreview" class="track-url-preview hide"><p><strong id="trackUrlTitle"></strong><span id="trackUrlArtist" class="url-subline"></span><span id="trackUrlAlbum" class="url-subline"></span><span id="trackUrlDuration" class="url-subline"></span></p><div class="actions"><button type="button" id="confirmTrackUrl" class="primary">この曲を登録</button><button type="button" id="cancelTrackUrl">キャンセル</button></div></div><p class="hint">URLを指定した曲だけ登録します。外部アーティスト名義の曲は自動検索しません。追加データはこのブラウザに保存されます。</p></div></details><details class="catalog-url-details" id="editionCheckDetails"><summary>🔄 配信バージョンを詳しく確認 <span aria-hidden="true">⌄</span></summary><div class="url-import"><p class="hint">現在使用している収録版と、取得済みのカタログにある別収録版を比較できます。曲IDが未設定なら、検索時に通常版を自動設定します。手動で選んだ版は自動変更しません。</p><div class="row"><select id="editionSongSelect" aria-label="配信版を確認する曲" style="flex:1 1 200px;min-width:0;max-width:100%"></select><button id="editionCheckButton" type="button">この曲を確認</button></div><p id="editionCheckStatus" class="hint" role="status" aria-live="polite"></p><div id="editionCheckResults" class="hide"></div><p class="hint">新曲チェックで取得した収録曲の履歴から比較します。IDを自動設定できなかった場合は、候補から手動で選べます。初回は「新曲をチェック」を済ませてください。掲載作品をすべて網羅するものではありません。外部楽曲をURL登録した曲は対象外です。</p></div></details><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span><div id="catalogVersionNotice" class="version-update-notice hide" role="status" aria-live="polite"><strong id="catalogVersionNoticeText"></strong><button id="catalogVersionJump" type="button">候補を確認する</button></div><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">Snow Manのアルバムと、確認済みのソロ・ユニット曲からたどれる配信作品の候補です。同名曲が複数の作品にある場合、取得できた中で新しい通常版の収録作品を優先しています。別バージョンや重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">表示される収録元はAppleから取得できた作品の範囲で選んでいます。初期登録曲は公開時点のものです。初めて使うときは「新しい曲をチェック」を押し、候補を確認して必要な曲を追加してください。追加した曲はこの端末のブラウザに保存されます。未配信の曲は不足に数えません。既存曲の名義からたどれない新しいソロ・ユニット名義や外部アーティストの曲は、見つからないことがあります。Apple Musicの曲URLから追加できます。</p></div><div id="catalogVersionPanel" class="hide catalog-expanded"><p class="hint"><strong>🔄 登録済み曲の新しい配信版候補</strong><br>新曲チェックで見つかった同名・同名義の別配信版を、収録アルバムの発売日で比較します。見つからない場合は「配信バージョンを詳しく確認」もお試しください。ライブ版・リミックスなどは対象外です。現在の版は確認するまで変更しません。</p><div id="catalogVersionList" class="library" style="max-height:300px"></div><p class="hint">変更しない候補は「この候補を表示しない」で片付けられます。同じ配信版は次回も出ませんが、さらに新しい版が見つかれば別の候補として表示します。</p><div class="actions"><button id="catalogVersionSelectAll" type="button">すべて選択</button><button id="catalogVersionSelectNone" type="button">すべて解除</button><button id="catalogApplyVersions" type="button" class="primary">選択した版に切り替える</button></div><p class="hint">曲の登録IDと順番は維持されます。曲ID・再生時間が切り替わり、以降の再生・保存に反映されます。曲URLから指定した外部楽曲は対象外です。</p></div><details id="catalogDiagnostics" class="details hide"><summary>検索できなかった照会を確認</summary><p class="hint">下記は曲数ではなく、Appleへの検索・アルバム照会の失敗件数です。下のボタンで失敗した照会だけを再試行できます。</p><ul id="catalogFailures" style="font-size:12px;color:#64748b;padding-left:20px;line-height:1.6"></ul><button type="button" id="catalogRetryFailed">失敗した照会だけ再試行</button><span id="catalogRetryStatus" class="hint" role="status" aria-live="polite"></span></details></section>
 <section class="panel"><details class="details"><summary>🎼 選曲対象の曲を編集する <span id="poolCount" class="muted"></span></summary><p class="hint">チェックを外すと選曲対象から外れ、いつでも戻せます。曲データは削除されません。曲の追加は「曲の追加・新曲チェック」欄から行えます。曲の長さは配信版と異なる場合があります。</p><div class="row"><button id="all">すべて選ぶ</button><button id="none">すべて外す</button></div><div id="library" class="library"></div>
 <div class="duration-audit">
  <button id="auditDuration" type="button">⏱ Apple Musicの再生時間を照合</button>
@@ -1140,7 +1140,7 @@ function showEditionComparison(song,current,items,wasIncomplete=false){
   delete idCache[trackCacheKey(existing)];
   existing.trackId=String(next.trackId);existing.trackTimeMillis=next.trackTimeMillis;
   existing.seconds=Math.round(next.trackTimeMillis/1000);existing.releaseDate=next.releaseDate||null;
-  existing.artist=next.artistName;existing.versionSource='catalog';
+  existing.artist=next.artistName;existing.versionSource='catalog'; // User explicitly selected this edition: never auto-replace.
   idCache[trackCacheKey(existing)]=String(next.trackId);
   store('snowtimer_music_ids_v1',idCache);renderPool();render();
   host.classList.add('hide');host.innerHTML='';
@@ -1230,8 +1230,59 @@ function renderCatalogDiagnostics(state){
  panel.classList.toggle('hide',!failures.length);
  $('catalogRetryFailed').disabled=!failures.length;
 }
+// Assign a verified, ordinary catalog edition to built-in songs that have no
+// track ID yet. Explicit IDs, previously cached IDs, URL imports and manually
+// chosen editions are never changed by this automatic step.
+function autoLinkUnresolvedSongs(){
+ const byTitle=new Map();
+ for(const item of Object.values(editionInventory)){
+  if(item?.kind!=='song'||!/^\d{8,20}$/.test(String(item.trackId||''))||
+     !Number.isFinite(item.trackTimeMillis)||!recognizedArtist(item.artistName))continue;
+  if(item.releaseDate&&Number.isFinite(Date.parse(item.releaseDate))&&Date.parse(item.releaseDate)>Date.now())continue;
+  if(DIFFERENT_EDITION_RE.test(String(item.trackName||'')+' '+String(item.collectionName||'')))continue;
+  const key=normalizeSong(item.trackName);
+  if(!byTitle.has(key))byTitle.set(key,[]);
+  byTitle.get(key).push(item);
+ }
+ let linked=0;
+ for(const song of pool){
+  if(song.versionSource==='url'||song.versionSource==='catalog'||song.versionSource==='auto-catalog')continue;
+  // A shortcut-resolved ID may already be in idCache; treat it as pinned.
+  if(/^\d{8,20}$/.test(verifiedTrackId(song)))continue;
+  const expectedArtist=exportRomanizedArtist(EXPORT_INITIAL_ARTISTS[song.name]||song.artist||'Snow Man');
+  const wanted=normalizeSong(expectedArtist);
+  const existingMs=Number.isFinite(song.trackTimeMillis)?song.trackTimeMillis:song.seconds*1000;
+  const candidates=[...new Map(titleVariants(song).flatMap(name=>byTitle.get(name)||[])
+   .filter(item=>normalizeSong(exportRomanizedArtist(item.artistName))===wanted)
+   .filter(item=>Math.abs(item.trackTimeMillis-existingMs)<=5000)
+   .map(item=>[String(item.trackId),item])).values()];
+  if(!candidates.length)continue;
+  // Only select an edition backed by a released, known catalog work. Unknown
+  // dates remain in the comparison UI rather than being silently guessed.
+  const dated=candidates.filter(item=>albumDateMs(item)>0&&albumDateMs(item)<=Date.now());
+  if(!dated.length)continue;
+  dated.sort((a,b)=>albumDateMs(b)-albumDateMs(a)||
+    Math.abs(a.trackTimeMillis-existingMs)-Math.abs(b.trackTimeMillis-existingMs));
+  const picked=dated[0],oldKey=trackCacheKey(song);
+  song.trackId=String(picked.trackId);
+  song.trackTimeMillis=picked.trackTimeMillis;
+  song.seconds=Math.round(picked.trackTimeMillis/1000);
+  song.releaseDate=picked.releaseDate||null;
+  song.artist=picked.artistName;
+  song.versionSource='auto-catalog';
+  delete idCache[oldKey];
+  idCache[trackCacheKey(song)]=String(picked.trackId);
+  linked++;
+ }
+ if(linked){store('snowtimer_music_ids_v1',idCache);renderPool();render()}
+ return linked;
+}
+
 async function finishCatalogScan(state){
  saveEditionInventory();
+ // Track additions are optional, but existing built-in songs should be playable
+ // without asking each first-time visitor to pick an album edition manually.
+ const autoLinked=autoLinkUnresolvedSongs();
  catalogCandidates=[...state.found.values()].sort((a,b)=>a.name.localeCompare(b.name,'ja'));
  catalogCandidateRender();
  let versionNotice='';
@@ -1242,7 +1293,8 @@ async function finishCatalogScan(state){
  const skipped=failures.filter(x=>x.skipped).length,errored=failures.length-skipped;
  const summary=(catalogCandidates.length?`未登録候補 ${catalogCandidates.length}曲（ソロ・ユニット含む）`:'未登録候補なし')+'・新しい配信版候補 '+catalogVersionCandidates.length+'曲';
  const failureText=failures.length?`。検索失敗 ${errored}件・未照会 ${skipped}件（どちらも曲数ではありません）。未確認の照会が残っています`:'。検索エラーなし';
- setCatalogStatus(summary+failureText+versionNotice+(catalogSkippedAlbums?'。確認済みの古い作品 '+catalogSkippedAlbums+'件は再取得を省略しました':'')+'。追加する前に候補をご確認ください。');
+ const linkText=autoLinked?`。曲ID未設定の${autoLinked}曲に取得済みの通常版を自動設定しました`:'';
+ setCatalogStatus(summary+failureText+linkText+versionNotice+(catalogSkippedAlbums?'。確認済みの古い作品 '+catalogSkippedAlbums+'件は再取得を省略しました':'')+'。追加する前に候補をご確認ください。');
  if(!failures.length&&!versionNotice){store(CATALOG_CHECK_KEY,new Date().toISOString());renderCatalogOnboarding()}
  renderCatalogDiagnostics(state);
  renderCatalogCacheNotice();
