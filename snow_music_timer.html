@@ -70,7 +70,7 @@ header p:before{content:none}
 .platform-note{font-size:12px;line-height:1.65;color:#59687c;margin:7px 0 13px}
 .platform-note strong{color:#24334b}
 #idMissing{padding:7px 0 4px}#idMissing button{font-size:12px;margin:3px 5px 3px 0;max-width:100%;white-space:normal;text-align:left}
-.duration-audit{margin:13px 0 4px;display:flex;flex-direction:column;gap:8px}.duration-audit button{align-self:flex-start}.audit-summary{padding:11px 12px;background:var(--accent-soft);border-radius:12px;font-size:13px;line-height:1.65}.audit-table{max-height:290px;overflow:auto;border:1px solid var(--line);border-radius:12px;margin:9px 0}.audit-row{display:flex;align-items:center;gap:9px;padding:10px;border-bottom:1px solid var(--line);font-size:13px}.audit-row:last-child{border-bottom:0}.audit-row .audit-name{flex:1;min-width:0;overflow-wrap:anywhere}.audit-row .audit-time{white-space:nowrap;font-variant-numeric:tabular-nums}.audit-actions{display:flex;flex-wrap:wrap;gap:8px;margin:9px 0}.audit-small{font-size:12px;color:#64748b}
+.duration-audit{margin:13px 0 4px;display:flex;flex-direction:column;gap:8px}.duration-audit button{align-self:flex-start}.audit-summary{padding:11px 12px;background:var(--accent-soft);border-radius:12px;font-size:13px;line-height:1.65}.audit-table{max-height:290px;overflow:auto;border:1px solid var(--line);border-radius:12px;margin:9px 0}.audit-row{display:flex;align-items:center;gap:9px;padding:10px;border-bottom:1px solid var(--line);font-size:13px}.audit-row:last-child{border-bottom:0}.audit-row .audit-name{flex:1;min-width:0;overflow-wrap:anywhere}.audit-row .audit-time{white-space:nowrap;font-variant-numeric:tabular-nums}.audit-actions{display:flex;flex-wrap:wrap;gap:8px;margin:9px 0}.audit-small{font-size:12px;color:#64748b}.audit-meta{font-size:11px;line-height:1.6;color:#64748b;margin-top:4px}.audit-unmatched{padding:8px 0}.audit-reason{font-size:12px;color:#8b5b2b;margin-top:3px}.audit-row.audit-unmatched-row{align-items:flex-start}.audit-row.audit-unmatched-row .audit-name{font-weight:650}.audit-rounding{font-size:12px;color:#8b5b2b}.audit-section-title{font-weight:750;font-size:13px;margin:13px 0 5px}
 </style></head><body><main><header><div class="fan-label">非公式・ファン制作</div><h1>⛄ Snow Music Timer</h1><p>聴きたい時間に合わせて、Snow Manの曲を組み合わせよう。</p><details class="subscription-note"><summary class="help-summary"><span>🎧 このツールについて</span><span class="caret">⌄</span></summary><div class="note-body"><strong>Snow Manの楽曲を、指定した時間に近い長さで組み合わせる非公式ツールです。</strong> サイト内で音楽は再生されません。再生にはApple Musicなどの音楽配信サービスを利用します。iPhoneでは別途ショートカットを設定するとApple Musicへ曲順を渡せます。Androidではこのショートカットによる直接再生は利用できません。Snow Man・所属事務所・各音楽配信サービスの公式サービスではありません。</div></details></header>
 <section class="panel timer-panel"><div class="timer-face"><span class="timer-caption">SET TIME</span><div class="times"><label><input id="min" aria-label="分" type="number" inputmode="numeric" min="0" max="180" value="10">分</label><b>:</b><label><input id="sec" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="00" aria-label="秒">秒</label></div></div><div class="presets" id="presets"></div><div class="controls"><div><label class="label" for="tolerance">許容する誤差</label><select id="tolerance"><option value="10">±10秒</option><option value="20" selected>±20秒</option><option value="30">±30秒</option><option value="60">±1分</option></select></div><div><label class="label" for="mode">終了時間の優先</label><select id="mode"><option value="closest">指定時間に近い</option><option value="under">指定時間を超えない</option><option value="over">指定時間より短くしない</option></select></div></div><label class="check"><input id="shuffle" type="checkbox" checked>曲順を毎回シャッフル</label><button id="generate" class="primary generate">🎵 曲を組み合わせる</button></section>
 <section class="catalog-strip" id="catalogPanel"><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新しい曲をチェック</button><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span></div><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">未登録候補です。別バージョン・重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">追加はこの端末のブラウザのみに保存されます。全曲が検索で見つかるとは限りません。</p></div></section>
@@ -272,12 +272,18 @@ async function fetchTrackMetadata(id){
 }
 async function resolveMetadataForAudit(song){
  let id=verifiedTrackId(song);
- if(!/^\d{8,20}$/.test(id))id=await resolveSongID(song);
- if(!id)return null;
- const metadata=await fetchTrackMetadata(id);
- // For non-curated IDs avoid incorrectly accepting unrelated catalog items.
- if(!metadata||(!knownTrackIDs[song.name]&&!titleVariants(song).includes(normalizeSong(metadata.trackName))))return null;
- return metadata;
+ try{
+  if(!/^\d{8,20}$/.test(id))id=await resolveSongID(song);
+  if(!id)return {metadata:null,reason:'曲IDを特定できませんでした（別名義・表記違い・検索候補なしなど）'};
+  const metadata=await fetchTrackMetadata(id);
+  if(!metadata)return {metadata:null,reason:'曲ID '+id+' で再生時間付きの楽曲情報を取得できませんでした'};
+  if(!knownTrackIDs[song.name]&&!titleVariants(song).includes(normalizeSong(metadata.trackName))){
+   return {metadata:null,reason:'取得した曲名「'+metadata.trackName+'」が登録名と一致しません（ID: '+id+'）'};
+  }
+  return {metadata,reason:''};
+ }catch(e){
+  return {metadata:null,reason:'Appleへの照会で通信・取得エラーが発生しました（'+String(e?.message||'詳細不明').slice(0,90)+'）'};
+ }
 }
 function afterDurationUpdate(){
  store('snowtimer_pool_v1',pool);
@@ -288,8 +294,8 @@ $('auditDuration').onclick=async()=>{
  auditing=true;auditedDifferences=[];
  const button=$('auditDuration');button.disabled=true;
  auditResults.classList.add('hide');auditResults.replaceChildren();
- const items=[...pool];let cursor=0,done=0,matched=0,unmatched=0,errors=0;
- const changes=[];
+ const items=[...pool];let cursor=0,done=0,matched=0,unmatched=0;
+ const changes=[],unresolved=[];
  const status=()=>{auditStatus.textContent=`Apple Musicと照合中… ${done}/${items.length}曲（確認済み${matched}曲・未確認${unmatched}曲）`};
  status();
  try{
@@ -297,32 +303,54 @@ $('auditDuration').onclick=async()=>{
    while(cursor<items.length){
     const song=items[cursor++];
     try{
-     const metadata=await resolveMetadataForAudit(song);
+     const response=await resolveMetadataForAudit(song);
+     const metadata=response.metadata;
      if(metadata){
       matched++;
       const seconds=Math.round(metadata.trackTimeMillis/1000);
       const cacheKey=trackCacheKey(song);
       song.trackId=String(metadata.trackId);
       idCache[cacheKey]=String(metadata.trackId);
-      if(song.seconds!==seconds)changes.push({id:song.id,name:song.name,before:song.seconds,after:seconds,artist:metadata.artistName,track:metadata.trackName,trackId:String(metadata.trackId)});
-     }else unmatched++;
-    }catch(e){errors++;unmatched++}
+      if(song.seconds!==seconds){
+       const roundingOnly=seconds===song.seconds+1&&Math.floor(metadata.trackTimeMillis/1000)===song.seconds;
+       changes.push({id:song.id,name:song.name,before:song.seconds,after:seconds,
+        exactMs:metadata.trackTimeMillis,roundingOnly,artist:metadata.artistName,
+        track:metadata.trackName,trackId:String(metadata.trackId)});
+      }
+     }else{
+      unmatched++;
+      unresolved.push({name:song.name,seconds:song.seconds,reason:response.reason});
+     }
+    }catch(e){
+     unmatched++;unresolved.push({name:song.name,seconds:song.seconds,reason:'照合処理でエラーが発生しました（'+String(e?.message||'詳細不明').slice(0,90)+'）'});
+    }
     done++;if(done%3===0||done===items.length)status();
    }
   }));
   store('snowtimer_music_ids_v1',idCache);store('snowtimer_pool_v1',pool);
   auditedDifferences=changes;
   auditResults.classList.remove('hide');
+  const roundingCount=changes.filter(c=>c.roundingOnly).length;
   const intro=document.createElement('div');intro.className='audit-summary';
-  intro.textContent=`照合完了：${matched}/${items.length}曲を確認。時間が異なる曲 ${changes.length}曲。未確認 ${unmatched}曲。`;
+  intro.textContent=`照合完了：${matched}/${items.length}曲を確認。時間差 ${changes.length}曲（うち秒の丸めで説明できる差 ${roundingCount}曲）。未確認 ${unmatched}曲。`;
   auditResults.appendChild(intro);
+  const guidance=document.createElement('p');guidance.className='audit-small';
+  guidance.textContent='Appleの再生時間はミリ秒単位。たとえば3:47.6を四捨五入すると3:48になり、切り捨て表示なら3:47です。丸めで説明できる差は自動選択しません。';
+  auditResults.appendChild(guidance);
   if(changes.length){
+   const title=document.createElement('div');title.className='audit-section-title';title.textContent='再生時間が異なる曲（更新する曲を選択）';auditResults.appendChild(title);
    const list=document.createElement('div');list.className='audit-table';
    changes.sort((a,b)=>a.name.localeCompare(b.name,'ja'));
    for(const change of changes){
     const row=document.createElement('label');row.className='audit-row';
-    const tick=document.createElement('input');tick.type='checkbox';tick.checked=true;tick.dataset.auditId=String(change.id);
-    const label=document.createElement('span');label.className='audit-name';label.textContent=change.name+'（'+change.artist+'）';
+    const tick=document.createElement('input');tick.type='checkbox';tick.checked=!change.roundingOnly;tick.dataset.auditId=String(change.id);
+    const label=document.createElement('span');label.className='audit-name';
+    const head=document.createElement('span');head.textContent=change.name+'（'+change.artist+'）';label.appendChild(head);
+    const meta=document.createElement('div');meta.className='audit-meta';
+    const minute=Math.floor(change.exactMs/60000), second=((change.exactMs%60000)/1000).toFixed(3).padStart(6,'0');
+    meta.textContent='Appleの再生時間：'+minute+'分'+second+'秒（ミリ秒値 '+change.exactMs+'）';
+    label.appendChild(meta);
+    if(change.roundingOnly){const note=document.createElement('div');note.className='audit-rounding';note.textContent='秒の丸め方の違いで説明可能（切り捨て→四捨五入）。音源差とは限りません';label.appendChild(note)}
     const time=document.createElement('span');time.className='audit-time';time.textContent=fmt(change.before)+' → '+fmt(change.after);
     row.append(tick,label,time);list.appendChild(row);
    }
@@ -334,8 +362,7 @@ $('auditDuration').onclick=async()=>{
     if(!chosen.size){alert('更新する曲を選択してください。');return}
     const changesById=new Map(changes.map(c=>[c.id,c]));let count=0;
     for(const song of pool){if(!chosen.has(song.id))continue;const c=changesById.get(song.id);if(!c)continue;
-     // Preserve both the old cache key and new key for compatibility.
-     idCache[trackCacheKey(song)]=c.trackId; song.seconds=c.after;song.trackId=c.trackId;idCache[trackCacheKey(song)]=c.trackId;count++;
+     idCache[trackCacheKey(song)]=c.trackId;song.seconds=c.after;song.trackId=c.trackId;idCache[trackCacheKey(song)]=c.trackId;count++;
     }
     store('snowtimer_music_ids_v1',idCache);afterDurationUpdate();
     auditedDifferences=changes.filter(c=>!chosen.has(c.id));
@@ -346,8 +373,27 @@ $('auditDuration').onclick=async()=>{
   }else{
    const line=document.createElement('p');line.className='hint';line.textContent='確認できた曲の再生時間は登録値と一致しています。';auditResults.appendChild(line);
   }
-  if(unmatched){const note=document.createElement('p');note.className='audit-small';note.textContent='未確認の曲は元の再生時間を維持しています。別バージョンや別名義の可能性があるため、推測で変更しません。';auditResults.appendChild(note)}
-  auditStatus.textContent='照合が終わりました。差分があれば確認して更新できます。';
+  if(unresolved.length){
+   const heading=document.createElement('div');heading.className='audit-section-title';heading.textContent='未確認の曲（'+unresolved.length+'曲）';auditResults.appendChild(heading);
+   const note=document.createElement('p');note.className='audit-small';note.textContent='下記は照合が完了しなかった理由です。Apple Musicに曲が存在しないという意味ではありません。再生時間は変更していません。';auditResults.appendChild(note);
+   const list=document.createElement('div');list.className='audit-table';
+   unresolved.sort((a,b)=>a.name.localeCompare(b.name,'ja'));
+   for(const entry of unresolved){
+    const row=document.createElement('div');row.className='audit-row audit-unmatched-row';
+    const content=document.createElement('div');content.className='audit-name';
+    const name=document.createElement('div');name.textContent=entry.name;content.appendChild(name);
+    const reason=document.createElement('div');reason.className='audit-reason';reason.textContent=entry.reason;content.appendChild(reason);
+    const time=document.createElement('span');time.className='audit-time';time.textContent=fmt(entry.seconds)+'（維持）';
+    row.append(content,time);list.appendChild(row);
+   }
+   auditResults.appendChild(list);
+   const copy=document.createElement('button');copy.type='button';copy.textContent='未確認曲と理由をコピー';
+   copy.onclick=async()=>{
+    const value=unresolved.map(t=>t.name+' ('+fmt(t.seconds)+'): '+t.reason).join('\n');
+    try{await navigator.clipboard.writeText(value);auditStatus.textContent='未確認曲と理由をコピーしました。'}catch(e){window.prompt('コピーしてください',value)}
+   };auditResults.appendChild(copy);
+  }
+  auditStatus.textContent='照合が終わりました。未確認曲と時間差の理由を確認できます。';
  }finally{auditing=false;button.disabled=false}
 };
 function setShortcutDisabled(disabled){
