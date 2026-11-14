@@ -715,7 +715,15 @@ async function catalogFetch(url){
    saveCatalogResponse(url,data);
    return data;
   }
-  catch(e){last=e;if(attempt===0)await sleepCatalog(e?.detail==='429'?3000:750)}
+  catch(e){
+   last=e;
+   // A CORS TypeError followed by a blocked JSONP script is a persistent
+   // transport failure in this browser. Repeating the identical request
+   // immediately only creates another long timeout and unnecessary load.
+   const transportBlocked=String(e?.detail||'').includes('TypeError')&&String(e?.detail||'').includes('スクリプトが読み込めませんでした');
+   if(transportBlocked)break;
+   if(attempt===0)await sleepCatalog(e?.detail==='429'?3000:750);
+  }
  }
  throw last;
 }
@@ -912,7 +920,7 @@ function catalogKnownTitles(){
 let catalogScanState=null;
 function renderCatalogDiagnostics(state){
  const failures=state?.failures||[],panel=$('catalogDiagnostics');
- $('catalogFailures').innerHTML=failures.map(f=>'<li>'+escape(f.label)+'（'+escape(f.reason)+'）</li>').join('');
+ $('catalogFailures').innerHTML=failures.map(f=>'<li>'+escape(f.label)+'（'+(f.skipped?'未照会：':'')+escape(f.reason)+'）</li>').join('');
  panel.classList.toggle('hide',!failures.length);
  $('catalogRetryFailed').disabled=!failures.length;
 }
@@ -924,8 +932,10 @@ async function finishCatalogScan(state){
  catch(e){catalogVersionCandidates=[];versionNotice='。配信版の比較は一部確認できませんでした'}
  catalogVersionRender();
  const failures=state.failures;
+ const skipped=failures.filter(x=>x.skipped).length,errored=failures.length-skipped;
  const summary=(catalogCandidates.length?`未登録候補 ${catalogCandidates.length}曲（ソロ・ユニット含む）`:'未登録候補なし')+'・新しい配信版候補 '+catalogVersionCandidates.length+'曲';
- setCatalogStatus(summary+(failures.length?`。検索失敗 ${failures.length}件（曲数ではありません）。未確認の照会が残っています`:'。検索エラーなし')+versionNotice+'。追加する前に候補をご確認ください。');
+ const failureText=failures.length?`。検索失敗 ${errored}件・未照会 ${skipped}件（どちらも曲数ではありません）。未確認の照会が残っています`:'。検索エラーなし';
+ setCatalogStatus(summary+failureText+versionNotice+'。追加する前に候補をご確認ください。');
  if(!failures.length&&!versionNotice){store(CATALOG_CHECK_KEY,new Date().toISOString());renderCatalogOnboarding()}
  renderCatalogDiagnostics(state);
  renderCatalogCacheNotice();
@@ -933,14 +943,29 @@ async function finishCatalogScan(state){
 async function runCatalogTasks(state,taskList){
  const btn=$('syncCatalog'),retry=$('catalogRetryFailed');btn.disabled=true;retry.disabled=true;
  let next=0,finished=0;const failed=[];
+ // All artistTerm searches use the same endpoint. If the first two fail with
+ // the same browser/network problem, do not waste minutes trying the other
+ // eight. Preserve skipped tasks for the explicit retry button instead.
+ const artistHealth={transportFailures:0,disabled:false};
  try{
   await Promise.all(Array.from({length:2},async()=>{
    while(next<taskList.length){
     const task=taskList[next++];
-    try{await task.run()}
-    catch(e){failed.push({...task,reason:itunesErrorLabel(e)})}
+    if(task.artistSearch&&artistHealth.disabled){
+     failed.push({...task,skipped:true,reason:'同じ検索経路で通信失敗が続いたため未照会。再試行できます'});
+    }else try{
+     await task.run();
+     if(task.artistSearch)artistHealth.transportFailures=0;
+    }catch(e){
+     const reason=itunesErrorLabel(e);
+     failed.push({...task,skipped:false,reason});
+     if(task.artistSearch){
+      const transport=String(e?.detail||'').includes('TypeError')&&String(e?.detail||'').includes('スクリプトが読み込めませんでした');
+      if(transport&&++artistHealth.transportFailures>=2)artistHealth.disabled=true;
+     }
+    }
     finished++;
-    setCatalogStatus(`確認中… ${finished}/${taskList.length}件の照会完了／未登録候補 ${state.found.size}曲`);
+    setCatalogStatus(`確認中… ${finished}/${taskList.length}件の照会処理（曲数ではありません）／未登録候補 ${state.found.size}曲`);
     // The shared catalogFetch queue already limits the request cadence.
    }
   }));
@@ -992,7 +1017,7 @@ async function scanCatalog(silent=false,forceFresh=false){
    }});
   }
  }});
- for(const artist of CATALOG_ARTISTS)tasks.push({label:'アーティスト '+artist,run:async()=>{
+ for(const artist of CATALOG_ARTISTS)tasks.push({label:'アーティスト '+artist,artistSearch:true,run:async()=>{
   const data=await catalogFetch('https://itunes.apple.com/search?term='+encodeURIComponent(artist)+'&media=music&entity=song&attribute=artistTerm&country=JP&limit=200');
   (data?.results||[]).forEach(accept);
  }});
