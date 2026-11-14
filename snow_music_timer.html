@@ -73,8 +73,8 @@ header p:before{content:none}
 .duration-audit{margin:13px 0 4px;display:flex;flex-direction:column;gap:8px}.duration-audit button{align-self:flex-start}.audit-summary{padding:11px 12px;background:var(--accent-soft);border-radius:12px;font-size:13px;line-height:1.65}.audit-table{max-height:290px;overflow:auto;border:1px solid var(--line);border-radius:12px;margin:9px 0}.audit-row{display:flex;align-items:center;gap:9px;padding:10px;border-bottom:1px solid var(--line);font-size:13px}.audit-row:last-child{border-bottom:0}.audit-row .audit-name{flex:1;min-width:0;overflow-wrap:anywhere}.audit-row .audit-time{white-space:nowrap;font-variant-numeric:tabular-nums}.audit-actions{display:flex;flex-wrap:wrap;gap:8px;margin:9px 0}.audit-small{font-size:12px;color:#64748b}.audit-meta{font-size:11px;line-height:1.6;color:#64748b;margin-top:4px}.audit-unmatched{padding:8px 0}.audit-reason{font-size:12px;color:#8b5b2b;margin-top:3px}.audit-row.audit-unmatched-row{align-items:flex-start}.audit-row.audit-unmatched-row .audit-name{font-weight:650}.audit-rounding{font-size:12px;color:#8b5b2b}.audit-section-title{font-weight:750;font-size:13px;margin:13px 0 5px}
 </style></head><body><main><header><div class="fan-label">非公式・ファン制作</div><h1>⛄ Snow Music Timer</h1><p>聴きたい時間に合わせて、Snow Manの曲を組み合わせよう。</p><details class="subscription-note"><summary class="help-summary"><span>🎧 このツールについて</span><span class="caret">⌄</span></summary><div class="note-body"><strong>Snow Manの楽曲を、指定した時間に近い長さで組み合わせる非公式ツールです。</strong> サイト内で音楽は再生されません。再生にはApple Musicなどの音楽配信サービスを利用します。iPhoneでは別途ショートカットを設定するとApple Musicへ曲順を渡せます。Androidではこのショートカットによる直接再生は利用できません。Snow Man・所属事務所・各音楽配信サービスの公式サービスではありません。</div></details></header>
 <section class="panel timer-panel"><div class="timer-face"><span class="timer-caption">SET TIME</span><div class="times"><label><input id="min" aria-label="分" type="number" inputmode="numeric" min="0" max="180" value="10">分</label><b>:</b><label><input id="sec" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="00" aria-label="秒">秒</label></div></div><div class="presets" id="presets"></div><div class="controls"><div><label class="label" for="tolerance">許容する誤差</label><select id="tolerance"><option value="10">±10秒</option><option value="20" selected>±20秒</option><option value="30">±30秒</option><option value="60">±1分</option></select></div><div><label class="label" for="mode">終了時間の優先</label><select id="mode"><option value="closest">指定時間に近い</option><option value="under">指定時間を超えない</option><option value="over">指定時間より短くしない</option></select></div></div><label class="check"><input id="shuffle" type="checkbox" checked>曲順を毎回シャッフル</label><button id="generate" class="primary generate">🎵 曲を組み合わせる</button></section>
-<section class="catalog-strip" id="catalogPanel"><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新しい曲をチェック</button><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span></div><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">未登録候補です。別バージョン・重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">追加はこの端末のブラウザのみに保存されます。全曲が検索で見つかるとは限りません。</p></div></section>
-<section class="panel result-panel" id="result"><div class="resulthead"><div><h2>今回の曲順</h2><span class="muted" id="count">—</span></div><div style="text-align:right"><div class="hint" id="targetLabel" style="margin:0 0 2px">合計再生時間</div><div class="big" id="total">--:--</div><div class="difference" id="difference">生成前</div></div></div><div id="message"></div><ol class="tracks" id="tracks"><li class="empty">時間を指定して「曲を組み合わせる」を押してください。</li></ol><div class="actions"><button id="again">🔄 別の組み合わせ</button><button id="save">☆ 保存</button><button id="copy">曲順をコピー</button></div><div class="exportpanel"><h2>🎧 Apple Musicで聴く（iPhone・iPad）</h2><p class="platform-note" id="platformNote">iPhone・iPadの「ショートカット」アプリを使う機能です。利用にはApple Musicの契約と専用ショートカットの事前設定が必要です。<strong>Androidではこのボタンから直接再生できません。</strong></p><a id="appleShortcut" class="shortcut-button disabled-link" aria-disabled="true" href="#" role="button">▶ Apple Musicで再生</a><a id="appleSaveShortcut" class="shortcut-button secondary-shortcut disabled-link" aria-disabled="true" href="#" role="button">☆ プレイリストとして保存</a><p class="hint" id="shortcutStatus" role="status">先に曲を組み合わせてください。</p><div id="idMissing" class="hide" aria-live="polite"></div><details class="details"><summary>iPhoneの初回設定・利用上の注意</summary><ol class="guide"><li>Apple Musicのサブスクリプションと「ショートカット」アプリが必要です。</li><li>曲ID対応の「Snow Music Timer ID 再生」ショートカットを追加してください。保存用は別の「Snow Music Timer ID 保存」が必要です。従来の曲名検索用ショートカットでは動きません。</li><li>このバージョンはApple Musicの曲IDをショートカットへ渡します。曲ID未確認の曲は送信せず、画面に表示します。登録前に曲順と曲のバージョンを確認してください。</li><li>保存用ショートカットは実行するたびに新しいプレイリストを作成します。</li></ol><p class="hint">曲ID対応ショートカットの共有リンクは準備中です。旧ショートカットと区別するため、名称を合わせてからお使いください。</p></details><hr style="border:0;border-top:1px solid #dce6ef;margin:17px 0"><h2>ほかの音楽サービスで聴く</h2><p class="hint">AndroidのApple Music利用者やSpotifyなどの利用者は、曲順をコピーして手動でプレイリストを作れます。Soundiizなどの外部転送サービスを使う方法もあります。利用には各サービスでのログイン・連携が必要な場合があり、転送後の曲数・曲順・バージョンを確認してください。</p><div class="actions"><button id="copyImport" class="primary">曲リストをコピー</button><button id="downloadCsv">CSVを保存</button><button id="downloadTxt">TXTを保存</button></div><a href="https://soundiiz.com/ja/" target="_blank" rel="noopener noreferrer">Soundiizを開く ↗</a><details class="details"><summary>取り込み方を見る</summary><ol class="guide"><li>「曲リストをコピー」を押す。</li><li>Soundiizでログインし、「プレイリストをインポート」→「プレーンテキストから」を選ぶ（表記が異なる場合があります）。</li><li>コピーした曲を貼り付け、内容を確認する。</li><li>新しいプレイリストを作成し、保存先としてSpotifyかApple Musicを指定する。</li><li>曲順・バージョン・曲数を確認して再生する。</li></ol><p class="hint">テキスト貼り付けが難しければ、CSVを保存して「ファイルから」で読み込んでください。サービス側で別バージョンに一致する場合があります。</p></details><p id="exportStatus" class="hint" role="status"></p></div><p class="hint">🔒 曲を固定して「別の組み合わせ」を押すと、その曲を残して再選曲します。「入替」はその1曲だけ変更します。🔒は曲と位置を固定します。</p></section>
+<section class="catalog-strip" id="catalogPanel"><div class="catalog-top"><button id="syncCatalog" type="button">🎵 新しい曲をチェック</button><span id="syncStatus" class="catalog-status hide" role="status" aria-live="polite"></span></div><div id="catalogCandidates" class="hide catalog-expanded"><p class="hint">Snow Man・ソロ・ユニット名義の未登録候補です。別バージョンや重複収録を確認して追加してください。</p><div id="catalogCandidateList" class="library" style="max-height:270px"></div><div class="actions"><button id="catalogSelectAll" type="button">すべて選択</button><button id="catalogSelectNone" type="button">すべて解除</button><button id="catalogAdd" type="button" class="primary">選択した曲を追加</button></div><p class="hint">追加はこの端末のブラウザに保存されます。公開検索では全配信曲を網羅できない場合があります。</p></div></section>
+<section class="panel result-panel" id="result"><div class="resulthead"><div><h2>今回の曲順</h2><span class="muted" id="count">—</span></div><div style="text-align:right"><div class="hint" id="targetLabel" style="margin:0 0 2px">合計再生時間</div><div class="big" id="total">--:--</div><div class="difference" id="difference">生成前</div></div></div><div id="message"></div><p class="hint" id="precisionStatus">未照合曲は登録された秒数で計算しています。</p><ol class="tracks" id="tracks"><li class="empty">時間を指定して「曲を組み合わせる」を押してください。</li></ol><div class="actions"><button id="again">🔄 別の組み合わせ</button><button id="save">☆ 保存</button><button id="copy">曲順をコピー</button></div><div class="exportpanel"><h2>🎧 Apple Musicで聴く（iPhone・iPad）</h2><p class="platform-note" id="platformNote">iPhone・iPadの「ショートカット」アプリを使う機能です。利用にはApple Musicの契約と専用ショートカットの事前設定が必要です。<strong>Androidではこのボタンから直接再生できません。</strong></p><a id="appleShortcut" class="shortcut-button disabled-link" aria-disabled="true" href="#" role="button">▶ Apple Musicで再生</a><a id="appleSaveShortcut" class="shortcut-button secondary-shortcut disabled-link" aria-disabled="true" href="#" role="button">☆ プレイリストとして保存</a><p class="hint" id="shortcutStatus" role="status">先に曲を組み合わせてください。</p><div id="idMissing" class="hide" aria-live="polite"></div><details class="details"><summary>iPhoneの初回設定・利用上の注意</summary><ol class="guide"><li>Apple Musicのサブスクリプションと「ショートカット」アプリが必要です。</li><li>曲ID対応の「Snow Music Timer ID 再生」ショートカットを追加してください。保存用は別の「Snow Music Timer ID 保存」が必要です。従来の曲名検索用ショートカットでは動きません。</li><li>このバージョンはApple Musicの曲IDをショートカットへ渡します。曲ID未確認の曲は送信せず、画面に表示します。登録前に曲順と曲のバージョンを確認してください。</li><li>保存用ショートカットは実行するたびに新しいプレイリストを作成します。</li></ol><p class="hint">曲ID対応ショートカットの共有リンクは準備中です。旧ショートカットと区別するため、名称を合わせてからお使いください。</p></details><hr style="border:0;border-top:1px solid #dce6ef;margin:17px 0"><h2>ほかの音楽サービスで聴く</h2><p class="hint">AndroidのApple Music利用者やSpotifyなどの利用者は、曲順をコピーして手動でプレイリストを作れます。Soundiizなどの外部転送サービスを使う方法もあります。利用には各サービスでのログイン・連携が必要な場合があり、転送後の曲数・曲順・バージョンを確認してください。</p><div class="actions"><button id="copyImport" class="primary">曲リストをコピー</button><button id="downloadCsv">CSVを保存</button><button id="downloadTxt">TXTを保存</button></div><a href="https://soundiiz.com/ja/" target="_blank" rel="noopener noreferrer">Soundiizを開く ↗</a><details class="details"><summary>取り込み方を見る</summary><ol class="guide"><li>「曲リストをコピー」を押す。</li><li>Soundiizでログインし、「プレイリストをインポート」→「プレーンテキストから」を選ぶ（表記が異なる場合があります）。</li><li>コピーした曲を貼り付け、内容を確認する。</li><li>新しいプレイリストを作成し、保存先としてSpotifyかApple Musicを指定する。</li><li>曲順・バージョン・曲数を確認して再生する。</li></ol><p class="hint">テキスト貼り付けが難しければ、CSVを保存して「ファイルから」で読み込んでください。サービス側で別バージョンに一致する場合があります。</p></details><p id="exportStatus" class="hint" role="status"></p></div><p class="hint">🔒 曲を固定して「別の組み合わせ」を押すと、その曲を残して再選曲します。「入替」はその1曲だけ変更します。🔒は曲と位置を固定します。</p></section>
 <section class="panel"><details class="details"><summary>🎼 選曲対象の曲を編集する <span id="poolCount" class="muted"></span></summary><p class="hint">チェックを外すと選曲対象から外れ、いつでも戻せます。曲データは削除されません。登録曲には未収録の配信曲がある場合があります。曲の長さは配信版と異なる場合があります。</p><div class="row"><button id="all">すべて選ぶ</button><button id="none">すべて外す</button></div><div id="library" class="library"></div>
 <div class="duration-audit">
  <button id="auditDuration" type="button">⏱ Apple Musicの再生時間を照合</button>
@@ -84,7 +84,7 @@ header p:before{content:none}
 <h2 style="margin-top:19px">曲を追加</h2><div class="row"><input id="newName" placeholder="曲名"><input id="newMin" type="number" inputmode="numeric" placeholder="分" min="0"><input id="newSec" type="number" inputmode="numeric" placeholder="秒" min="0" max="59"><button id="add">追加</button></div><p class="hint">曲名のみでも追加できます。Apple Musicで楽曲を特定できれば再生時間を自動取得します。見つからないときは分・秒を入力してください。</p><h2 style="margin-top:19px">曲データを一括登録</h2><p class="hint">「曲名,3:21」の形式で1行ずつ貼り付け。既存の同名曲は上書きします。</p><textarea id="bulk" rows="3" style="width:100%;border:1px solid #dce6ef;border-radius:10px;padding:10px" placeholder="曲名,3:21&#10;別の曲,4:02"></textarea><div class="actions"><button id="import">一括登録</button><button id="export">曲データをコピー</button><button id="reset">初期データに戻す</button></div></details></section>
 <section class="panel"><details class="details"><summary>⭐ 保存した組み合わせ <span id="favoriteCount" class="muted"></span></summary><div id="favorites" class="favorites"></div></details></section>
 <section class="theme-bar" aria-label="テーマカラー"><details id="themePanelDetails"><summary class="theme-summary"><span>🎨 テーマカラー</span><span><span id="themeCurrentLabel">FSSブルー</span> <span class="caret">⌄</span></span></summary><div class="theme-body"><div class="theme-swatches" id="themeSwatches" role="group" aria-label="テーマの色を選択"></div><div id="themeCustomWrap" class="theme-custom hide"><div class="theme-custom-controls"><label>メイン色 <input type="color" id="themeAccent" value="#69b8d5" aria-label="メインカラー"></label><label>ボタン色 <input type="color" id="themeButton" value="#287e9e" aria-label="ボタンカラー"></label><label>背景色 <input type="color" id="themeBg" value="#f4f8fc" aria-label="背景カラー"></label><button id="themeReset" type="button">FSSに戻す</button></div><p class="hint">色の設定はこのブラウザに保存されます。</p></div></div></details></section>
-<div class="info"><b>再生時間について</b><br>表示される合計時間は登録された楽曲の長さを足した目安です。再生環境や曲のバージョン、クロスフェード、通信状況などによって、実際に音楽が終わる時刻とは異なる場合があります。選んだ順番で再生されるよう、音楽アプリのシャッフル・リピート設定もご確認ください。</div><footer>Snow Music Timer — 非公式・ファン制作。各配信サービスの利用条件に従ってお楽しみください。</footer></main>
+<div class="info"><b>再生時間について</b><br>Appleで照合できた曲はミリ秒単位の再生時間を合計します。未照合曲には登録済みの秒数を使うため、結果は目安です。再生環境や曲のバージョン、クロスフェード、通信状況などによって、実際に音楽が終わる時刻とは異なる場合があります。選んだ順番で再生されるよう、音楽アプリのシャッフル・リピート設定もご確認ください。</div><footer>Snow Music Timer — 非公式・ファン制作。各配信サービスの利用条件に従ってお楽しみください。</footer></main>
 <script>
 (()=>{'use strict';
 const BASE=[['グッタイム','3:21'],['ALL SUITE','3:12'],['オドロウゼ！','3:53'],['奇跡','3:43'],['BANG!!','3:23'],['SAVE YOUR HEART','3:10'],['GO HARD','3:27'],['マドラー','3:18'],['show time...','3:45'],['カリスマックス','2:57'],['D.D.','4:37'],["KISSIN’ MY LIPS",'3:24'],['Stories','3:31'],['Grandeur','3:37'],['HELLO HELLO','4:24'],['Secret Touch','3:50'],['ブラザービート','3:25'],['オレンジkiss','4:20'],['タペストリー','3:58'],['W','4:18'],['Dangerholic','3:51'],['LOVE TRIGGER','3:55'],['We’ll go together','4:31'],['BREAKOUT','3:01'],['君は僕のもの','4:14'],['EVOLUTION','3:41'],['終わらない Memories','3:33'],["Snow Man's Life",'5:27'],['JUICY','3:28'],['ボクとキミと','4:18'],['Happy Birthday','3:44'],['あいことば','4:48'],['slow...','2:56']];
@@ -107,17 +107,19 @@ for(const [id,value] of Object.entries(savedPrefs)){const el=$(id);if(el&&value!
 function saveSession(){store('snowtimer_session_v6',{names:result.map(t=>t.name),locks:[...locked],prefs:{min:$('min').value,sec:$('sec').value,tolerance:$('tolerance').value,mode:$('mode').value,shuffle:$('shuffle').checked}})}
 function target(){let m=Number($('min').value),s=Number($('sec').value);if(!Number.isInteger(m)||!Number.isInteger(s)||m<0||s<0||s>=60)return null;return m*60+s}
 function selected(){return pool.filter(t=>t.enabled&&t.seconds>0)}function rng(a){return a[Math.floor(Math.random()*a.length)]}function shuffle(arr){for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function durationMs(t){return Number.isFinite(t.trackTimeMillis)&&t.trackTimeMillis>0?Math.round(t.trackTimeMillis):Math.round(t.seconds*1000)}
+function timeDiff(ms){const sign=ms>0?'+':ms<0?'−':'';const abs=Math.abs(ms);return sign+(abs>=60000?Math.floor(abs/60000)+'分':'')+(abs>=60000?((abs%60000)/1000).toFixed(3):(abs/1000).toFixed(3))+'秒'}
 function score(total,aim,mode){let d=total-aim;if(mode==='under'&&d>0)return Math.abs(d)+100000;if(mode==='over'&&d<0)return Math.abs(d)+100000;return Math.abs(d)}
 // Multiple randomized beam searches; each song can appear at most once.
-function solve(aim,excludeId=null){const fixed=result.filter(t=>locked.has(t.id)&&t.id!==excludeId&&pool.some(p=>p.id===t.id&&p.enabled));const fixedSeconds=fixed.reduce((a,t)=>a+t.seconds,0);let candidates=selected().filter(t=>!fixed.some(f=>f.id===t.id)&&t.id!==excludeId);const tol=Number($('tolerance').value),mode=$('mode').value;const space=aim-fixedSeconds;let best=null,bestScore=Infinity;const rounds=16;
-for(let r=0;r<rounds;r++){let arr=shuffle([...candidates]);let beam=[{sum:0,ids:[]}],seenBest=new Set();for(let j=0;j<arr.length;j++){let t=arr[j],next=[...beam];for(let state of beam){let sum=state.sum+t.seconds;if(sum>Math.max(space+tol+65,aim+tol+65))continue;let ids=[...state.ids,t.id];next.push({sum,ids});}
+function solve(aim,excludeId=null){const fixed=result.filter(t=>locked.has(t.id)&&t.id!==excludeId&&pool.some(p=>p.id===t.id&&p.enabled));const fixedSeconds=fixed.reduce((a,t)=>a+t.seconds,0);const fixedMs=fixed.reduce((a,t)=>a+durationMs(t),0);let candidates=selected().filter(t=>!fixed.some(f=>f.id===t.id)&&t.id!==excludeId);const tol=Number($('tolerance').value),mode=$('mode').value;const space=aim-fixedSeconds;let best=null,bestScore=Infinity;const rounds=16;
+for(let r=0;r<rounds;r++){let arr=shuffle([...candidates]);let beam=[{sum:0,ms:0,ids:[]}],seenBest=new Set();for(let j=0;j<arr.length;j++){let t=arr[j],next=[...beam];for(let state of beam){let sum=state.sum+t.seconds;if(sum>Math.max(space+tol+65,aim+tol+65))continue;let ids=[...state.ids,t.id];next.push({sum,ms:state.ms+durationMs(t),ids});}
 // Keep diverse sums and short candidate paths. Bucket collisions are randomized.
 shuffle(next);let bySum=new Map();for(let st of next){let prev=bySum.get(st.sum);if(!prev||st.ids.length<prev.ids.length)bySum.set(st.sum,st)}let unique=[...bySum.values()];unique.sort((a,b)=>{let sa=Math.abs(a.sum-space),sb=Math.abs(b.sum-space);return sa-sb});let chosen=unique.slice(0,140);let others=shuffle(unique.slice(140));chosen.push(...others.slice(0,180));beam=chosen;
-for(let state of beam){if(!state.ids.length&&!fixed.length)continue;let total=fixedSeconds+state.sum;let sc=score(total,aim,mode);let sig=state.ids.slice().sort((a,b)=>a-b).join(',');if(sig===lastSignature)sc+=25;if(sc<bestScore||(sc===bestScore&&Math.random()<.25)){bestScore=sc;best={ids:state.ids, fixed, total};}}
+for(let state of beam){if(!state.ids.length&&!fixed.length)continue;let total=fixedSeconds+state.sum;let sc=score((fixedMs+state.ms)/1000,aim,mode);let sig=state.ids.slice().sort((a,b)=>a-b).join(',');if(sig===lastSignature)sc+=25;if(sc<bestScore||(sc===bestScore&&Math.random()<.25)){bestScore=sc;best={ids:state.ids, fixed, total};}}
 }if(bestScore===0&&r>3)break}
 if(!best){if(fixed.length)best={ids:[],fixed,total:fixedSeconds};else return null}
 let chosen=best.ids.map(id=>pool.find(p=>p.id===id)).filter(Boolean);if($('shuffle').checked)shuffle(chosen);if(best.fixed.length){const pending=[...chosen];if($('shuffle').checked)shuffle(pending);const fixedAt=new Map(result.map((t,i)=>[i,t]).filter(([i,t])=>locked.has(t.id)));const length=Math.max(result.length,fixedAt.size+pending.length);const rebuilt=[];for(let i=0;i<length;i++){if(fixedAt.has(i))rebuilt[i]=fixedAt.get(i);else if(pending.length)rebuilt[i]=pending.shift();else if(i<result.length){const old=result[i];if(old&&!rebuilt.some(t=>t&&t.id===old.id)&&!fixedAt.has(i)&&!pending.some(t=>t.id===old.id))rebuilt[i]=old}}rebuilt.push(...pending);return rebuilt.filter(Boolean)}return chosen}
-function render(){saveSession();updateShortcutLink();let sum=result.reduce((a,t)=>a+t.seconds,0),aim=target(),diff=aim===null?0:sum-aim,tol=Number($('tolerance').value);$('total').textContent=result.length?fmt(sum):'--:--';$('count').textContent=result.length?result.length+'曲':'—';$('targetLabel').textContent=aim===null?'合計再生時間':'合計再生時間（指定 '+fmt(aim)+'）';$('difference').textContent=!result.length?'生成前':diff===0?'誤差0秒・ちょうど！':(diff>0?fmt(diff)+' 長い':fmt(-diff)+' 短い')+(Math.abs(diff)<=tol?'・許容範囲内':'・許容範囲外');$('difference').className='difference '+(Math.abs(diff)<=tol&&($('mode').value==='closest'||$('mode').value==='under'&&diff<=0||$('mode').value==='over'&&diff>=0)?'ok':'warn');$('tracks').innerHTML=result.length?result.map((t,i)=>`<li><span class="num">${i+1}</span><span class="trackname">${escape(t.name)}</span><span class="duration">${fmt(t.seconds)}</span><button class="iconBtn ${locked.has(t.id)?'locked':''}" data-lock="${t.id}" title="固定">${locked.has(t.id)?'🔒':'🔓'}</button><button class="iconBtn" data-replace="${t.id}" title="この曲を入れ替え">入替</button></li>`).join(''):'<li class="empty">曲がありません。</li>';
+function render(){saveSession();updateShortcutLink();let sumMs=result.reduce((a,t)=>a+durationMs(t),0),sum=sumMs/1000,aim=target(),diffMs=aim===null?0:sumMs-aim*1000,diff=diffMs/1000,tol=Number($('tolerance').value);$('total').textContent=result.length?fmt(sum):'--:--';$('count').textContent=result.length?result.length+'曲':'—';$('targetLabel').textContent=aim===null?'合計再生時間':'合計再生時間（指定 '+fmt(aim)+'）';$('difference').textContent=!result.length?'生成前':diffMs===0?'誤差0秒・ちょうど！':(diffMs>0?'長い ':'短い ')+timeDiff(Math.abs(diffMs)).replace(/^\+/, '')+(Math.abs(diffMs)<=tol*1000?'・許容範囲内':'・許容範囲外');$('difference').className='difference '+(Math.abs(diff)<=tol&&($('mode').value==='closest'||$('mode').value==='under'&&diff<=0||$('mode').value==='over'&&diff>=0)?'ok':'warn');$('precisionStatus').textContent=result.some(t=>!Number.isFinite(t.trackTimeMillis))?'未照合曲を含むため、一部は登録された秒数で計算しています。':'照合済み曲のミリ秒値を合計しています（表示は秒単位）。';$('tracks').innerHTML=result.length?result.map((t,i)=>`<li><span class="num">${i+1}</span><span class="trackname">${escape(t.name)}</span><span class="duration">${fmt(t.seconds)}</span><button class="iconBtn ${locked.has(t.id)?'locked':''}" data-lock="${t.id}" title="固定">${locked.has(t.id)?'🔒':'🔓'}</button><button class="iconBtn" data-replace="${t.id}" title="この曲を入れ替え">入替</button></li>`).join(''):'<li class="empty">曲がありません。</li>';
 let mode=$('mode').value,satisfied=Math.abs(diff)<=tol&&(mode==='closest'||mode==='under'&&diff<=0||mode==='over'&&diff>=0);
 $('message').textContent=!result.length?'':satisfied?'指定条件の範囲に収まりました。':mode==='under'&&diff>0?'注意：指定時間を超えています。現在の登録曲・固定曲では超えない組み合わせを見つけられませんでした。':mode==='over'&&diff<0?'注意：指定時間より短い組み合わせです。':'指定条件に届かず、近い候補を表示しています。';$('message').className=satisfied?'ok':'warn';}
 function replaceOne(id){
@@ -126,13 +128,13 @@ function replaceOne(id){
  if(locked.has(id)){alert('この曲は固定中です。先に鍵を外してください。');return}
  const aim=target(),tol=Number($('tolerance').value),mode=$('mode').value;
  if(aim===null){alert('時間の指定を確認してください。');return}
- const others=result.filter((t,i)=>i!==index),sum=others.reduce((a,t)=>a+t.seconds,0);
+ const others=result.filter((t,i)=>i!==index),sum=others.reduce((a,t)=>a+durationMs(t),0)/1000;
  const used=new Set(others.map(t=>t.id));
  let options=selected().filter(t=>t.id!==id&&!used.has(t.id));
- const allowed=options.filter(t=>{const diff=sum+t.seconds-aim;return Math.abs(diff)<=tol&&(mode==='closest'||mode==='under'&&diff<=0||mode==='over'&&diff>=0)});
+ const allowed=options.filter(t=>{const diff=sum+durationMs(t)/1000-aim;return Math.abs(diff)<=tol&&(mode==='closest'||mode==='under'&&diff<=0||mode==='over'&&diff>=0)});
  if(!allowed.length){$('message').textContent='ほかの曲を変えずに指定時間内へ収まる入替候補がありません。鍵を外して「別の組み合わせ」を試してください。';$('message').className='warn';return}
  const currentSeconds=result[index].seconds;
- const scored=allowed.map(t=>({track:t,score:Math.abs(sum+t.seconds-aim)}));
+ const scored=allowed.map(t=>({track:t,score:Math.abs(sum+durationMs(t)/1000-aim)}));
  const minScore=Math.min(...scored.map(x=>x.score));
  const near=scored.filter(x=>x.score<=minScore+Math.min(10,tol));
  const differing=near.filter(x=>x.track.seconds!==currentSeconds);
@@ -155,7 +157,8 @@ const shortcutSaveName='Snow Music Timer ID 保存';
 const knownTrackIDs={
  'We’ll go together':'1804833237', 'EVOLUTION':'1804833240',
  'オトノナルホウヘ':'1804833314', // THE BEST 2020 - 2025, Shota Watanabe
- 'Two':'6769372001' // i DO ME, Shota Watanabe & Ren Meguro
+ 'Two':'6769372001', // i DO ME, Shota Watanabe & Ren Meguro
+ 'サンシャインドリーマー':'6769350418' // ONKOCHISHIN, Raul / Shota Watanabe / Koji Mukai
 };
 const idCache=load('snowtimer_music_ids_v1',{});
 let linkRevision=0;
@@ -187,7 +190,7 @@ const SONG_ALIASES={
 const SOLO_HINTS={
  'オトノナルホウヘ':['Shota Watanabe'],
  'Two':['Shota Watanabe','Ren Meguro'],
- 'サンシャインドリーマー':['Shota Watanabe']
+ 'サンシャインドリーマー':['Raul','Shota Watanabe','Koji Mukai']
 };
 function titleVariants(song){return [...new Set([song.name,...(SONG_ALIASES[song.name]||[])].map(normalizeSong))]}
 function artistTokens(raw){return normalizeSong(raw).replace(/[＆&、，,／/・+]/g,' | ').split(/\s+\|\s+/).map(t=>t.trim()).filter(Boolean)}
@@ -310,6 +313,7 @@ $('auditDuration').onclick=async()=>{
       const seconds=Math.round(metadata.trackTimeMillis/1000);
       const cacheKey=trackCacheKey(song);
       song.trackId=String(metadata.trackId);
+      song.trackTimeMillis=Math.round(metadata.trackTimeMillis);
       idCache[cacheKey]=String(metadata.trackId);
       if(song.seconds!==seconds){
        const roundingOnly=seconds===song.seconds+1&&Math.floor(metadata.trackTimeMillis/1000)===song.seconds;
@@ -328,6 +332,7 @@ $('auditDuration').onclick=async()=>{
    }
   }));
   store('snowtimer_music_ids_v1',idCache);store('snowtimer_pool_v1',pool);
+  render();
   auditedDifferences=changes;
   auditResults.classList.remove('hide');
   const roundingCount=changes.filter(c=>c.roundingOnly).length;
@@ -362,7 +367,7 @@ $('auditDuration').onclick=async()=>{
     if(!chosen.size){alert('更新する曲を選択してください。');return}
     const changesById=new Map(changes.map(c=>[c.id,c]));let count=0;
     for(const song of pool){if(!chosen.has(song.id))continue;const c=changesById.get(song.id);if(!c)continue;
-     idCache[trackCacheKey(song)]=c.trackId;song.seconds=c.after;song.trackId=c.trackId;idCache[trackCacheKey(song)]=c.trackId;count++;
+     idCache[trackCacheKey(song)]=c.trackId;song.seconds=c.after;song.trackId=c.trackId;song.trackTimeMillis=c.exactMs;idCache[trackCacheKey(song)]=c.trackId;count++;
     }
     store('snowtimer_music_ids_v1',idCache);afterDurationUpdate();
     auditedDifferences=changes.filter(c=>!chosen.has(c.id));
@@ -468,24 +473,13 @@ $('library').onchange=e=>{let node=e.target.closest('[data-enable]');if(node){le
 function upsert(name,seconds){name=String(name).trim();if(!name||!Number.isInteger(seconds)||seconds<15||seconds>1800)return false;let t=pool.find(p=>p.name.toLowerCase()===name.toLowerCase());if(t){t.seconds=seconds;t.enabled=true}else pool.push({id:Math.max(0,...pool.map(p=>p.id))+1,name,seconds,enabled:true});return true}
 // Apple iTunes Search API (public, unauthenticated), with JSONP for static-site hosting.
 // The results are suggestions only: this endpoint is not an exhaustive discography feed.
-function catalogLookup(){
-  return new Promise((resolve,reject)=>{
-    const cb='snowTimerCatalog'+Math.random().toString(36).slice(2);
-    const script=document.createElement('script');
-    let finished=false;
-    const cleanup=()=>{delete window[cb];script.remove();clearTimeout(timer)};
-    const finish=(error,value)=>{if(finished)return;finished=true;cleanup();error?reject(error):resolve(value)};
-    const timer=setTimeout(()=>finish(new Error('取得がタイムアウトしました')),12000);
-    window[cb]=data=>finish(null,data);
-    script.onerror=()=>finish(new Error('通信に失敗しました'));
-    script.src='https://itunes.apple.com/lookup?id=1772019148&entity=song&country=JP&limit=200&callback='+encodeURIComponent(cb);
-    document.head.appendChild(script);
-  });
-}
+// v25: scan the public Japanese iTunes catalog for group, solo and unit credits.
+// This is candidate discovery, not an exhaustive or authoritative discography.
+const CATALOG_ARTISTS=['Snow Man',...MEMBER_NAMES];
 let catalogCandidates=[];
 function catalogCandidateRender(){
  const container=$('catalogCandidateList');
- container.innerHTML=catalogCandidates.map((t,i)=>`<label><input type="checkbox" data-candidate="${i}" checked><span>${escape(t.name)}</span><em>${fmt(t.seconds)}</em></label>`).join('');
+ container.innerHTML=catalogCandidates.map((t,i)=>`<label><input type="checkbox" data-candidate="${i}" checked><span><strong>${escape(t.name)}</strong><small style="display:block;font-size:11px;color:#64748b;margin-top:3px">${escape(t.artist)} ／ ${escape(t.album||'アルバム不明')}</small></span><em>${fmt(t.seconds)}</em></label>`).join('');
  $('catalogCandidates').classList.toggle('hide',!catalogCandidates.length);
 }
 $('catalogSelectAll').onclick=()=>$('catalogCandidateList').querySelectorAll('[data-candidate]').forEach(x=>x.checked=true);
@@ -493,39 +487,69 @@ $('catalogSelectNone').onclick=()=>$('catalogCandidateList').querySelectorAll('[
 $('catalogAdd').onclick=()=>{
  const chosen=[...$('catalogCandidateList').querySelectorAll('[data-candidate]:checked')].map(n=>catalogCandidates[Number(n.dataset.candidate)]);
  if(!chosen.length){setCatalogStatus('追加する曲を選択してください。');return}
- let count=0;for(const t of chosen)if(upsert(t.name,t.seconds)){count++;if(t.trackId){const added=pool.find(x=>normalizeSong(x.name)===normalizeSong(t.name));if(added){idCache[trackCacheKey(added)]=String(t.trackId)}}}store('snowtimer_music_ids_v1',idCache);
- renderPool();catalogCandidates=[];catalogCandidateRender();
- setCatalogStatus(`${count}曲を追加しました`);
+ let count=0;
+ for(const t of chosen){
+  if(!upsert(t.name,t.seconds))continue;
+  const song=pool.find(x=>normalizeSong(x.name)===normalizeSong(t.name));
+  if(song){song.trackId=String(t.trackId);song.trackTimeMillis=t.trackTimeMillis;idCache[trackCacheKey(song)]=String(t.trackId)}
+  count++;
+ }
+ store('snowtimer_music_ids_v1',idCache);renderPool();render();
+ catalogCandidates=[];catalogCandidateRender();setCatalogStatus(`${count}曲を追加しました。選曲対象に反映されました。`);
 };
 function setCatalogStatus(message){const el=$('syncStatus');el.textContent=message;el.classList.toggle('hide',!message)}
-async function syncCatalog(silent=false){
- const btn=$('syncCatalog'),status=$('syncStatus');
- if(btn.disabled)return;
- btn.disabled=true;if(!silent)setCatalogStatus('確認中…');
+function catalogKnownTitles(){
+ const names=new Set();
+ for(const t of pool){names.add(normalizeSong(t.name));for(const alias of SONG_ALIASES[t.name]||[])names.add(normalizeSong(alias))}
+ return names;
+}
+async function scanCatalog(silent=false){
+ const btn=$('syncCatalog');if(btn.disabled)return;
+ btn.disabled=true;catalogCandidates=[];catalogCandidateRender();
+ const already=catalogKnownTitles();
+ const knownIds=new Set(pool.flatMap(t=>[knownTrackIDs[t.name],t.trackId,idCache[trackCacheKey(t)]]).filter(Boolean).map(String));
+ const found=new Map();let completed=0,errors=0,albumsScanned=0;
+ function accept(t){
+  if(t?.kind!=='song'||!Number.isSafeInteger(t.trackId)||!Number.isFinite(t.trackTimeMillis)||t.trackTimeMillis<15000||!t.trackName||!recognizedArtist(t.artistName))return;
+  const title=normalizeSong(t.trackName),id=String(t.trackId);
+  if(already.has(title)||knownIds.has(id)||found.has(title))return;
+  const candidate={name:t.trackName,artist:t.artistName,album:t.collectionName||'',seconds:Math.round(t.trackTimeMillis/1000),trackTimeMillis:t.trackTimeMillis,trackId:t.trackId};
+  found.set(title,candidate);
+ }
+ const tasks=[];
+ // The artist's releases include unit and solo album tracks even when their track credits differ.
+ tasks.push(async()=>{
+  const data=await queryITunes('https://itunes.apple.com/lookup?id=1772019148&entity=album&country=JP&limit=200');
+  const albums=(data?.results||[]).filter(t=>t.wrapperType==='collection'&&Number.isSafeInteger(t.collectionId)&&normalizeSong(t.artistName)==='snow man');
+  albums.sort((a,b)=>String(b.releaseDate||'').localeCompare(String(a.releaseDate||'')));
+  const ids=[...new Set(['1804833044','6769371796',...albums.map(a=>String(a.collectionId))])].slice(0,36);
+  for(const id of ids){tasks.push(async()=>{
+   const songs=await queryITunes('https://itunes.apple.com/lookup?id='+encodeURIComponent(id)+'&entity=song&country=JP&limit=200');
+   (songs?.results||[]).forEach(accept);albumsScanned++;
+  })}
+ });
+ // Search by artist credit: names are romanized in some iTunes releases.
+ for(const artist of CATALOG_ARTISTS){tasks.push(async()=>{
+  const data=await queryITunes('https://itunes.apple.com/search?term='+encodeURIComponent(artist)+'&media=music&entity=song&attribute=artistTerm&country=JP&limit=200');
+  (data?.results||[]).forEach(accept);
+ })}
+ function progress(){setCatalogStatus(`確認中… ${completed}件の検索完了／候補${found.size}曲`)}
+ if(!silent)progress();
  try{
-  const data=await catalogLookup();
-  if(!data||!Array.isArray(data.results))throw new Error('データを読み取れませんでした');
-  const norm=x=>String(x||'').normalize('NFKC').replace(/[’‘]/g,"'").replace(/\s+/g,' ').trim().toLowerCase();
-  const known=new Set(pool.map(t=>norm(t.name)));
-  const found=new Map();
-  for(const t of data.results){
-   if(t.kind!=='song'||norm(t.artistName)!=='snow man'||!t.trackName||!Number.isFinite(t.trackTimeMillis)||t.trackTimeMillis<15000)continue;
-   const key=norm(t.trackName);if(known.has(key)||found.has(key))continue;
-   found.set(key,{name:t.trackName,seconds:Math.round(t.trackTimeMillis/1000),trackId:t.trackId});
-  }
-  catalogCandidates=[...found.values()];catalogCandidateRender();
-  if(!catalogCandidates.length){if(!silent)setCatalogStatus('新しい候補なし');else setCatalogStatus('');return}
-  setCatalogStatus(`候補 ${catalogCandidates.length}曲`);
- }catch(e){if(!silent)setCatalogStatus('確認できませんでした。再試行してください。')}
+  // Tasks may append album lookups; each worker continues until the queue is drained.
+  let next=0;
+  await Promise.all(Array.from({length:3},async()=>{
+   while(next<tasks.length){const fn=tasks[next++];try{await fn()}catch(e){errors++}completed++;if(!silent)progress()}
+  }));
+  catalogCandidates=[...found.values()].sort((a,b)=>a.name.localeCompare(b.name,'ja'));
+  catalogCandidateRender();
+  const summary=catalogCandidates.length?`未登録候補 ${catalogCandidates.length}曲（ソロ・ユニット含む）`:'未登録候補は見つかりませんでした';
+  setCatalogStatus(summary+(errors?`。${errors}件の照会に失敗。再確認できます`:'')+'。候補は追加前にご確認ください。');
+ }catch(e){setCatalogStatus('曲の確認に失敗しました。通信状態を確認して再試行してください。')}
  finally{btn.disabled=false}
 }
-$('syncCatalog').onclick=()=>syncCatalog(false);
-// At most one passive check per local day. Never automatically modify the song database.
-try{
- const today=new Date().toLocaleDateString('en-CA');
- const last=localStorage.getItem('snowtimer_catalog_checked_v9');
- if(last!==today){localStorage.setItem('snowtimer_catalog_checked_v9',today);syncCatalog(true)}
-}catch(e){}
+$('syncCatalog').onclick=()=>scanCatalog(false);
+// Run full catalog discovery only when requested. No automatic database changes.
 $('add').onclick=async()=>{
  const button=$('add'),name=$('newName').value.trim();
  if(!name){alert('曲名を入力してください');return}
