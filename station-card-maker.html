@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eef9ff">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Station紹介カードメーカー V13</title>
+<title>Station紹介カードメーカー V14</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
@@ -14,7 +14,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V13</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列、アクセント画像は本文の下に配置します。内容量に合わせてカードの高さが自動で伸びます。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V14</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列、アクセント画像は本文の下に配置します。内容量に合わせてカードの高さが自動で伸びます。</p></section>
 <div class="grid">
 <section class="card">
 <div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
@@ -48,7 +48,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
-const PROFILE_KEY='fssStationProfileV13',LIB_KEY='fssStationLibrariesV13',DRAFT_KEY='fssStationDraftV13';
+const PROFILE_KEY='fssStationProfileV14',LIB_KEY='fssStationLibrariesV14',DRAFT_KEY='fssStationDraftV14';
 const FSS={name:'FSSブルー',bg:'#f5fbff',accent:'#7fc8e8',text:'#263640'};
 const MEMBERS=[
 {name:'黄',bg:'#fffbea',accent:'#f0cf45',text:'#37331f'},
@@ -64,9 +64,60 @@ const MEMBERS=[
 let iconImage=null,iconData='',accentImage=null,selectedTags=[],activeThemeName='FSSブルー';
 function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(_){return fallback}}
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}}
-function libs(){const r=read(LIB_KEY,null)||read('fssStationLibrariesV12',null)||read('fssStationLibrariesV11',null)||read('fssStationLibrariesV10',{})||{};return{titles:Array.isArray(r.titles)?r.titles:[],times:Array.isArray(r.times)?r.times:[],focuses:Array.isArray(r.focuses)?r.focuses:[],memos:Array.isArray(r.memos)?r.memos:[],tags:Array.isArray(r.tags)?r.tags:[],themes:Array.isArray(r.themes)?r.themes:[]}}
+function libs(){const r=read(LIB_KEY,null)||read('fssStationLibrariesV13',null)||read('fssStationLibrariesV12',null)||read('fssStationLibrariesV11',null)||read('fssStationLibrariesV10',{})||{};return{titles:Array.isArray(r.titles)?r.titles:[],times:Array.isArray(r.times)?r.times:[],focuses:Array.isArray(r.focuses)?r.focuses:[],memos:Array.isArray(r.memos)?r.memos:[],tags:Array.isArray(r.tags)?r.tags:[],themes:Array.isArray(r.themes)?r.themes:[]}}
 function saveLibs(v){write(LIB_KEY,v);renderLibraries();renderThemes()}
 function unique(arr,v){v=String(v||'').trim();return v?[v,...arr.filter(x=>x!==v)].slice(0,40):arr}
+function renderScalarSelect(kind,selectId){
+  const select=$(selectId),l=libs();
+  if(!select)return;
+  const current=select.value;
+  select.innerHTML='<option value="">保存済みから選ぶ</option>';
+  (l[kind]||[]).forEach(value=>{
+    const o=document.createElement('option');
+    o.value=value;o.textContent=value;
+    select.appendChild(o);
+  });
+  if((l[kind]||[]).includes(current))select.value=current;
+}
+function renderTags(){
+  const root=$('tagsLibrary'),l=libs();
+  if(!root)return;
+  root.innerHTML='';
+  (l.tags||[]).forEach(value=>{
+    const chip=document.createElement('span');
+    chip.className='savedChip'+(selectedTags.includes(value)?' active':'');
+    const pick=document.createElement('button');
+    pick.type='button';pick.className='pick';pick.textContent='#'+value;
+    pick.onclick=()=>{
+      selectedTags=selectedTags.includes(value)
+        ? selectedTags.filter(x=>x!==value)
+        : [...selectedTags,value];
+      saveDraft();
+      renderTags();
+      render();
+    };
+    const del=document.createElement('button');
+    del.type='button';del.className='remove';del.textContent='×';
+    del.onclick=e=>{
+      e.stopPropagation();
+      const l2=libs();
+      l2.tags=(l2.tags||[]).filter(x=>x!==value);
+      selectedTags=selectedTags.filter(x=>x!==value);
+      saveLibs(l2);
+      saveDraft();
+      render();
+    };
+    chip.append(pick,del);
+    root.appendChild(chip);
+  });
+}
+function renderLibraries(){
+  renderScalarSelect('titles','titlesSelect');
+  renderScalarSelect('times','timesSelect');
+  renderScalarSelect('focuses','focusesSelect');
+  renderScalarSelect('memos','memosSelect');
+  renderTags();
+}
 function rr(x,y,w,h,r){const q=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+q,y);ctx.arcTo(x+w,y,x+w,y+h,q);ctx.arcTo(x+w,y+h,x,y+h,q);ctx.arcTo(x,y+h,x,y,q);ctx.arcTo(x,y,x+w,y,q);ctx.closePath()}
 function rgba(hex,a){let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16);return Number.isNaN(n)?`rgba(0,0,0,${a})`:`rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
 function wrap(text,max,font){ctx.font=font;let line='';const out=[];for(const ch of [...String(text||'')]){const t=line+ch;if(line&&ctx.measureText(t).width>max){out.push(line);line=ch}else line=t}if(line)out.push(line);return out}
@@ -143,9 +194,43 @@ function drawAccent(y){
   ctx.restore();
   return y+height;
 }
+function measureTextBlock(){
+  const station=$('station').value.trim()||'Station name';
+  const handle=$('handle').value.trim();
+  const title=$('title').value.trim();
+  const time=$('time').value.trim();
+  const focus=$('focus').value.trim();
+  const memo=$('memo').value.trim();
+  let widest=0;
+
+  const measure=(value,font)=>{
+    if(!value)return 0;
+    ctx.font=font;
+    return ctx.measureText(value).width;
+  };
+
+  widest=Math.max(widest,220+measure(station,'900 64px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
+  if(handle)widest=Math.max(widest,220+measure(handle,'730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
+  if(title)widest=Math.max(widest,measure(title,'900 82px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
+  if(time)widest=Math.max(widest,measure(time,'850 44px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
+  if(focus)widest=Math.max(widest,measure(focus,'850 44px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
+  if(memo){
+    memo.split(/\\n+/).forEach(line=>{
+      widest=Math.max(widest,measure(line,'650 36px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
+    });
+  }
+  if(selectedTags.length){
+    ctx.font='800 29px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
+    const tagsW=selectedTags.reduce((sum,raw)=>sum+ctx.measureText('#'+raw).width+51,0);
+    widest=Math.max(widest,Math.min(tagsW,1180));
+  }
+
+  const width=Math.max(760,Math.min(1424,Math.ceil(widest+40)));
+  return {width,x:Math.round((1600-width)/2)};
+}
 function measureCard(){
   const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
-  const margin=88,textW=1424;
+  const block=measureTextBlock(),textW=block.width;
   let y=255;
 
   if(title){
@@ -154,10 +239,8 @@ function measureCard(){
     const lines=wrap(title,textW,font).slice(0,3);
     y+=lines.length*ts*1.1+28;
   }
-
   if(time)y+=metaHeight(time,textW)+18;
   if(focus)y+=metaHeight(focus,textW)+18;
-
   if(memo){
     const fs=36,font=`650 ${fs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
     const lines=wrap(memo,textW,font);
@@ -165,14 +248,16 @@ function measureCard(){
   }
   if(selectedTags.length){
     ctx.font='800 29px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-    let cx=margin,rows=1;
-    selectedTags.forEach(raw=>{const w=ctx.measureText('#'+raw).width+40;if(cx+w>margin+textW){rows++;cx=margin}cx+=w+11});
+    let cx=block.x,rows=1;
+    selectedTags.forEach(raw=>{
+      const w=ctx.measureText('#'+raw).width+40;
+      if(cx+w>block.x+textW){rows++;cx=block.x}
+      cx+=w+11;
+    });
     y+=rows*54+18;
   }
-  if(accentImage){
-    y+=34+accentHeight()+30;
-  }
-  return Math.max(820,Math.ceil(y+90));
+  if(accentImage)y+=34+accentHeight()+30;
+  return Math.max(720,Math.ceil(y+90));
 }
 function render(){
   const bg=$('bgColor').value,accent=$('accentColor').value,text=$('textColor').value;
@@ -189,11 +274,11 @@ function render(){
   ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(1500,20,230,0,Math.PI*2);ctx.fill();
   ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(1510,cardH,320,0,Math.PI*2);ctx.fill();
 
-  const margin=88,iconR=50,textW=1424;
+  const block=measureTextBlock(),margin=block.x,textW=block.width,iconR=50;
   drawIcon(margin+iconR,72+iconR,iconR,accent,text);
 
   const stationX=margin+iconR*2+25;
-  const ss=fit(station,900,64,44,900);
+  const ss=fit(station,Math.max(420,textW-(stationX-margin)),64,44,900);
   ctx.fillStyle=text;
   ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
   ctx.fillText(station,stationX,132);
@@ -244,7 +329,7 @@ function saveDraft(){write(DRAFT_KEY,{title:$('title').value,time:$('time').valu
 function sync(){$('iconXVal').textContent=$('iconX').value;$('iconYVal').textContent=$('iconY').value;$('accentScaleVal').textContent=$('accentScale').value;$('accentOpacityVal').textContent=$('accentOpacity').value}
 function addCandidate(kind,inputId){const v=$(inputId).value.trim();if(!v){alert('保存する内容を入力してください。');return}const l=libs();l[kind]=unique(l[kind],v);saveLibs(l);const s=$(kind+'Select');if(s)s.value=v}
 document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>addCandidate(b.dataset.save,b.dataset.input));document.querySelectorAll('select[data-kind]').forEach(s=>s.onchange=()=>{if(!s.value)return;$(s.dataset.target).value=s.value;saveDraft();render()});document.querySelectorAll('[data-delete-kind]').forEach(b=>b.onclick=()=>{const s=$(b.dataset.select),v=s.value;if(!v){alert('削除する候補を選んでください。');return}if(!confirm('この保存済み候補を削除しますか？'))return;const l=libs();l[b.dataset.deleteKind]=l[b.dataset.deleteKind].filter(x=>x!==v);saveLibs(l)});
-$('addTag').onclick=()=>{const v=$('tagInput').value.trim().replace(/^#+/,'');if(!v)return;const l=libs();l.tags=unique(l.tags,v);if(!selectedTags.includes(v))selectedTags.push(v);$('tagInput').value='';saveLibs(l);saveDraft();render()};$('tagInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('addTag').click()}};
+$('addTag').onclick=()=>{const v=$('tagInput').value.trim().replace(/^#+/,'');if(!v){alert('タグを入力してください。');return}const l=libs();l.tags=unique(l.tags,v);if(!selectedTags.includes(v))selectedTags.push(v);$('tagInput').value='';write(LIB_KEY,l);renderLibraries();renderThemes();saveDraft();render()};$('tagInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('addTag').click()}};
 $('fssTheme').onclick=()=>applyTheme(FSS,'FSSブルー');$('saveTheme').onclick=()=>{const name=$('themeName').value.trim();if(!name){alert('自由テーマの名前を入力してください。');return}const l=libs(),t={name,bg:$('bgColor').value,accent:$('accentColor').value,text:$('textColor').value};const old=l.themes.find(x=>x.name===name);if(old&&!confirm(`「${name}」を上書きしますか？`))return;l.themes=[t,...l.themes.filter(x=>x.name!==name)];activeThemeName=name;saveLibs(l);$('themeName').value='';saveDraft();render()};
 ['station','handle','bgColor','accentColor','textColor','iconX','iconY','title','time','focus','memo','accentScale','accentOpacity'].forEach(id=>$(id).addEventListener('input',()=>{sync();saveDraft();render()}));
 $('saveProfile').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}alert(saveProfile()?'基本情報を保存しました。':'保存できませんでした。')};
@@ -252,7 +337,7 @@ $('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!
 $('accentImageInput').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{accentImage=img;$('accentThumb').src=r.result;$('accentThumb').style.display='block';$('removeAccent').classList.remove('hidden');$('accentControls').classList.remove('hidden');render()};img.src=r.result};r.readAsDataURL(f)};$('removeAccent').onclick=()=>{accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');render()};
 $('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();render()};
 $('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
-renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;activeThemeName=MEMBERS.some(t=>t.name===d.activeThemeName)||d.activeThemeName==='FSSブルー'?d.activeThemeName:''}sync();renderLibraries();renderThemes();render();
+renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;activeThemeName=MEMBERS.some(t=>t.name===d.activeThemeName)||d.activeThemeName==='FSSブルー'?d.activeThemeName:''}sync();renderLibraries();renderThemes();render();
 })();
 </script>
 </body></html>
