@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eef9ff">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Station紹介カードメーカー V15</title>
+<title>Station紹介カードメーカー V16</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
@@ -14,7 +14,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V15</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列のまま、入力内容の量に合わせてカードの横幅・高さ・文字サイズを自動調整します。アクセント画像は本文の下に配置します。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V16</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列のまま、入力内容の量に合わせてカードの横幅・高さ・文字サイズを自動調整します。アクセント画像は本文の下に配置します。</p></section>
 <div class="grid">
 <section class="card">
 <div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
@@ -40,7 +40,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button></div><p class="note">基本情報・色テーマ・保存候補・下書きはこの端末のブラウザ内だけに保存します。</p>
 </section>
 
-<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">入力情報が少ないときはカードをコンパクトに・文字を大きく、多いときは横幅と高さを広げて自動調整します。アクセント画像は本文の下に配置します。</p></section>
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">カードの横幅と文字サイズは一定に保ち、入力情報が増えたときだけ高さを自動で伸ばします。アクセント画像は本文の下に配置します。</p></section>
 </div></main>
 
 <div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
@@ -48,7 +48,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
-const PROFILE_KEY='fssStationProfileV15',LIB_KEY='fssStationLibrariesV15',DRAFT_KEY='fssStationDraftV15';
+const PROFILE_KEY='fssStationProfileV16',LIB_KEY='fssStationLibrariesV16',DRAFT_KEY='fssStationDraftV16';
 const FSS={name:'FSSブルー',bg:'#f5fbff',accent:'#7fc8e8',text:'#263640'};
 const MEMBERS=[
 {name:'黄',bg:'#fffbea',accent:'#f0cf45',text:'#37331f'},
@@ -137,36 +137,25 @@ function layoutMode(){
   return 'normal';
 }
 function metrics(){
-  const mode=layoutMode();
-  if(mode==='sparse')return {mode,station:72,title:98,label:31,value:56,memo:43,tag:34,gap:42,minInner:790,minH:620};
-  if(mode==='dense')return {mode,station:58,title:72,label:24,value:40,memo:31,tag:26,gap:24,minInner:1120,minH:760};
-  return {mode,station:64,title:84,label:27,value:47,memo:36,tag:30,gap:32,minInner:940,minH:690};
+  return {
+    station:56,
+    handle:28,
+    title:68,
+    label:22,
+    value:38,
+    memo:30,
+    tag:25,
+    gap:28,
+    minH:900,
+    cardW:1600,
+    contentW:1120,
+    accentW:1424
+  };
 }
 function textWidth(value,font){if(!value)return 0;ctx.font=font;return ctx.measureText(value).width}
 function widestMemoLine(value,font){
   if(!value)return 0;
   return String(value).split(/\n+/).reduce((m,line)=>Math.max(m,textWidth(line,font)),0);
-}
-function desiredInnerWidth(m){
-  const station=$('station').value.trim()||'Station name';
-  const handle=$('handle').value.trim();
-  const title=$('title').value.trim();
-  const time=$('time').value.trim();
-  const focus=$('focus').value.trim();
-  const memo=$('memo').value.trim();
-  let widest=0;
-  widest=Math.max(widest,130+textWidth(station,`900 ${m.station}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
-  if(handle)widest=Math.max(widest,130+textWidth(handle,'730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
-  if(title)widest=Math.max(widest,textWidth(title,`900 ${m.title}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
-  if(time)widest=Math.max(widest,textWidth(time,`850 ${m.value}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
-  if(focus)widest=Math.max(widest,textWidth(focus,`850 ${m.value}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
-  widest=Math.max(widest,widestMemoLine(memo,`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
-  if(selectedTags.length){
-    ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const tagLine=selectedTags.reduce((n,v)=>n+ctx.measureText('#'+v).width+54,0);
-    widest=Math.max(widest,Math.min(tagLine,1424));
-  }
-  return Math.max(m.minInner,Math.min(1424,Math.ceil(widest+70)));
 }
 function wrapLines(value,maxW,font,maxLines=99){
   const paras=String(value||'').split(/\n/);
@@ -189,13 +178,17 @@ function drawMeta(label,value,x,y,w,accent,text,m){
   ctx.fillStyle=accent;
   ctx.font=`900 ${m.label}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
   ctx.fillText(label,x,y+m.label);
-  const maxSize=m.value;
-  let size=maxSize;
+  let size=m.value;
   let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
   let lines=wrapLines(value,w,font,4);
-  while(lines.length>3&&size>30){size-=2;font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(value,w,font,4)}
-  ctx.fillStyle=text;ctx.font=font;
-  let yy=y+m.label+48;
+  while(lines.length>3&&size>30){
+    size-=2;
+    font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    lines=wrapLines(value,w,font,4);
+  }
+  ctx.fillStyle=text;
+  ctx.font=font;
+  let yy=y+m.label+44;
   lines.forEach(line=>{ctx.fillText(line,x,yy);yy+=size*1.18});
   return yy;
 }
@@ -203,8 +196,12 @@ function metaHeight(value,w,m){
   let size=m.value;
   let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
   let lines=wrapLines(value,w,font,4);
-  while(lines.length>3&&size>30){size-=2;font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(value,w,font,4)}
-  return m.label+48+lines.length*size*1.18;
+  while(lines.length>3&&size>30){
+    size-=2;
+    font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    lines=wrapLines(value,w,font,4);
+  }
+  return m.label+44+lines.length*size*1.18;
 }
 function drawTags(x,y,maxW,accent,text,m){
   let cx=x,cy=y;
@@ -220,7 +217,7 @@ function drawTags(x,y,maxW,accent,text,m){
 }
 function accentWidth(cardW){
   const pct=Math.max(50,Math.min(100,+$('accentScale').value||100));
-  return Math.round((cardW-176)*pct/100);
+  return Math.round(1424*pct/100);
 }
 function accentHeight(cardW){
   if(!accentImage)return 0;
@@ -236,68 +233,111 @@ function drawAccent(y,cardW){
 }
 function measureLayout(){
   const m=metrics();
-  const innerW=desiredInnerWidth(m);
-  const cardW=innerW+176;
   const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
-  let y=235;
+  const bodyW=m.contentW;
+  let y=250;
+
   if(title){
-    let size=m.title;let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;let lines=wrapLines(title,innerW,font,4);
-    while(lines.length>3&&size>48){size-=2;font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(title,innerW,font,4)}
+    let size=m.title;
+    let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    let lines=wrapLines(title,bodyW,font,4);
+    while(lines.length>2&&size>50){
+      size-=2;
+      font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+      lines=wrapLines(title,bodyW,font,4);
+    }
     y+=lines.length*size*1.08+m.gap;
   }
-  if(time)y+=metaHeight(time,innerW,m)+m.gap;
-  if(focus)y+=metaHeight(focus,innerW,m)+m.gap;
+  if(time)y+=metaHeight(time,bodyW,m)+m.gap;
+  if(focus)y+=metaHeight(focus,bodyW,m)+m.gap;
   if(memo){
     const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrapLines(memo,innerW,font,99);
+    const lines=wrapLines(memo,bodyW,font,99);
     y+=Math.max(1,lines.length)*m.memo*1.42+m.gap;
   }
   if(selectedTags.length){
     ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
     let cx=0,rows=1;
-    selectedTags.forEach(raw=>{const w=ctx.measureText('#'+raw).width+54;if(cx&&cx+w>innerW){rows++;cx=0}cx+=w+12});
+    selectedTags.forEach(raw=>{
+      const w=ctx.measureText('#'+raw).width+54;
+      if(cx&&cx+w>bodyW){rows++;cx=0}
+      cx+=w+12;
+    });
     y+=rows*(m.tag+28)+m.gap;
   }
-  if(accentImage)y+=24+accentHeight(cardW)+34;
+  if(accentImage)y+=24+accentHeight(m.cardW)+38;
   const cardH=Math.max(m.minH,Math.ceil(y+70));
-  return {m,innerW,cardW,cardH};
+  return {m,cardW:m.cardW,cardH,bodyW};
 }
 function render(){
   const bg=$('bgColor').value,accent=$('accentColor').value,text=$('textColor').value;
   const station=$('station').value.trim()||'Station name',handle=$('handle').value.trim();
   const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
-  const L=measureLayout(),m=L.m,margin=88,textW=L.innerW;
+  const L=measureLayout(),m=L.m;
+
   if(canvas.width!==L.cardW)canvas.width=L.cardW;
   if(canvas.height!==L.cardH)canvas.height=L.cardH;
   $('previewSize').textContent=`${L.cardW} × ${L.cardH}`;
-  ctx.clearRect(0,0,L.cardW,L.cardH);ctx.fillStyle=bg;ctx.fillRect(0,0,L.cardW,L.cardH);
-  ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,Math.min(220,L.cardW*.16),0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,Math.min(300,L.cardW*.2),0,Math.PI*2);ctx.fill();
 
-  const iconR=m.mode==='sparse'?56:50;
-  drawIcon(margin+iconR,66+iconR,iconR,accent,text);
-  const stationX=margin+iconR*2+24;
-  const stationAvail=L.cardW-margin-stationX;
+  ctx.clearRect(0,0,L.cardW,L.cardH);
+  ctx.fillStyle=bg;ctx.fillRect(0,0,L.cardW,L.cardH);
+  ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,220,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,300,0,Math.PI*2);ctx.fill();
+
+  const contentX=(L.cardW-m.contentW)/2;
+  const iconR=50;
+  const stationX=contentX+iconR*2+24;
+  drawIcon(contentX+iconR,66+iconR,iconR,accent,text);
+
+  const stationAvail=contentX+m.contentW-stationX;
   const ss=fit(station,stationAvail,m.station,42,900);
-  ctx.fillStyle=text;ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;ctx.fillText(station,stationX,126);
-  if(handle){ctx.fillStyle=rgba(text,.58);ctx.font='730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(handle,stationX,164)}
+  ctx.fillStyle=text;
+  ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  ctx.fillText(station,stationX,126);
 
-  let y=235;
+  if(handle){
+    ctx.fillStyle=rgba(text,.62);
+    const hs=fit(handle,stationAvail,m.handle,22,730);
+    ctx.font=`730 ${hs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    ctx.fillText(handle,stationX,166);
+  }
+
+  let y=250;
+  const bodyX=stationX;
+  const bodyW=contentX+m.contentW-bodyX;
+
   if(title){
-    let size=m.title;let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;let lines=wrapLines(title,textW,font,4);
-    while(lines.length>3&&size>48){size-=2;font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(title,textW,font,4)}
-    ctx.fillStyle=text;ctx.font=font;lines.forEach(line=>{ctx.fillText(line,margin,y);y+=size*1.08});y+=m.gap;
+    let size=m.title;
+    let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    let lines=wrapLines(title,bodyW,font,4);
+    while(lines.length>2&&size>50){
+      size-=2;
+      font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+      lines=wrapLines(title,bodyW,font,4);
+    }
+    ctx.fillStyle=text;ctx.font=font;
+    lines.slice(0,2).forEach(line=>{ctx.fillText(line,bodyX,y);y+=size*1.08});
+    y+=m.gap;
   }
-  if(time){y=drawMeta('配信時間',time,margin,y,textW,accent,text,m)+m.gap}
-  if(focus){y=drawMeta('重点曲・配信軸',focus,margin,y,textW,accent,text,m)+m.gap}
+  if(time){y=drawMeta('配信時間',time,bodyX,y,bodyW,accent,text,m)+m.gap}
+  if(focus){y=drawMeta('重点曲・配信軸',focus,bodyX,y,bodyW,accent,text,m)+m.gap}
   if(memo){
-    const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;const lines=wrapLines(memo,textW,font,99);
-    ctx.fillStyle=rgba(text,.80);ctx.font=font;lines.forEach(line=>{ctx.fillText(line,margin,y);y+=m.memo*1.42});y+=m.gap;
+    const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    const lines=wrapLines(memo,bodyW,font,99);
+    ctx.fillStyle=rgba(text,.80);ctx.font=font;
+    lines.forEach(line=>{ctx.fillText(line,bodyX,y);y+=m.memo*1.42});
+    y+=m.gap;
   }
-  if(selectedTags.length){y=drawTags(margin,y,textW,accent,text,m)+m.gap}
-  if(accentImage){y+=18;drawAccent(y,L.cardW)}
+  if(selectedTags.length){y=drawTags(bodyX,y,bodyW,accent,text,m)+m.gap}
 
-  ctx.fillStyle=rgba(text,.28);ctx.font='700 14px -apple-system,sans-serif';ctx.textAlign='right';ctx.fillText('STATIONHEAD / STATION GUIDE',L.cardW-40,L.cardH-28);ctx.textAlign='left';
+  if(accentImage){
+    y+=18;
+    drawAccent(y,L.cardW);
+  }
+
+  ctx.fillStyle=rgba(text,.28);
+  ctx.font='700 14px -apple-system,sans-serif';
+  ctx.textAlign='right';ctx.fillText('STATIONHEAD / STATION GUIDE',L.cardW-40,L.cardH-28);ctx.textAlign='left';
 }
 function applyTheme(t,name){$('bgColor').value=t.bg;$('accentColor').value=t.accent;$('textColor').value=t.text;activeThemeName=name||t.name||'';renderThemes();saveDraft();render()}
 function renderThemes(){const memberRoot=$('memberThemes'),customRoot=$('customThemes'),l=libs();memberRoot.innerHTML='';MEMBERS.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;b.append(sw,document.createTextNode(t.name));b.onclick=()=>applyTheme(t,t.name);memberRoot.appendChild(b)});customRoot.innerHTML='';if(!l.themes.length){const em=document.createElement('span');em.className='hint';em.textContent='まだ自由テーマはありません';customRoot.appendChild(em)}else l.themes.forEach(t=>{const item=document.createElement('span');item.className='customThemeItem';const a=document.createElement('button');a.type='button';a.className='applyTheme';const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;a.append(sw,document.createTextNode(t.name));a.onclick=()=>applyTheme(t,t.name);const x=document.createElement('button');x.type='button';x.className='removeTheme';x.textContent='×';x.onclick=()=>{if(!confirm(`「${t.name}」を削除しますか？`))return;const l2=libs();l2.themes=l2.themes.filter(v=>v.name!==t.name);saveLibs(l2)};item.append(a,x);customRoot.appendChild(item)});$('fssTheme').classList.toggle('active',activeThemeName==='FSSブルー')}
