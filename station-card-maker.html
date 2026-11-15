@@ -220,9 +220,9 @@ canvas{display:block;width:100%;height:auto;background:#fff}
 
   <div class="filebox">
     <div class="field" style="margin:0">
-      <label for="mainImageInput">任意の画像</label>
+      <label for="mainImageInput">メイン画像 <span style="font-size:10px;color:#71818b;font-weight:700">推奨</span></label>
       <input id="mainImageInput" type="file" accept="image/*">
-      <div class="hint">自作画像・写真など。なしでもカードは成立します。</div>
+      <div class="hint">自作画像・写真など。入れない場合は、Stationheadアイコンを大きく使ったレイアウトに切り替わります。</div>
     </div>
     <div class="imagePreviewLine">
       <img id="mainThumb" class="mainThumb" alt="">
@@ -248,7 +248,7 @@ canvas{display:block;width:100%;height:auto;background:#fff}
 <section class="card previewWrap">
   <div class="previewHead"><h2>プレビュー</h2><small>1600 × 900 / 16:9</small></div>
   <div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div>
-  <p class="note">カードは「配信タイトル」を主役にして、時間・重点曲は文章の流れの中に置きます。空欄はそのまま消えます。</p>
+  <p class="note">配信タイトルを大きく、時間・重点曲もタイムライン上で読めるサイズにします。メイン画像なしの場合はStationheadアイコンを大きく使います。</p>
 </section>
 </div>
 </main>
@@ -382,18 +382,53 @@ function drawImage(x,y,w,h,accent,text){
   }
   ctx.restore();ctx.strokeStyle=rgba(text,.10);ctx.lineWidth=2;rr(x,y,w,h,34);ctx.stroke()
 }
+function drawIconVisual(x,y,w,h,accent,text){
+  rr(x,y,w,h,42);
+  ctx.save();
+  ctx.clip();
+  ctx.fillStyle=rgba(accent,.10);
+  ctx.fillRect(x,y,w,h);
+
+  const cx=x+w/2,cy=y+h/2;
+  const maxR=Math.min(w,h)*.39;
+  [1,.78,.58].forEach((m,i)=>{
+    ctx.beginPath();
+    ctx.arc(cx,cy,maxR*m,0,Math.PI*2);
+    ctx.fillStyle=rgba(accent,.055 + i*.028);
+    ctx.fill();
+  });
+
+  const iconR=Math.min(w,h)*.24;
+  drawIcon(cx,cy,iconR,accent,text);
+
+  ctx.restore();
+  ctx.strokeStyle=rgba(text,.10);
+  ctx.lineWidth=2;
+  rr(x,y,w,h,42);
+  ctx.stroke();
+}
 function drawMeta(label,value,x,y,w,accent,text){
-  ctx.fillStyle=rgba(text,.46);ctx.font='800 18px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
+  ctx.fillStyle=rgba(accent,.95);
+  ctx.font='900 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
   ctx.fillText(label,x,y);
-  ctx.fillStyle=accent;ctx.fillRect(x,y+15,38,4);
-  const size=fit(value,w,30,22,800);ctx.fillStyle=text;ctx.font=`800 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  ctx.fillText(value,x,y+58);return y+78
+  const size=fit(value,w,38,28,850);
+  ctx.fillStyle=text;
+  ctx.font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  ctx.fillText(value,x,y+48);
+  return y+82
 }
 function drawTags(x,y,maxW,accent,text){
-  let cx=x,cy=y;ctx.font='800 21px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
+  let cx=x,cy=y;
+  ctx.font='800 27px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
   selectedTags.forEach(raw=>{
-    const label='#'+raw,w=ctx.measureText(label).width+32;if(cx+w>x+maxW){cx=x;cy+=44}
-    ctx.fillStyle=rgba(accent,.16);rr(cx,cy,w,34,17);ctx.fill();ctx.fillStyle=text;ctx.fillText(label,cx+16,cy+24);cx+=w+9;
+    const label='#'+raw,w=ctx.measureText(label).width+38;
+    if(cx+w>x+maxW){cx=x;cy+=52}
+    ctx.fillStyle=rgba(accent,.18);
+    rr(cx,cy,w,42,21);
+    ctx.fill();
+    ctx.fillStyle=text;
+    ctx.fillText(label,cx+19,cy+30);
+    cx+=w+11;
   });
 }
 
