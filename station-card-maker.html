@@ -47,7 +47,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / FAN-MADE TOOL <span class="version">最終更新 2026.11.15</span></div><h1>Station紹介カードメーカー</h1><p class="lead">配信のお知らせ画像を作れます。Station情報を登録して、配信内容を入力したら、色や画像を選んでPNGに保存。よく使うカードは丸ごと保存できます。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / FAN-MADE TOOL <span class="version">最終更新 2026.11.16</span></div><h1>Station紹介カードメーカー</h1><p class="lead">配信のお知らせ画像を作れます。Station情報を登録して、配信内容を入力したら、色や画像を選んでPNGに保存。よく使うカードは丸ごと保存できます。</p></section>
 <div class="grid">
 <section class="card">
 <div class="sectionHead"><h2>Station情報</h2><small>最初に一度登録</small></div>
@@ -63,7 +63,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="hint">保存済みカードは端末内に保存されます。端末変更時は下のバックアップを使ってください。</div></div>
 <div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
 <div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="配信時間を入力"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
-<div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><input id="focus" type="text" maxlength="44" placeholder="重点曲や配信テーマを入力"><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
+<div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><textarea id="focus" rows="3" maxlength="220" placeholder="例：&#10;グッタイム&#10;AMENITY&#10;YUME"></textarea><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="hint">1行に1曲ずつ入力できます。改行した位置がカードにも反映されます。</div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
 <div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="補足文を入力"></textarea><button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button></div><div class="recallRow"><select id="memosSelect" data-kind="memos" data-target="memo"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">削除</button></div></div>
 <div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録"><button type="button" class="saveMini" id="addTag">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div>
 
@@ -144,7 +144,7 @@ function renderScalarSelect(kind,selectId){
   select.innerHTML='<option value="">保存済みから選ぶ</option>';
   (l[kind]||[]).forEach(value=>{
     const o=document.createElement('option');
-    o.value=value;o.textContent=value;
+    o.value=value;o.textContent=kind==='focuses'?value.replace(/\s*\n\s*/g,' / '):value;
     select.appendChild(o);
   });
   if((l[kind]||[]).includes(current))select.value=current;
@@ -244,40 +244,37 @@ function wrapLines(value,maxW,font,maxLines=99){
   }
   return out;
 }
-function drawMeta(label,value,x,y,w,accent,text,m){
+function metaTextLayout(label,value,w,m){
   const labelW=220;
+  const valueW=Math.max(140,w-labelW);
+  const isFocus=label==='重点曲・配信軸';
+  let size=m.value;
+  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  let lines=wrapLines(value,valueW,font,99);
+  // 重点曲は入力時の改行をそのまま保持し、文字を小さくして無理に詰めない。
+  // 時間欄は従来どおり、長い場合のみ控えめに縮小する。
+  if(!isFocus){
+    while(lines.length>3&&size>28){
+      size-=2;
+      font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+      lines=wrapLines(value,valueW,font,99);
+    }
+  }
+  const lineH=size*1.2;
+  return {labelW,size,font,lines,lineH,h:Math.max(m.value+10,lines.length*lineH+8)};
+}
+function drawMeta(label,value,x,y,w,accent,text,m){
+  const a=metaTextLayout(label,value,w,m);
   ctx.fillStyle=accent;
   ctx.font=`900 ${m.label}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
   ctx.fillText(label,x,y+m.value);
-
-  let size=m.value;
-  const valueW=Math.max(220,w-labelW);
-  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrapLines(value,valueW,font,99);
-  while(lines.length>3&&size>28){
-    size-=2;
-    font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines=wrapLines(value,valueW,font,3);
-  }
   ctx.fillStyle=text;
-  ctx.font=font;
-  let yy=y+size;
-  lines.forEach((line,i)=>ctx.fillText(line,x+labelW,yy+i*size*1.18));
-  const h=Math.max(m.value+10,lines.length*size*1.18+8);
-  return y+h;
+  ctx.font=a.font;
+  a.lines.forEach((line,i)=>ctx.fillText(line,x+a.labelW,y+a.size+i*a.lineH));
+  return y+a.h;
 }
-function metaHeight(value,w,m){
-  const labelW=220;
-  const valueW=Math.max(220,w-labelW);
-  let size=m.value;
-  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrapLines(value,valueW,font,99);
-  while(lines.length>3&&size>28){
-    size-=2;
-    font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines=wrapLines(value,valueW,font,3);
-  }
-  return Math.max(m.value+10,lines.length*size*1.18+8);
+function metaHeight(label,value,w,m){
+  return metaTextLayout(label,value,w,m).h;
 }
 function drawTags(x,y,maxW,accent,text,m){
   let cx=x,cy=y;
@@ -349,8 +346,8 @@ function layoutBlocks(w,m){
   const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
   const blocks=[];
   if(title){const t=titleLines(title,w,m);blocks.push({kind:'title',...t,h:t.lines.length*t.size*1.12});}
-  if(time)blocks.push({kind:'meta',label:'配信時間',value:time,h:metaHeight(time,w,m)});
-  if(focus)blocks.push({kind:'meta',label:'重点曲・配信軸',value:focus,h:metaHeight(focus,w,m)});
+  if(time)blocks.push({kind:'meta',label:'配信時間',value:time,h:metaHeight('配信時間',time,w,m)});
+  if(focus)blocks.push({kind:'meta',label:'重点曲・配信軸',value:focus,h:metaHeight('重点曲・配信軸',focus,w,m)});
   if(memo){const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;const lines=wrapLines(memo,w,font);blocks.push({kind:'memo',font,lines,h:Math.max(1,lines.length)*m.memo*1.42});}
   if(selectedTags.length){
     ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
