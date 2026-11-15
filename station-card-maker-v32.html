@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef9ff">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Station紹介カードメーカー</title>
+<style>
+:root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:auto;padding:20px 14px 60px}.hero{text-align:center;padding:10px 6px 16px}.kicker{font-size:11px;font-weight:900;letter-spacing:.12em;color:var(--blue3)}.version{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:#d8f2ff;color:#4d788b;letter-spacing:0}h1{margin:6px 0 8px;font-size:28px;line-height:1.25}.lead{margin:0 auto;max-width:760px;color:var(--muted);font-size:13px;line-height:1.7}.grid{display:grid;grid-template-columns:minmax(330px,460px) minmax(0,1fr);gap:14px;align-items:start}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px;box-shadow:0 10px 28px rgba(53,99,120,.08)}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:0 0 10px}.sectionHead:not(:first-child){margin-top:20px}.sectionHead h2{font-size:17px;margin:0}.sectionHead small{font-size:10px;color:var(--muted)}.field{margin:11px 0}.field label{display:block;font-size:12px;font-weight:900;margin-bottom:6px}.req{color:#db6070;font-size:10px;margin-left:5px}.field input[type=text],.field textarea,.field select{width:100%;border:1px solid #cbdce5;border-radius:13px;padding:11px 12px;background:#fff}.field textarea{min-height:84px;resize:vertical;line-height:1.6}.hint{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.55}.row2{display:grid;grid-template-columns:1fr;gap:9px}.libraryRow{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:stretch}.saveMini{border:1px solid #a9d5e8;background:#edf9ff;color:#346d86;border-radius:12px;padding:0 12px;font-size:10px;font-weight:900;white-space:nowrap}.recallRow{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;margin-top:7px}.recallRow select{width:100%;border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#f8fbfc;font-size:11px;color:#536874}.deleteSaved{border:1px solid #efd6d6;background:#fffafa;color:#996565;border-radius:10px;padding:9px 10px;font-size:10px;font-weight:850;white-space:nowrap}.savedArea{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.savedChip{display:inline-flex;align-items:center;gap:3px;border:1px solid var(--line);background:#f8fbfc;border-radius:999px;padding:6px 8px 6px 10px;font-size:10px;color:#536874}.savedChip .pick{border:0;background:transparent;padding:0;font-size:10px;color:inherit}.savedChip .remove{border:0;background:transparent;padding:0 2px;color:#9aa7ae;font-size:13px;line-height:1}.tagLibrary .savedChip.active{background:#dff4fd;border-color:#99d4eb;color:#2f6e89}.filebox{border:1px dashed #b9d3df;border-radius:14px;padding:12px;background:#f9fcfd}.filebox+.filebox{margin-top:9px}.filebox input[type=file]{width:100%}.imagePreviewLine{display:flex;align-items:center;gap:10px;margin-top:9px}.iconThumb{width:58px;height:58px;border-radius:50%;border:1px solid var(--line);object-fit:cover;background:#eef5f8;display:none}.accentThumb{width:76px;height:76px;border-radius:12px;border:1px solid var(--line);object-fit:contain;background:#eef5f8;display:none}.miniBtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 10px;font-size:10px;font-weight:850;color:#536874}.rangeLine{display:grid;grid-template-columns:58px 1fr 32px;gap:7px;align-items:center;margin-top:7px;font-size:10px;color:var(--muted)}.rangeLine input{width:100%}.placementRow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.accentPlacementRow{grid-template-columns:repeat(2,1fr)}.placementRow button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 5px;font-size:10px;font-weight:850;color:#536874}.placementRow button.active{background:#edf9ff;border-color:#9ed6eb;color:#2d667f}.hidden{display:none!important}.colorGroup{border:1px solid var(--line);border-radius:14px;padding:11px;margin-top:9px;background:#fbfdfe}.colorGroupTitle{font-size:11px;font-weight:900;margin-bottom:8px}.themeRow{display:flex;flex-wrap:wrap;gap:8px}.themeBtn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:7px 9px;min-width:64px;font-size:10px;font-weight:850;display:grid;place-items:center;gap:4px}.themeBtn.active{box-shadow:0 0 0 3px rgba(126,193,219,.27);border-color:#8fcfe9}.swatch{width:28px;height:18px;border-radius:6px;border:1px solid rgba(0,0,0,.12)}.customThemeItem{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}.customThemeItem .applyTheme{border:0;background:transparent;padding:7px 9px;font-size:10px;font-weight:850;display:flex;align-items:center;gap:6px}.customThemeItem .removeTheme{border:0;background:#fff8f8;color:#a06a6a;align-self:stretch;padding:0 8px}.customColors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}.colorField{font-size:10px;color:var(--muted)}.colorField input{width:100%;height:38px;border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff;margin-top:4px}.customThemeSave{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:8px}.customThemeSave input{width:100%;border:1px solid #cbdce5;border-radius:11px;padding:9px 10px}.primary,.secondary{border-radius:14px;padding:12px 13px;font-weight:900}.primary{border:0;background:linear-gradient(#bce9fd,#d8f2ff);color:#245c74}.secondary{border:1px solid var(--line);background:#fff;color:#566d79}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.note{font-size:10px;color:var(--muted);line-height:1.6;margin:9px 2px 0}.previewWrap{position:sticky;top:12px}.previewHead{display:flex;justify-content:space-between;gap:10px;align-items:end;margin-bottom:10px}.previewHead h2{margin:0;font-size:17px}.previewHead small{color:var(--muted);font-size:10px}.canvasFrame{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#dfeaf0}canvas{display:block;width:100%;height:auto;background:#fff}.modal{position:fixed;inset:0;background:rgba(0,0,0,.76);z-index:9999;display:none;align-items:flex-start;justify-content:center;padding:calc(20px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));overflow:auto}.modal.show{display:flex}.modalCard{width:min(900px,100%);background:#fff;border-radius:20px;padding:14px}.modalTop{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}.closeBtn{border:0;background:#eef3f5;border-radius:999px;width:38px;height:38px;font-size:18px}.outputImg{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}.saveRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.saveRow a,.saveRow button{text-align:center;text-decoration:none;border-radius:13px;padding:12px;font-weight:900;font-size:13px}.saveRow a{background:#d8f2ff;color:#245c74}.saveRow button{border:1px solid var(--line);background:#fff;color:#556c78}@media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}@media(max-width:500px){.row2,.customColors,.actions,.saveRow{grid-template-columns:1fr}.placementRow{grid-template-columns:repeat(3,1fr)}.accentPlacementRow{grid-template-columns:repeat(2,1fr)}}
+.layoutSettings{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:12px;background:#f9fcfd}.layoutSettings summary{cursor:pointer;font-weight:900;font-size:13px}.layoutSettings .tweak{grid-template-columns:88px minmax(0,1fr) 44px;margin-top:13px}.layoutSettings .tweak b{text-align:right;font-variant-numeric:tabular-nums}
+.presetTagForm{display:grid;grid-template-columns:1fr;gap:7px;margin-top:10px}.presetTagForm select,.presetTagForm input{min-width:0;width:100%;border:1px solid #cbdce5;border-radius:11px;padding:9px 10px;background:#fff;font-size:12px}.presetTagForm .saveMini{padding:9px 12px}.presetThemeTag{display:block;font-size:9px;color:#647987;max-width:105px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.themeBtn{max-width:132px}.presetTagListHint{font-size:11px;color:var(--muted)}
+
+.presetTagsDetails{border-top:1px solid var(--line);margin-top:11px;padding-top:10px}
+.presetTagsDetails summary{font-weight:850;color:#41677a;font-size:12px;cursor:pointer}
+.mutedSmall{font-weight:500;color:var(--muted);font-size:10px}
+.presetTagForm{margin-top:9px;gap:8px}
+.presetTagEntry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}
+.presetTagEntry .saveMini{padding:0 12px}
+.templateGroup{margin:12px 0 18px;background:#f5fbfe}
+.templateNameRow,.templateSelectRow{display:grid;gap:7px;margin-top:9px;grid-template-columns:minmax(0,1fr) auto}
+.templateSelectRow{grid-template-columns:minmax(0,1fr) auto auto}
+.templateNameRow input,.templateSelectRow select{min-width:0;width:100%;border:1px solid #cbdce5;background:white;border-radius:11px;padding:10px;font-size:12px}
+.templateSelectRow button{padding:9px;font-size:10px}
+@media(max-width:500px){.templateSelectRow{grid-template-columns:minmax(0,1fr) auto auto}}
+
+/* 公開用の画面整理。描画・保存処理には触れない */
+.hero{padding:22px 12px 24px}.hero h1{font-size:clamp(22px,4vw,30px);letter-spacing:-.035em}.hero .lead{max-width:590px;font-size:13px;line-height:1.65}
+.grid{grid-template-columns:minmax(350px,500px) minmax(0,1fr);gap:18px}.card{padding:20px;border-radius:20px}
+.sectionHead{margin-bottom:12px}.sectionHead:not(:first-child){margin-top:26px;border-top:1px solid #e7eff3;padding-top:20px}.sectionHead h2{font-size:18px;letter-spacing:-.025em}
+.field{margin:14px 0}.field label{font-size:13px}.hint{font-size:11px;line-height:1.65}.note{font-size:11px}.colorGroup{margin-top:10px;padding:13px}.colorGroupTitle{font-size:12px}
+.themeRow{gap:8px}.themeBtn{min-width:83px;min-height:74px;padding:9px 7px;font-size:11px;align-content:center}.swatch{width:36px;height:22px}
+.optionalColor summary{cursor:pointer;list-style-position:inside;margin-bottom:0}.optionalColor[open] summary{margin-bottom:10px}
+.presetTagsDetails summary{padding:5px 0}.templateGroup{margin:12px 0 20px;padding:14px;background:#f5fbfe}.templateNameRow{margin-top:14px}
+.templateNameRow input,.templateSelectRow select{font-size:14px}.templateNameRow button,.templateSelectRow button{font-size:12px}
+.libraryRow .saveMini,.recallRow .deleteSaved{font-size:11px}.recallRow select{font-size:12px}
+.layoutSettings summary{font-size:13px}.layoutSettings .tweak{grid-template-columns:90px minmax(0,1fr) 44px}
+.primary{min-height:52px;font-size:15px}.secondary{min-height:48px}
+.backupPanel{margin-top:17px}.backupPanel summary{cursor:pointer}.backupActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 8px}.backupActions button,.backupImportButton{min-height:46px;display:flex;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line);border-radius:12px;padding:9px;font-size:12px;font-weight:850}.backupImportButton{background:#edf9ff;color:#346d86;cursor:pointer}#importBackup{width:100%;font-size:11px;max-width:100%}
+@media(max-width:500px){.backupActions{grid-template-columns:1fr}}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #80c5e6;outline-offset:2px}
+@media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}
+@media(max-width:500px){.wrap{padding:12px 11px 48px}.card{padding:15px;border-radius:19px}.hero{padding:18px 8px 22px}.sectionHead h2{font-size:17px}.themeBtn{min-width:79px;min-height:69px}.actions{grid-template-columns:1fr 1fr}.templateNameRow{grid-template-columns:minmax(0,1fr) auto}.templateNameRow .saveMini{padding:0 9px;white-space:normal;max-width:118px}.templateSelectRow{grid-template-columns:minmax(0,1fr) auto auto}.templateSelectRow button{padding:9px 8px}.saveRow{grid-template-columns:1fr 1fr}.customColors{grid-template-columns:repeat(3,1fr)}.rangeLine{grid-template-columns:62px minmax(0,1fr) 36px}.presetTagForm{grid-template-columns:1fr}.recallRow select,.templateSelectRow select{min-width:0}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero"><div class="kicker">STATIONHEAD / FAN-MADE TOOL <span class="version">最終更新 2026.11.16</span></div><h1>Station紹介カードメーカー</h1><p class="lead">配信のお知らせ画像を作れます。Station情報を登録して、配信内容を入力したら、色や画像を選んでPNGに保存。よく使うカードは丸ごと保存できます。</p></section>
+<div class="grid">
+<section class="card">
+<div class="sectionHead"><h2>Station情報</h2><small>最初に一度登録</small></div>
+<div class="row2"><div class="field"><label for="station">Station名<span class="req">必須</span></label><input id="station" type="text" maxlength="28" placeholder="Station名を入力"></div><div class="field"><label for="handle">@ID / 呼び名</label><input id="handle" type="text" maxlength="28" placeholder="IDまたは呼び名を入力"></div></div>
+<div class="filebox"><div class="field" style="margin:0"><label for="iconInput">アイコン画像</label><input id="iconInput" type="file" accept="image/*"><div class="hint">丸く切り抜いて表示します。</div></div><div class="imagePreviewLine"><img id="iconThumb" class="iconThumb" alt=""><button type="button" id="removeIcon" class="miniBtn hidden">アイコンを外す</button></div><div id="iconControls" class="hidden"><div class="rangeLine"><span>横位置</span><input id="iconX" type="range" min="0" max="100" value="50"><b id="iconXVal">50</b></div><div class="rangeLine"><span>縦位置</span><input id="iconY" type="range" min="0" max="100" value="50"><b id="iconYVal">50</b></div></div></div>
+
+<button type="button" id="saveProfile" class="secondary" style="width:100%;margin-top:10px">基本情報を保存</button>
+
+<div class="sectionHead"><h2>配信カードを作る</h2><small>必要な項目だけ入力</small></div><div class="colorGroup templateGroup"><div class="colorGroupTitle">保存済みのカードを使う・新しく保存</div>
+<div class="hint">同じ配信のカードを再利用できます。保存後も内容を変えられます。</div>
+<div class="templateNameRow"><input id="templateName" type="text" maxlength="36" placeholder="保存名（例：朝の定常配信）"><button type="button" id="saveTemplate" class="saveMini">このカードを保存</button></div>
+<div class="templateSelectRow"><select id="templateSelect" aria-label="保存済みカード"><option value="">保存済みカードを選択</option></select><button type="button" id="loadTemplate" class="miniBtn">呼び出す</button><button type="button" id="deleteTemplate" class="deleteSaved">削除</button></div>
+<div class="hint">保存済みカードは端末内に保存されます。端末変更時は下のバックアップを使ってください。</div></div>
+<div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
+<div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="配信時間を入力"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
+<div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><textarea id="focus" rows="3" maxlength="220" placeholder="例：&#10;グッタイム&#10;AMENITY&#10;YUME"></textarea><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="hint">1行に1曲ずつ入力できます。改行した位置がカードにも反映されます。</div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
+<div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="補足文を入力"></textarea><button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button></div><div class="recallRow"><select id="memosSelect" data-kind="memos" data-target="memo"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">削除</button></div></div>
+<div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録"><button type="button" class="saveMini" id="addTag">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div>
+
+<div class="sectionHead"><h2>カードの色</h2><small>選ぶだけで反映</small></div>
+<div class="colorGroup"><div class="colorGroupTitle">FSSブルー・共通カラー</div>
+<div class="themeRow"><button type="button" class="themeBtn" id="fssTheme"><span class="swatch" style="background:#d6f4ff"></span>FSS</button><div id="sharedThemes" class="themeRow"></div></div>
+<details class="presetTagsDetails" id="presetTagsDetails"><summary>この9色の用途タグを設定 <span class="mutedSmall">（色名とは別の目印）</span></summary>
+<div class="hint">色を選ぶと編集対象も切り替わります。登録したタグは色ボタンの下に表示されます（画像には入りません）。</div>
+<div class="presetTagForm"><select id="presetTagTheme" aria-label="用途タグを付ける色"></select><div class="presetTagEntry"><input id="presetTagInput" type="text" maxlength="22" placeholder="用途タグ（例：定常配信）"><button type="button" id="presetTagAdd" class="saveMini">追加</button></div></div>
+<div class="savedArea" id="presetTagList"></div></details></div>
+<div class="colorGroup"><div class="colorGroupTitle">メンカラ × 9</div><div id="memberThemes" class="themeRow"></div></div>
+
+
+
+
+<details class="colorGroup optionalColor"><summary class="colorGroupTitle">自由色を作る・保存する</summary><div id="customThemes" class="themeRow"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"></label></div><div class="customThemeSave"><input id="themeName" type="text" maxlength="20" placeholder="色テーマ名を入力"><button type="button" id="saveTheme" class="saveMini">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></details>
+<div class="filebox"><div class="field" style="margin:0"><label for="accentImageInput">アクセント画像 <span style="font-size:10px;color:#71818b;font-weight:700">任意</span></label><input id="accentImageInput" type="file" accept="image/*"><div class="hint">画像を本文の下または右に配置できます。「背面」は文字の後ろに重ねます。画像の縦横比は維持します。</div></div><div class="imagePreviewLine"><img id="accentThumb" class="accentThumb" alt=""><button type="button" id="removeAccent" class="miniBtn hidden">画像を外す</button></div><div id="accentControls" class="hidden"><div class="placementRow accentPlacementRow"><button type="button" data-accent-place="bottom" class="active">下に配置</button><button type="button" data-accent-place="side">右に配置</button><button type="button" data-accent-place="right">右背面</button><button type="button" data-accent-place="bottomBack">下背面</button></div><div class="rangeLine"><span>大きさ</span><input id="accentScale" type="range" min="50" max="100" value="100"><b id="accentScaleVal">100</b></div><div class="rangeLine"><span>濃さ</span><input id="accentOpacity" type="range" min="25" max="100" value="100"><b id="accentOpacityVal">100</b></div></div></div>
+
+
+<details class="layoutSettings" id="layoutSettings"><summary>カードの大きさ・配置を微調整</summary>
+<div class="hint">基本は自動調整です。必要な項目だけ動かせます。文字や画像がカードからはみ出さない範囲に制限しています。</div>
+<div class="rangeLine tweak"><span>カード幅</span><input id="layoutWidth" type="range" min="900" max="1600" step="50" value="1200"><b id="layoutWidthVal">1200</b></div>
+<div class="rangeLine tweak"><span>下余白</span><input id="layoutHeight" type="range" min="0" max="280" step="10" value="0"><b id="layoutHeightVal">0</b></div>
+<div class="rangeLine tweak"><span>文字の左右</span><input id="layoutX" type="range" min="-40" max="120" step="10" value="0"><b id="layoutXVal">0</b></div>
+<div class="rangeLine tweak"><span>文字の上下</span><input id="layoutY" type="range" min="-25" max="100" step="5" value="0"><b id="layoutYVal">0</b></div>
+<div class="rangeLine tweak"><span>項目の間隔</span><input id="layoutGap" type="range" min="-10" max="40" step="5" value="0"><b id="layoutGapVal">0</b></div>
+<div class="hint">アクセント画像の位置（画像を入れた場合に反映）</div>
+<div class="rangeLine tweak"><span>画像の左右</span><input id="layoutImageX" type="range" min="-120" max="120" step="10" value="0"><b id="layoutImageXVal">0</b></div>
+<div class="rangeLine tweak"><span>画像の上下</span><input id="layoutImageY" type="range" min="-100" max="100" step="10" value="0"><b id="layoutImageYVal">0</b></div>
+<button type="button" class="miniBtn" id="resetLayout" style="margin-top:12px">配置を初期値に戻す</button>
+</details>
+<details class="colorGroup backupPanel" id="backupPanel"><summary class="colorGroupTitle">設定のバックアップ・端末引き継ぎ</summary>
+<div class="hint">保存済みカード・アイコンやアクセント画像・色テーマ・タグ・保存候補・現在の編集中カードをまとめて引き継ぎます。</div>
+<div class="backupActions"><button type="button" id="exportBackup" class="secondary">バックアップを書き出す</button><label class="backupImportButton" for="importBackup">バックアップを読み込む</label></div>
+<input id="importBackup" type="file" accept=".json,application/json" aria-label="バックアップJSONファイルを選択">
+<div class="hint">読み込み時はこの端末の保存済みデータが置き換わります。必要なら先に書き出してください。バックアップには画像やStation情報が含まれるため、ファイルの共有先にご注意ください。</div>
+</details>
+<div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">入力内容をクリア</button></div><p class="note">入力内容と保存済みカードは、このブラウザ内に保存されます。公開・共有されることはありません。</p>
+</section>
+
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">入力するとプレビューが更新されます。カード幅や配置は「微調整」から変更できます。</p></section>
+</div></main>
+
+<div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
+
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
+const PROFILE_KEY='fssStationProfileV16',LIB_KEY='fssStationLibrariesV16',DRAFT_KEY='fssStationDraftV16',PRESET_TAG_KEY='fssStationPresetTagsV24',CARD_LIBRARY_KEY='fssStationWholeCardsV25';
+const FSS={name:'FSSブルー',bg:'#f5fbff',accent:'#7fc8e8',text:'#263640'};
+const SHARED=[
+{name:'ディープターコイズ',bg:'#ecfaf7',accent:'#008b81',text:'#174441'},
+{name:'ミルクティー',bg:'#fffaf1',accent:'#d6b48b',text:'#514334'},
+{name:'ライムソーダ',bg:'#f8fce9',accent:'#a4c935',text:'#38431d'},
+{name:'テラコッタ',bg:'#fff6f0',accent:'#c47852',text:'#553a2b'},
+// 高彩度の告知用カラー。メンカラとは背景との強いコントラストで差別化。
+{name:'ネオンライム',bg:'#111a27',accent:'#d9ff27',text:'#f8fff0'},
+{name:'ショッキングピンク',bg:'#1a1030',accent:'#ff2bbf',text:'#fff3fc'},
+{name:'エレクトリックシアン',bg:'#191337',accent:'#00f0ed',text:'#f3ffff'},
+{name:'フラッシュオレンジ',bg:'#182333',accent:'#ff783a',text:'#fff8ed'}
+];
+const MEMBERS=[
+{name:'黄',bg:'#fffbea',accent:'#f0cf45',text:'#37331f'},
+{name:'紫',bg:'#f8f2ff',accent:'#8e6ac1',text:'#322a3c'},
+{name:'白',bg:'#f7f8fa',accent:'#d6dbe2',text:'#30343a'},
+{name:'青',bg:'#eff8ff',accent:'#5ea7df',text:'#253645'},
+{name:'橙',bg:'#fff5e9',accent:'#ef963a',text:'#403024'},
+{name:'緑',bg:'#effaf3',accent:'#56b878',text:'#263a2e'},
+{name:'黒',bg:'#f1f2f3',accent:'#35383d',text:'#202225'},
+{name:'赤',bg:'#fff0f0',accent:'#d95555',text:'#412727'},
+{name:'桃',bg:'#fff1f7',accent:'#ef8bb7',text:'#432b36'}
+];
+let iconImage=null,iconData='',accentImage=null,accentData='',accentPlacement='bottom',selectedTags=[],activeThemeName='FSSブルー';
+function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(_){return fallback}}
+function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}}
+function libs(){const r=read(LIB_KEY,null)||read('fssStationLibrariesV14',null)||read('fssStationLibrariesV13',null)||read('fssStationLibrariesV12',null)||read('fssStationLibrariesV11',null)||read('fssStationLibrariesV10',{})||{};return{titles:Array.isArray(r.titles)?r.titles:[],times:Array.isArray(r.times)?r.times:[],focuses:Array.isArray(r.focuses)?r.focuses:[],memos:Array.isArray(r.memos)?r.memos:[],tags:Array.isArray(r.tags)?r.tags:[],themes:Array.isArray(r.themes)?r.themes:[]}}
+function saveLibs(v){write(LIB_KEY,v);renderLibraries();renderThemes()}
+function unique(arr,v){v=String(v||'').trim();return v?[v,...arr.filter(x=>x!==v)].slice(0,40):arr}
+function renderScalarSelect(kind,selectId){
+  const select=$(selectId),l=libs();
+  if(!select)return;
+  const current=select.value;
+  select.innerHTML='<option value="">保存済みから選ぶ</option>';
+  (l[kind]||[]).forEach(value=>{
+    const o=document.createElement('option');
+    o.value=value;o.textContent=kind==='focuses'?value.replace(/\s*\n\s*/g,' / '):value;
+    select.appendChild(o);
+  });
+  if((l[kind]||[]).includes(current))select.value=current;
+}
+function renderTags(){
+  const root=$('tagsLibrary'),l=libs();
+  if(!root)return;
+  root.innerHTML='';
+  (l.tags||[]).forEach(value=>{
+    const chip=document.createElement('span');
+    chip.className='savedChip'+(selectedTags.includes(value)?' active':'');
+    const pick=document.createElement('button');
+    pick.type='button';pick.className='pick';pick.textContent='#'+value;
+    pick.onclick=()=>{
+      selectedTags=selectedTags.includes(value)
+        ? selectedTags.filter(x=>x!==value)
+        : [...selectedTags,value];
+      saveDraft();
+      renderTags();
+      render();
+    };
+    const del=document.createElement('button');
+    del.type='button';del.className='remove';del.textContent='×';
+    del.onclick=e=>{
+      e.stopPropagation();
+      const l2=libs();
+      l2.tags=(l2.tags||[]).filter(x=>x!==value);
+      selectedTags=selectedTags.filter(x=>x!==value);
+      saveLibs(l2);
+      saveDraft();
+      render();
+    };
+    chip.append(pick,del);
+    root.appendChild(chip);
+  });
+}
+function renderLibraries(){
+  renderScalarSelect('titles','titlesSelect');
+  renderScalarSelect('times','timesSelect');
+  renderScalarSelect('focuses','focusesSelect');
+  renderScalarSelect('memos','memosSelect');
+  renderTags();
+}
+function rr(x,y,w,h,r){const q=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+q,y);ctx.arcTo(x+w,y,x+w,y+h,q);ctx.arcTo(x+w,y+h,x,y+h,q);ctx.arcTo(x,y+h,x,y,q);ctx.arcTo(x,y,x+w,y,q);ctx.closePath()}
+function rgba(hex,a){let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16);return Number.isNaN(n)?`rgba(0,0,0,${a})`:`rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
+function wrap(text,max,font){ctx.font=font;let line='';const out=[];for(const ch of [...String(text||'')]){const t=line+ch;if(line&&ctx.measureText(t).width>max){out.push(line);line=ch}else line=t}if(line)out.push(line);return out}
+function fit(text,max,start,min,weight=800){let s=start;while(s>min){ctx.font=`${weight} ${s}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;if(ctx.measureText(text).width<=max)break;s-=2}return s}
+function resizeData(file,maxSide=360,q=.86){return new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=reject;r.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const sc=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*sc),h=Math.round(img.naturalHeight*sc);const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL(file.type==='image/png'?'image/png':'image/jpeg',q))};img.src=r.result};r.readAsDataURL(file)})}
+function loadData(data,cb){if(!data){cb(null);return}const i=new Image();i.onload=()=>cb(i);i.onerror=()=>cb(null);i.src=data}
+function drawIcon(cx,cy,r,accent,text){ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=rgba(accent,.16);ctx.fillRect(cx-r,cy-r,r*2,r*2);if(iconImage){const iw=iconImage.naturalWidth||iconImage.width,ih=iconImage.naturalHeight||iconImage.height,sc=Math.max(r*2/iw,r*2/ih),dw=iw*sc,dh=ih*sc,px=+$('iconX').value/100,py=+$('iconY').value/100;ctx.drawImage(iconImage,cx-r+(r*2-dw)*px,cy-r+(r*2-dh)*py,dw,dh)}else{ctx.fillStyle=rgba(text,.55);ctx.font='900 42px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((($('station').value.trim()||'S')[0]||'S').toUpperCase(),cx,cy+1);ctx.textAlign='left';ctx.textBaseline='alphabetic'}ctx.restore();ctx.strokeStyle=rgba(text,.12);ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke()}
+function layoutMode(){
+  const title=$('title').value.trim();
+  const time=$('time').value.trim();
+  const focus=$('focus').value.trim();
+  const memo=$('memo').value.trim();
+  const fieldCount=[title,time,focus,memo].filter(Boolean).length+(selectedTags.length?1:0);
+  const chars=title.length+time.length+focus.length+memo.length+selectedTags.reduce((n,v)=>n+v.length,0);
+  if(chars<=72&&fieldCount<=4)return 'sparse';
+  if(chars>=210||memo.length>=120||selectedTags.length>=6)return 'dense';
+  return 'normal';
+}
+function metrics(){
+  return {
+    station:54,
+    handle:26,
+    title:60,
+    label:22,
+    value:34,
+    memo:29,
+    tag:24,
+    gap:22,
+    minH:440,
+    cardW:1600,
+    contentW:1320,
+    accentW:1424
+  };
+}
+function textWidth(value,font){if(!value)return 0;ctx.font=font;return ctx.measureText(value).width}
+function widestMemoLine(value,font){
+  if(!value)return 0;
+  return String(value).split(/\n+/).reduce((m,line)=>Math.max(m,textWidth(line,font)),0);
+}
+function wrapLines(value,maxW,font,maxLines=99){
+  const paras=String(value||'').split(/\n/);
+  const out=[];
+  ctx.font=font;
+  for(const para of paras){
+    if(para===''){out.push('');continue}
+    let line='';
+    for(const ch of [...para]){
+      const t=line+ch;
+      if(line&&ctx.measureText(t).width>maxW){out.push(line);line=ch;if(out.length>=maxLines)return out}
+      else line=t;
+    }
+    if(line)out.push(line);
+    if(out.length>=maxLines)return out;
+  }
+  return out;
+}
+function metaTextLayout(label,value,w,m){
+  const labelW=220;
+  const valueW=Math.max(140,w-labelW);
+  const isFocus=label==='重点曲・配信軸';
+  let size=m.value;
+  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  let lines=wrapLines(value,valueW,font,99);
+  // 重点曲は入力時の改行をそのまま保持し、文字を小さくして無理に詰めない。
+  // 時間欄は従来どおり、長い場合のみ控えめに縮小する。
+  if(!isFocus){
+    while(lines.length>3&&size>28){
+      size-=2;
+      font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+      lines=wrapLines(value,valueW,font,99);
+    }
+  }
+  const lineH=size*1.2;
+  return {labelW,size,font,lines,lineH,h:Math.max(m.value+10,lines.length*lineH+8)};
+}
+function drawMeta(label,value,x,y,w,accent,text,m){
+  const a=metaTextLayout(label,value,w,m);
+  ctx.fillStyle=accent;
+  ctx.font=`900 ${m.label}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  ctx.fillText(label,x,y+m.value);
+  ctx.fillStyle=text;
+  ctx.font=a.font;
+  a.lines.forEach((line,i)=>ctx.fillText(line,x+a.labelW,y+a.size+i*a.lineH));
+  return y+a.h;
+}
+function metaHeight(label,value,w,m){
+  return metaTextLayout(label,value,w,m).h;
+}
+function drawTags(x,y,maxW,accent,text,m){
+  let cx=x,cy=y;
+  ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  selectedTags.forEach(raw=>{
+    const label='#'+raw,w=ctx.measureText(label).width+42;
+    if(cx+w>x+maxW){cx=x;cy+=m.tag+28}
+    ctx.fillStyle=rgba(accent,.18);rr(cx,cy,w,m.tag+18,(m.tag+18)/2);ctx.fill();
+    ctx.fillStyle=text;ctx.fillText(label,cx+21,cy+m.tag+3);
+    cx+=w+12;
+  });
+  return cy+m.tag+20;
+}
+function accentBottomWidth(cardW){
+  const pct=Math.max(50,Math.min(100,+$('accentScale').value||100));
+  return Math.round(Math.min(cardW-180,1040)*pct/100);
+}
+function accentBottomHeight(cardW){
+  if(!accentImage)return 0;
+  const iw=accentImage.naturalWidth||accentImage.width||1;
+  const ih=accentImage.naturalHeight||accentImage.height||1;
+  return Math.round(accentBottomWidth(cardW)*ih/iw);
+}
+function drawAccentBottom(y,cardW){
+  if(!accentImage)return y;
+  const width=accentBottomWidth(cardW),height=accentBottomHeight(cardW),x=(cardW-width)/2;
+  ctx.save();ctx.globalAlpha=+$('accentOpacity').value/100;ctx.drawImage(accentImage,x,y,width,height);ctx.restore();
+  return y+height;
+}
+function accentRightSize(cardW,cardH){
+  const pct=Math.max(50,Math.min(100,+$('accentScale').value||100));
+  const iw=accentImage?.naturalWidth||accentImage?.width||1;
+  const ih=accentImage?.naturalHeight||accentImage?.height||1;
+  const maxW=Math.min(cardW*.34,360+(pct-50)/50*300);
+  const maxH=Math.max(240,cardH-110);
+  const sc=Math.min(maxW/iw,maxH/ih);
+  return {w:iw*sc,h:ih*sc};
+}
+function drawAccentRight(cardW,cardH){
+  if(!accentImage)return;
+  let {w,h}=accentRightSize(cardW,cardH);
+  const isSide=accentPlacement==='side';
+  let minX=cardW*.59;
+  if(isSide){
+    const L=measureSideTextBounds(cardW);
+    minX=Math.max(minX,L.right+22);
+    const available=Math.max(80,cardW-36-minX);
+    if(w>available){const ratio=available/w;w*=ratio;h*=ratio}
+  }
+  const x=Math.min(cardW-28-w,Math.max(minX,cardW-60-w+layoutVal('layoutImageX')));
+  const y=Math.max(26,Math.min(cardH-h-26,(cardH-h)/2+layoutVal('layoutImageY')));
+  ctx.save();ctx.globalAlpha=+$('accentOpacity').value/100;
+  ctx.drawImage(accentImage,x,y,w,h);ctx.restore();
+}
+// 下背面はカードの高さを増やさず、下部に画像を置いてから文字を描画する。
+function drawAccentBottomBackground(cardW,cardH){
+  if(!accentImage)return;
+  const iw=accentImage.naturalWidth||accentImage.width||1;
+  const ih=accentImage.naturalHeight||accentImage.height||1;
+  const pct=Math.max(50,Math.min(100,Number($('accentScale').value)||100))/100;
+  const maxW=Math.min(cardW-90,cardW*.80)*pct;
+  const maxH=Math.max(150,cardH*.55)*pct;
+  const sc=Math.min(maxW/iw,maxH/ih);
+  const w=iw*sc,h=ih*sc;
+  const x=Math.max(20,Math.min(cardW-w-20,(cardW-w)/2+layoutVal('layoutImageX')));
+  const y=Math.max(20,Math.min(cardH-h-18,cardH-h-35+layoutVal('layoutImageY')));
+  ctx.save();
+  ctx.globalAlpha=Number($('accentOpacity').value)/100;
+  ctx.drawImage(accentImage,x,y,w,h);
+  ctx.restore();
+}
+function measureSideTextBounds(cardW){
+  const contentX=Math.max(48,Math.min(cardW*.25,85+layoutVal('layoutX')));
+  const bodyX=contentX+124;
+  const bodyW=Math.max(300,Math.min(580,cardW-bodyX-Math.max(290,cardW*.37)));
+  return {right:bodyX+bodyW};
+}
+function drawEmptyAccentArea(cardW,cardH,accent){
+  // 図形や境界線を作らず、カード全面に連続する淡い横グラデーション。
+  const grad=ctx.createLinearGradient(cardW*.38,0,cardW,0);
+  grad.addColorStop(0,rgba(accent,0));
+  grad.addColorStop(.32,rgba(accent,.035));
+  grad.addColorStop(.68,rgba(accent,.105));
+  grad.addColorStop(1,rgba(accent,.19));
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,cardW,cardH);
+}
+// 計測と描画の双方が同じテキスト幅・折り返しを使用する。
+function titleLines(title,w,m){
+  let size=m.title, font='',lines=[];
+  do{
+    font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    lines=wrapLines(title,w,font,99);
+    if(lines.length<=2||size<=44)break;
+    size-=2;
+  }while(true);
+  return {size,font,lines};
+}
+function layoutBlocks(w,m){
+  const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
+  const blocks=[];
+  if(title){const t=titleLines(title,w,m);blocks.push({kind:'title',...t,h:t.lines.length*t.size*1.12});}
+  if(time)blocks.push({kind:'meta',label:'配信時間',value:time,h:metaHeight('配信時間',time,w,m)});
+  if(focus)blocks.push({kind:'meta',label:'重点曲・配信軸',value:focus,h:metaHeight('重点曲・配信軸',focus,w,m)});
+  if(memo){const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;const lines=wrapLines(memo,w,font);blocks.push({kind:'memo',font,lines,h:Math.max(1,lines.length)*m.memo*1.42});}
+  if(selectedTags.length){
+    ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    let used=0,rows=1;
+    selectedTags.forEach(raw=>{const width=ctx.measureText('#'+raw).width+42;if(used&&used+width>w){rows++;used=0;}used+=width+12;});
+    blocks.push({kind:'tags',h:rows*(m.tag+28)});
+  }
+  return blocks;
+}
+function layoutVal(id){return Number($(id)?.value||0)}
+function measureLayout(){
+  const m=metrics(),cardW=layoutVal('layoutWidth')||1200;
+  const hasRight=!!accentImage&&(accentPlacement==='right'||accentPlacement==='side');
+  const hasBottom=!!accentImage&&accentPlacement==='bottom';
+  const noAccent=!accentImage;
+  const contentX=Math.max(48,Math.min(cardW*.25,(hasRight?85:78)+layoutVal('layoutX'))), iconR=50,bodyX=contentX+124;
+  // 右に画像がある場合は文字を専用の左側領域に収める。画像がない時は少し左へ寄せる。
+  const bodyW=hasRight?Math.max(300,Math.min(580,cardW-bodyX-Math.max(290,cardW*.37))):Math.max(300,cardW-bodyX-90);
+  const blocks=layoutBlocks(bodyW,m);
+  const gap=Math.max(8,(blocks.length>3?18:24)+layoutVal('layoutGap'));
+  const bodyTop=Math.max(185,214+layoutVal('layoutY'));
+  const bodyH=blocks.reduce((sum,b)=>sum+b.h,0)+Math.max(0,blocks.length-1)*gap;
+  const bottomImage=!!accentImage&&accentPlacement==='bottom';
+  const bottomGap=bottomImage?30:0;
+  const bottomH=bottomImage?accentBottomHeight(cardW):0;
+  const contentEnd=blocks.length?bodyTop+bodyH:170;
+  const sideH=accentImage&&accentPlacement==='side'?accentRightSize(cardW,Math.max(500,contentEnd+100)).h:0;
+  const sideEnd=accentPlacement==='side'?Math.max(contentEnd,Math.max(26,layoutVal('layoutImageY')+26)+sideH):contentEnd;
+  const imageEnd=bottomImage?contentEnd+bottomGap+Math.max(0,layoutVal('layoutImageY'))+bottomH:sideEnd;
+  // 上下に適度な余裕を確保する。描画内容そのものを高さの基準にする。
+  const cardH=Math.max(m.minH,Math.ceil(imageEnd+(bottomImage?72:94)+layoutVal('layoutHeight')));
+  return {m,cardW,cardH,contentX,bodyX,bodyW,blocks,gap,bodyTop,bodyH,bottomImage,bottomGap};
+}
+function render(){
+  const bg=$('bgColor').value,accent=$('accentColor').value,text=$('textColor').value;
+  const station=$('station').value.trim()||'Station name',handle=$('handle').value.trim();
+  const L=measureLayout(),m=L.m;
+  if(canvas.width!==L.cardW)canvas.width=L.cardW;
+  if(canvas.height!==L.cardH)canvas.height=L.cardH;
+  $('previewSize').textContent=`${L.cardW} × ${L.cardH}`;
+  ctx.clearRect(0,0,L.cardW,L.cardH);
+  ctx.fillStyle=bg;ctx.fillRect(0,0,L.cardW,L.cardH);
+  if(!accentImage){
+    drawEmptyAccentArea(L.cardW,L.cardH,accent);
+  }else{
+    ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,220,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,300,0,Math.PI*2);ctx.fill();
+  }
+  if(accentImage&&accentPlacement==='right')drawAccentRight(L.cardW,L.cardH);
+  if(accentImage&&accentPlacement==='bottomBack')drawAccentBottomBackground(L.cardW,L.cardH);
+
+  const iconR=50,stationX=L.bodyX;
+  drawIcon(L.contentX+iconR,54+iconR,iconR,accent,text);
+  const stationAvail=(accentImage&&(accentPlacement==='right'||accentPlacement==='side')?L.bodyW:L.cardW-stationX-70);
+  const ss=fit(station,stationAvail,m.station,42,900);
+  ctx.fillStyle=text;
+  ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  ctx.fillText(station,stationX,112);
+  if(handle){
+    ctx.fillStyle=rgba(text,.62);
+    const hs=fit(handle,stationAvail,m.handle,22,730);
+    ctx.font=`730 ${hs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    ctx.fillText(handle,stationX,150);
+  }
+  let y=L.bodyTop;
+  L.blocks.forEach((b,i)=>{
+    if(b.kind==='title'){
+      ctx.fillStyle=text;ctx.font=b.font;
+      b.lines.forEach(line=>{ctx.fillText(line,L.bodyX,y);y+=b.size*1.12;});
+    }else if(b.kind==='meta'){
+      y=drawMeta(b.label,b.value,L.bodyX,y,L.bodyW,accent,text,m);
+    }else if(b.kind==='memo'){
+      ctx.fillStyle=rgba(text,.80);ctx.font=b.font;
+      b.lines.forEach(line=>{ctx.fillText(line,L.bodyX,y+m.memo);y+=m.memo*1.42;});
+    }else if(b.kind==='tags'){
+      drawTags(L.bodyX,y,L.bodyW,accent,text,m);y+=b.h;
+    }
+    if(i<L.blocks.length-1)y+=L.gap;
+  });
+  if(L.bottomImage){y+=L.bottomGap+layoutVal('layoutImageY');drawAccentBottom(Math.max(30,y),L.cardW);}
+  if(accentImage&&accentPlacement==='side')drawAccentRight(L.cardW,L.cardH);
+  // フッターはレイアウト幅・最低高さを決める要素にしない。
+  ctx.fillStyle=rgba(text,.28);ctx.font='700 14px -apple-system,sans-serif';
+  ctx.textAlign='right';ctx.fillText('STATIONHEAD / STATION GUIDE',L.cardW-40,L.cardH-28);ctx.textAlign='left';
+}
+function presetTags(){const stored=read(PRESET_TAG_KEY,{});return stored&&typeof stored==='object'&&!Array.isArray(stored)?stored:{}}
+function presetTagValues(name){const a=presetTags()[name];return Array.isArray(a)?a.filter(x=>typeof x==='string'):[]}
+function drawPresetTagList(){
+  const sel=$('presetTagTheme'),root=$('presetTagList');if(!sel||!root)return;
+  const name=sel.value;root.innerHTML='';
+  const items=presetTagValues(name);
+  if(!items.length){const hint=document.createElement('span');hint.className='presetTagListHint';hint.textContent='この色の用途タグは未登録です';root.appendChild(hint);return}
+  items.forEach(tag=>{
+    const chip=document.createElement('span');chip.className='savedChip';
+    const label=document.createElement('span');label.textContent='#'+tag;
+    const remove=document.createElement('button');remove.type='button';remove.className='remove';remove.textContent='×';remove.title='タグを削除';
+    remove.onclick=()=>{const all=presetTags();all[name]=presetTagValues(name).filter(x=>x!==tag);write(PRESET_TAG_KEY,all);drawPresetTagList();renderThemes()};
+    chip.append(label,remove);root.appendChild(chip);
+  });
+}
+function setupPresetTagEditor(){
+  const sel=$('presetTagTheme');
+  [FSS,...SHARED].forEach(t=>{const o=document.createElement('option');o.value=t.name;o.textContent=t.name;sel.appendChild(o)});
+  sel.onchange=drawPresetTagList;
+  const add=()=>{const input=$('presetTagInput'),tag=input.value.trim().replace(/^#+/,'');if(!tag)return;
+    const all=presetTags(),name=sel.value;all[name]=[...new Set([...presetTagValues(name),tag])].slice(0,8);
+    if(write(PRESET_TAG_KEY,all)){input.value='';drawPresetTagList();renderThemes()}else alert('タグを保存できませんでした。');
+  };
+  $('presetTagAdd').onclick=add;
+  $('presetTagInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();add()}};
+  drawPresetTagList();
+}
+function wholeCardData(){
+  return {station:$('station').value,handle:$('handle').value,iconData,iconX:$('iconX').value,iconY:$('iconY').value,
+    title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags:[...selectedTags],
+    activeThemeName,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,
+    accentData,accentPlacement,accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,
+    layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))};
+}
+function wholeCards(){const data=read(CARD_LIBRARY_KEY,[]);return Array.isArray(data)?data:[]}
+function renderWholeCards(chosen=''){
+  const sel=$('templateSelect');sel.innerHTML='<option value="">保存済みカードを選択</option>';
+  wholeCards().forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op)});
+  if(chosen&&wholeCards().some(c=>c.name===chosen))sel.value=chosen;
+}
+function setIconFromData(data){
+  iconData=data||'';iconImage=null;$('iconInput').value='';$('iconThumb').style.display='none';
+  $('removeIcon').classList.add('hidden');$('iconControls').classList.add('hidden');
+  if(!iconData){render();return}
+  loadData(iconData,img=>{iconImage=img;if(img){$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden')}render()});
+}
+function setAccentFromData(data){
+  accentData=data||'';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';
+  $('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');
+  if(!accentData){render();return}
+  loadData(accentData,img=>{accentImage=img;if(img){$('accentThumb').src=accentData;$('accentThumb').style.display='block';$('removeAccent').classList.remove('hidden');$('accentControls').classList.remove('hidden')}render()});
+}
+function loadWholeCard(c){
+  if(!c||!c.data)return;
+  const d=c.data;
+  ['station','handle','iconX','iconY','title','time','focus','memo','bgColor','accentColor','textColor','accentScale','accentOpacity'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});
+  selectedTags=Array.isArray(d.selectedTags)?[...d.selectedTags]:[];
+  activeThemeName=d.activeThemeName||'';accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';
+  if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null)$(id).value=d.layoutPrefs[id]});
+  document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));
+  setIconFromData(d.iconData);setAccentFromData(d.accentData);
+  if([FSS,...SHARED].some(v=>v.name===activeThemeName)){$('presetTagTheme').value=activeThemeName;drawPresetTagList()}
+  sync();renderTags();renderThemes();saveDraft();render();
+}
+function setupWholeCardLibrary(){
+  renderWholeCards();
+  $('saveTemplate').onclick=()=>{
+    const name=$('templateName').value.trim();if(!name){alert('保存名を入力してください。');return}
+    const cards=wholeCards(),existing=cards.find(c=>c.name===name);
+    if(existing&&!confirm('同じ名前のカードを上書きしますか？'))return;
+    const next=[{name,data:wholeCardData()},...cards.filter(c=>c.name!==name)];
+    if(write(CARD_LIBRARY_KEY,next)){renderWholeCards(name);alert('カードを保存しました。')}else alert('カードを保存できませんでした。画像が大きすぎる、またはブラウザの保存容量が不足している可能性があります。');
+  };
+  $('loadTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('呼び出すカードを選択してください。');return}const c=wholeCards().find(v=>v.name===name);if(c){loadWholeCard(c);$('templateName').value=name;}};
+  $('deleteTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('削除するカードを選択してください。');return}if(!confirm('「'+name+'」を削除しますか？'))return;if(write(CARD_LIBRARY_KEY,wholeCards().filter(c=>c.name!==name))){renderWholeCards();if($('templateName').value===name)$('templateName').value='';}};
+}
+// JSONバックアップ。既存キーをそのまま使用し、他サイトのデータにはアクセスしない。
+const BACKUP_KEYS=[PROFILE_KEY,LIB_KEY,DRAFT_KEY,PRESET_TAG_KEY,CARD_LIBRARY_KEY];
+const BACKUP_FORMAT='station-card-maker-backup';
+function backupPayload(){
+  const stored={};
+  for(const key of BACKUP_KEYS){const raw=localStorage.getItem(key);stored[key]=raw===null?null:JSON.parse(raw)}
+  // 旧バージョンのキーから読み込まれていた保存候補もバックアップに含める。
+  stored[LIB_KEY]=libs();
+  stored[PRESET_TAG_KEY]=presetTags();
+  stored[CARD_LIBRARY_KEY]=wholeCards();
+  // 未保存の変更や画像も引き継げるよう、画面の現在値を優先して格納する。
+  stored[PROFILE_KEY]={station:$('station').value,handle:$('handle').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData};
+  stored[DRAFT_KEY]={title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags:[...selectedTags],accentPlacement,
+    accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,
+    accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName,
+    layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))};
+  return {format:BACKUP_FORMAT,version:1,createdAt:new Date().toISOString(),stored,currentCard:wholeCardData()};
+}
+function checkBackup(data){
+  if(!data||typeof data!=='object'||Array.isArray(data)||data.format!==BACKUP_FORMAT||data.version!==1||
+     !data.stored||typeof data.stored!=='object'||Array.isArray(data.stored))throw Error('このツールのバックアップ形式ではありません。');
+  for(const key of BACKUP_KEYS){
+    if(!Object.prototype.hasOwnProperty.call(data.stored,key))throw Error('バックアップに必要なデータがありません。');
+    const v=data.stored[key];
+    if(key===CARD_LIBRARY_KEY){
+      if(v!==null&&(!Array.isArray(v)||v.length>500||v.some(c=>!c||typeof c.name!=='string'||c.name.length>100||!c.data||typeof c.data!=='object')))throw Error('カード一覧の形式が正しくありません。');
+    }else if(v!==null&&(typeof v!=='object'||Array.isArray(v)))throw Error('設定データの形式が正しくありません。');
+  }
+  if(!data.currentCard||typeof data.currentCard!=='object'||Array.isArray(data.currentCard))throw Error('編集中カードの情報がありません。');
+  for(const key of ['iconData','accentData']){
+    const v=data.currentCard[key];
+    if(v!=null&&typeof v!=='string')throw Error('画像データが正しくありません。');
+  }
+  return true;
+}
+function setupBackup(){
+  $('exportBackup').onclick=()=>{
+    try{
+      const payload=backupPayload();
+      const blob=new Blob([JSON.stringify(payload)],{type:'application/json;charset=utf-8'});
+      const url=URL.createObjectURL(blob),a=document.createElement('a');
+      const d=new Date(),stamp=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('');
+      a.href=url;a.download='station-card-backup-'+stamp+'.json';document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),60000);
+    }catch(e){alert('バックアップを作れませんでした：'+e.message)}
+  };
+  $('importBackup').onchange=async e=>{
+    const file=e.target.files?.[0];if(!file)return;
+    try{
+      if(file.size>20*1024*1024)throw Error('ファイルが大きすぎます（上限20MB）。');
+      const data=JSON.parse(await file.text());checkBackup(data);
+      const count=(data.stored[CARD_LIBRARY_KEY]||[]).length;
+      if(!confirm('バックアップ内の保存済みカード '+count+' 件と設定を復元します。\nこの端末に保存しているカード・候補・色設定は置き換わります。続けますか？'))return;
+      const before={};for(const k of BACKUP_KEYS)before[k]=localStorage.getItem(k);
+      try{
+        for(const k of BACKUP_KEYS){
+          const v=data.stored[k];if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));
+        }
+      }catch(err){
+        for(const k of BACKUP_KEYS){try{if(before[k]===null)localStorage.removeItem(k);else localStorage.setItem(k,before[k])}catch(_){}}
+        throw Error('保存容量が不足している可能性があります。既存データはできる限り元に戻しました。');
+      }
+      // 復元した一覧を再描画し、編集中カードの状態も再現する。
+      renderLibraries();renderWholeCards();renderThemes();drawPresetTagList();
+      loadWholeCard({data:data.currentCard});saveProfile();
+      alert('バックアップを復元しました。カード一覧とプレビューを確認してください。');
+    }catch(err){alert('バックアップを読み込めませんでした：'+err.message)}
+    finally{e.target.value=''}
+  };
+}
+function applyTheme(t,name){$('bgColor').value=t.bg;$('accentColor').value=t.accent;$('textColor').value=t.text;activeThemeName=name||t.name||'';if([FSS,...SHARED].some(v=>v.name===activeThemeName)){$('presetTagTheme').value=activeThemeName;drawPresetTagList();}renderThemes();saveDraft();render()}
+function renderThemes(){const memberRoot=$('memberThemes'),customRoot=$('customThemes'),sharedRoot=$('sharedThemes'),l=libs();sharedRoot.innerHTML='';SHARED.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=`linear-gradient(135deg, ${t.bg} 0%, ${t.bg} 42%, ${t.accent} 42%, ${t.accent} 100%)`;b.append(sw,document.createTextNode(t.name));const tags=presetTagValues(t.name);if(tags.length){const tlabel=document.createElement('span');tlabel.className='presetThemeTag';tlabel.textContent=tags.map(v=>'#'+v).join(' ');tlabel.title=tlabel.textContent;b.appendChild(tlabel)}b.onclick=()=>applyTheme(t,t.name);sharedRoot.appendChild(b)});memberRoot.innerHTML='';MEMBERS.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;b.append(sw,document.createTextNode(t.name));b.onclick=()=>applyTheme(t,t.name);memberRoot.appendChild(b)});customRoot.innerHTML='';if(!l.themes.length){const em=document.createElement('span');em.className='hint';em.textContent='まだ自由テーマはありません';customRoot.appendChild(em)}else l.themes.forEach(t=>{const item=document.createElement('span');item.className='customThemeItem';const a=document.createElement('button');a.type='button';a.className='applyTheme';const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;a.append(sw,document.createTextNode(t.name));a.onclick=()=>applyTheme(t,t.name);const x=document.createElement('button');x.type='button';x.className='removeTheme';x.textContent='×';x.onclick=()=>{if(!confirm(`「${t.name}」を削除しますか？`))return;const l2=libs();l2.themes=l2.themes.filter(v=>v.name!==t.name);saveLibs(l2)};item.append(a,x);customRoot.appendChild(item)});const fb=$('fssTheme');fb.classList.toggle('active',activeThemeName==='FSSブルー');fb.querySelectorAll('.presetThemeTag').forEach(x=>x.remove());const ft=presetTagValues('FSSブルー');if(ft.length){const s=document.createElement('span');s.className='presetThemeTag';s.textContent=ft.map(x=>'#'+x).join(' ');s.title=s.textContent;fb.appendChild(s)}}
+function saveProfile(){return write(PROFILE_KEY,{station:$('station').value,handle:$('handle').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData})}
+function applyProfile(p){if(!p)return;['station','handle','iconX','iconY'].forEach(id=>{if(p[id]!=null)$(id).value=p[id]});iconData=p.iconData||'';loadData(iconData,img=>{iconImage=img;if(iconData){$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden')}sync();renderThemes();render()})}
+function saveDraft(){write(DRAFT_KEY,{title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags,accentPlacement,accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName,layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))})}
+const layoutIds=['layoutWidth','layoutHeight','layoutX','layoutY','layoutGap','layoutImageX','layoutImageY'];
+function sync(){$('iconXVal').textContent=$('iconX').value;$('iconYVal').textContent=$('iconY').value;$('accentScaleVal').textContent=$('accentScale').value;$('accentOpacityVal').textContent=$('accentOpacity').value;layoutIds.forEach(id=>$(id+'Val').textContent=$(id).value)}
+function addCandidate(kind,inputId){const v=$(inputId).value.trim();if(!v){alert('保存する内容を入力してください。');return}const l=libs();l[kind]=unique(l[kind],v);saveLibs(l);const s=$(kind+'Select');if(s)s.value=v}
+document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>addCandidate(b.dataset.save,b.dataset.input));document.querySelectorAll('select[data-kind]').forEach(s=>s.onchange=()=>{if(!s.value)return;$(s.dataset.target).value=s.value;saveDraft();render()});document.querySelectorAll('[data-delete-kind]').forEach(b=>b.onclick=()=>{const s=$(b.dataset.select),v=s.value;if(!v){alert('削除する候補を選んでください。');return}if(!confirm('この保存済み候補を削除しますか？'))return;const l=libs();l[b.dataset.deleteKind]=l[b.dataset.deleteKind].filter(x=>x!==v);saveLibs(l)});
+$('addTag').onclick=()=>{const v=$('tagInput').value.trim().replace(/^#+/,'');if(!v){alert('タグを入力してください。');return}const l=libs();l.tags=unique(l.tags,v);if(!selectedTags.includes(v))selectedTags.push(v);$('tagInput').value='';write(LIB_KEY,l);renderLibraries();renderThemes();saveDraft();render()};$('tagInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('addTag').click()}};
+document.querySelectorAll('[data-accent-place]').forEach(b=>b.onclick=()=>{accentPlacement=b.dataset.accentPlace;document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));saveDraft();render()});
+$('fssTheme').onclick=()=>applyTheme(FSS,'FSSブルー');$('saveTheme').onclick=()=>{const name=$('themeName').value.trim();if(!name){alert('自由テーマの名前を入力してください。');return}if(name==='FSSブルー'||SHARED.some(t=>t.name===name)||MEMBERS.some(t=>t.name===name)){alert('共通カラー・メンカラとは別の名前を入力してください。');return}const l=libs(),t={name,bg:$('bgColor').value,accent:$('accentColor').value,text:$('textColor').value};const old=l.themes.find(x=>x.name===name);if(old&&!confirm(`「${name}」を上書きしますか？`))return;l.themes=[t,...l.themes.filter(x=>x.name!==name)];activeThemeName=name;saveLibs(l);$('themeName').value='';saveDraft();render()};
+['station','handle','bgColor','accentColor','textColor','iconX','iconY','title','time','focus','memo','accentScale','accentOpacity',...layoutIds].forEach(id=>$(id).addEventListener('input',()=>{sync();saveDraft();render()}));
+$('resetLayout').onclick=()=>{layoutIds.forEach(id=>$(id).value=id==='layoutWidth'?1200:0);sync();saveDraft();render()};
+$('saveProfile').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}alert(saveProfile()?'基本情報を保存しました。':'保存できませんでした。')};
+$('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{iconData=await resizeData(f);loadData(iconData,img=>{iconImage=img;$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden');render()})}catch(_){alert('アイコン画像を読み込めませんでした。')}};$('removeIcon').onclick=()=>{iconData='';iconImage=null;$('iconInput').value='';$('iconThumb').style.display='none';$('removeIcon').classList.add('hidden');$('iconControls').classList.add('hidden');render()};
+$('accentImageInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const data=await resizeData(f,1100,.86);setAccentFromData(data)}catch(_){alert('画像を読み込めませんでした。')}};$('removeAccent').onclick=()=>{accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');render()};
+$('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();render()};
+$('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
+setupPresetTagEditor();setupWholeCardLibrary();setupBackup();renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));sync();renderLibraries();renderThemes();render();
+})();
+</script>
+</body></html>
