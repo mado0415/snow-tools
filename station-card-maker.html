@@ -3,870 +3,101 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#eef9ff"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<title>Station紹介カードメーカー V8</title>
+<meta name="theme-color" content="#eef9ff">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Station紹介カードメーカー V9</title>
 <style>
-:root{
-  --ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;
-  --blue:#d8f2ff;--blue3:#5a9cba;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
-  color:var(--ink);
-  background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%);
-}
-button,input,textarea{font:inherit;color:inherit}
-button{cursor:pointer}
-.wrap{max-width:1120px;margin:auto;padding:20px 14px 60px}
-.hero{text-align:center;padding:10px 6px 16px}
-.kicker{font-size:11px;font-weight:900;letter-spacing:.12em;color:var(--blue3)}
-h1{margin:6px 0 8px;font-size:28px;line-height:1.25}
-.lead{margin:0 auto;max-width:760px;color:var(--muted);font-size:13px;line-height:1.7}
-.grid{display:grid;grid-template-columns:minmax(330px,450px) minmax(0,1fr);gap:14px;align-items:start}
-.card{
-  background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px;
-  box-shadow:0 10px 28px rgba(53,99,120,.08)
-}
-.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:0 0 10px}
-.sectionHead:not(:first-child){margin-top:20px}
-.sectionHead h2{font-size:17px;margin:0}
-.sectionHead small{font-size:10px;color:var(--muted)}
-.field{margin:11px 0}
-.field label{display:block;font-size:12px;font-weight:900;margin-bottom:6px}
-.req{color:#db6070;font-size:10px;margin-left:5px}
-.field input[type=text],.field textarea,.field select{
-  width:100%;border:1px solid #cbdce5;border-radius:13px;padding:11px 12px;background:#fff
-}
-.field textarea{min-height:84px;resize:vertical;line-height:1.6}
-.hint{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.55}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.libraryRow{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:stretch}
-.recallRow{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;margin-top:7px}
-.recallRow select{width:100%;border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#f8fbfc;font-size:11px;color:#536874}
-.deleteSaved{border:1px solid #efd6d6;background:#fffafa;color:#996565;border-radius:10px;padding:9px 10px;font-size:10px;font-weight:850;white-space:nowrap}
-.savedLabel{font-size:10px;color:var(--muted);margin-top:7px}
-.saveMini{
-  border:1px solid #a9d5e8;background:#edf9ff;color:#346d86;border-radius:12px;
-  padding:0 13px;font-size:11px;font-weight:900;white-space:nowrap
-}
-.savedArea{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;min-height:0}
-.savedChip{
-  display:inline-flex;align-items:center;gap:3px;border:1px solid var(--line);background:#f8fbfc;
-  border-radius:999px;padding:6px 8px 6px 10px;font-size:10px;color:#536874
-}
-.savedChip .pick{border:0;background:transparent;padding:0;font-size:10px;color:inherit}
-.savedChip .remove{
-  border:0;background:transparent;padding:0 2px;color:#9aa7ae;font-size:13px;line-height:1
-}
-.tagLibrary .savedChip.active{background:#dff4fd;border-color:#99d4eb;color:#2f6e89}
-.callout{
-  margin:10px 0 0;padding:10px 11px;border:1px solid var(--line);border-radius:13px;
-  background:#f8fbfc;font-size:11px;line-height:1.65;color:#60727c
-}
-.filebox{border:1px dashed #b9d3df;border-radius:14px;padding:12px;background:#f9fcfd}
-.filebox + .filebox{margin-top:9px}
-.filebox input[type=file]{width:100%}
-.imagePreviewLine{display:flex;align-items:center;gap:10px;margin-top:9px}
-.iconThumb{width:58px;height:58px;border-radius:50%;border:1px solid var(--line);object-fit:cover;background:#eef5f8;display:none}
-.mainThumb{width:92px;height:58px;border-radius:10px;border:1px solid var(--line);object-fit:cover;background:#eef5f8;display:none}
-.miniBtn{
-  border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 10px;
-  font-size:10px;font-weight:850;color:#536874
-}
-.rangeLine{display:grid;grid-template-columns:55px 1fr 30px;gap:7px;align-items:center;margin-top:7px;font-size:10px;color:var(--muted)}
-.rangeLine input{width:100%}
-.toggleLine{display:flex;gap:7px;margin-top:8px}
-.toggleLine button{
-  flex:1;border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px;
-  font-size:10px;font-weight:850;color:#536874
-}
-.toggleLine button.active{background:#edf9ff;border-color:#9ed6eb;color:#2d667f}
-.hidden{display:none!important}
-.colorGroup{
-  margin-top:9px;padding:11px;border:1px solid var(--line);border-radius:14px;background:#f9fcfd
-}
-.colorGroup + .colorGroup{margin-top:10px}
-.colorGroupTitle{
-  display:flex;justify-content:space-between;align-items:center;gap:8px;
-  margin-bottom:8px;font-size:11px;font-weight:900;color:#536874
-}
-.themeRow{display:flex;flex-wrap:wrap;gap:8px}
-.memberPalette{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.themeItem{position:relative;min-width:0}
-.themePick{
-  width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;
-  padding:8px 8px 7px;text-align:center;min-height:69px
-}
-.themePick.active{border-color:#74bddc;box-shadow:0 0 0 2px rgba(116,189,220,.18)}
-.themeRow .themeItem{width:92px}
-.themeSwatch{
-  display:block;width:100%;height:28px;border-radius:9px;border:1px solid rgba(38,54,64,.12);margin-bottom:6px
-}
-.themeName{
-  display:block;font-size:10px;font-weight:900;line-height:1.25;white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis
-}
-.themeDelete{
-  position:absolute;top:-5px;right:-5px;width:22px;height:22px;border:1px solid #efd3d3;
-  border-radius:999px;background:#fffafa;color:#a46b6b;font-size:13px;line-height:18px;padding:0
-}
-.customThemeEditor{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:10px}
-.customThemeEditor input{
-  width:100%;border:1px solid #cbdce5;border-radius:11px;padding:9px 10px;background:#fff;font-size:11px
-}
-.customThemeEditor button{
-  border:1px solid #a9d5e8;background:#edf9ff;color:#346d86;border-radius:11px;
-  padding:9px 11px;font-size:10px;font-weight:900;white-space:nowrap
-}
-.customColors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}
-.colorField{font-size:10px;color:var(--muted)}
-.colorField input{width:100%;height:38px;border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff;margin-top:4px}
-@media(max-width:420px){
-  .memberPalette{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .themeRow .themeItem{width:86px}
-}
-.primary,.secondary{
-  border-radius:14px;padding:12px 13px;font-weight:900
-}
-.primary{border:0;background:linear-gradient(#bce9fd,#d8f2ff);color:#245c74}
-.secondary{border:1px solid var(--line);background:#fff;color:#566d79}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.note{font-size:10px;color:var(--muted);line-height:1.6;margin:9px 2px 0}
-.previewWrap{position:sticky;top:12px}
-.previewHead{display:flex;justify-content:space-between;gap:10px;align-items:end;margin-bottom:10px}
-.previewHead h2{margin:0;font-size:17px}
-.previewHead small{color:var(--muted);font-size:10px}
-.canvasFrame{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#dfeaf0}
-canvas{display:block;width:100%;height:auto;background:#fff}
-.modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.76);z-index:9999;display:none;align-items:flex-start;justify-content:center;
-  padding:calc(20px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));overflow:auto
-}
-.modal.show{display:flex}
-.modalCard{width:min(900px,100%);background:#fff;border-radius:20px;padding:14px}
-.modalTop{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}
-.closeBtn{border:0;background:#eef3f5;border-radius:999px;width:38px;height:38px;font-size:18px}
-.outputImg{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}
-.saveRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.saveRow a,.saveRow button{text-align:center;text-decoration:none;border-radius:13px;padding:12px;font-weight:900;font-size:13px}
-.saveRow a{background:#d8f2ff;color:#245c74}
-.saveRow button{border:1px solid var(--line);background:#fff;color:#556c78}
-@media(max-width:840px){
-  .grid{grid-template-columns:1fr}
-  .previewWrap{position:static}
-}
-@media(max-width:500px){
-  .row2,.customColors,.actions,.saveRow{grid-template-columns:1fr}
-}
+:root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:auto;padding:20px 14px 60px}.hero{text-align:center;padding:10px 6px 16px}.kicker{font-size:11px;font-weight:900;letter-spacing:.12em;color:var(--blue3)}.version{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:#d8f2ff;color:#4d788b;letter-spacing:0}h1{margin:6px 0 8px;font-size:28px;line-height:1.25}.lead{margin:0 auto;max-width:760px;color:var(--muted);font-size:13px;line-height:1.7}.grid{display:grid;grid-template-columns:minmax(330px,460px) minmax(0,1fr);gap:14px;align-items:start}.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:17px;box-shadow:0 10px 28px rgba(53,99,120,.08)}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:0 0 10px}.sectionHead:not(:first-child){margin-top:20px}.sectionHead h2{font-size:17px;margin:0}.sectionHead small{font-size:10px;color:var(--muted)}.field{margin:11px 0}.field label{display:block;font-size:12px;font-weight:900;margin-bottom:6px}.req{color:#db6070;font-size:10px;margin-left:5px}.field input[type=text],.field textarea,.field select{width:100%;border:1px solid #cbdce5;border-radius:13px;padding:11px 12px;background:#fff}.field textarea{min-height:84px;resize:vertical;line-height:1.6}.hint{margin-top:5px;color:var(--muted);font-size:10px;line-height:1.55}.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.libraryRow{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:stretch}.saveMini{border:1px solid #a9d5e8;background:#edf9ff;color:#346d86;border-radius:12px;padding:0 12px;font-size:10px;font-weight:900;white-space:nowrap}.recallRow{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;margin-top:7px}.recallRow select{width:100%;border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#f8fbfc;font-size:11px;color:#536874}.deleteSaved{border:1px solid #efd6d6;background:#fffafa;color:#996565;border-radius:10px;padding:9px 10px;font-size:10px;font-weight:850;white-space:nowrap}.savedArea{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.savedChip{display:inline-flex;align-items:center;gap:3px;border:1px solid var(--line);background:#f8fbfc;border-radius:999px;padding:6px 8px 6px 10px;font-size:10px;color:#536874}.savedChip .pick{border:0;background:transparent;padding:0;font-size:10px;color:inherit}.savedChip .remove{border:0;background:transparent;padding:0 2px;color:#9aa7ae;font-size:13px;line-height:1}.tagLibrary .savedChip.active{background:#dff4fd;border-color:#99d4eb;color:#2f6e89}.filebox{border:1px dashed #b9d3df;border-radius:14px;padding:12px;background:#f9fcfd}.filebox+.filebox{margin-top:9px}.filebox input[type=file]{width:100%}.imagePreviewLine{display:flex;align-items:center;gap:10px;margin-top:9px}.iconThumb{width:58px;height:58px;border-radius:50%;border:1px solid var(--line);object-fit:cover;background:#eef5f8;display:none}.accentThumb{width:96px;height:60px;border-radius:10px;border:1px solid var(--line);object-fit:contain;background:#eef5f8;display:none}.miniBtn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 10px;font-size:10px;font-weight:850;color:#536874}.rangeLine{display:grid;grid-template-columns:58px 1fr 32px;gap:7px;align-items:center;margin-top:7px;font-size:10px;color:var(--muted)}.rangeLine input{width:100%}.placementRow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}.placementRow button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 5px;font-size:10px;font-weight:850;color:#536874}.placementRow button.active{background:#edf9ff;border-color:#9ed6eb;color:#2d667f}.hidden{display:none!important}.colorGroup{border:1px solid var(--line);border-radius:14px;padding:11px;margin-top:9px;background:#fbfdfe}.colorGroupTitle{font-size:11px;font-weight:900;margin-bottom:8px}.themeRow{display:flex;flex-wrap:wrap;gap:8px}.themeBtn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:7px 9px;min-width:64px;font-size:10px;font-weight:850;display:grid;place-items:center;gap:4px}.themeBtn.active{box-shadow:0 0 0 3px rgba(126,193,219,.27);border-color:#8fcfe9}.swatch{width:28px;height:18px;border-radius:6px;border:1px solid rgba(0,0,0,.12)}.customThemeItem{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}.customThemeItem .applyTheme{border:0;background:transparent;padding:7px 9px;font-size:10px;font-weight:850;display:flex;align-items:center;gap:6px}.customThemeItem .removeTheme{border:0;background:#fff8f8;color:#a06a6a;align-self:stretch;padding:0 8px}.customColors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:9px}.colorField{font-size:10px;color:var(--muted)}.colorField input{width:100%;height:38px;border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff;margin-top:4px}.customThemeSave{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:8px}.customThemeSave input{width:100%;border:1px solid #cbdce5;border-radius:11px;padding:9px 10px}.primary,.secondary{border-radius:14px;padding:12px 13px;font-weight:900}.primary{border:0;background:linear-gradient(#bce9fd,#d8f2ff);color:#245c74}.secondary{border:1px solid var(--line);background:#fff;color:#566d79}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.note{font-size:10px;color:var(--muted);line-height:1.6;margin:9px 2px 0}.previewWrap{position:sticky;top:12px}.previewHead{display:flex;justify-content:space-between;gap:10px;align-items:end;margin-bottom:10px}.previewHead h2{margin:0;font-size:17px}.previewHead small{color:var(--muted);font-size:10px}.canvasFrame{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#dfeaf0}canvas{display:block;width:100%;height:auto;background:#fff}.modal{position:fixed;inset:0;background:rgba(0,0,0,.76);z-index:9999;display:none;align-items:flex-start;justify-content:center;padding:calc(20px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom));overflow:auto}.modal.show{display:flex}.modalCard{width:min(900px,100%);background:#fff;border-radius:20px;padding:14px}.modalTop{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px}.closeBtn{border:0;background:#eef3f5;border-radius:999px;width:38px;height:38px;font-size:18px}.outputImg{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line)}.saveRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.saveRow a,.saveRow button{text-align:center;text-decoration:none;border-radius:13px;padding:12px;font-weight:900;font-size:13px}.saveRow a{background:#d8f2ff;color:#245c74}.saveRow button{border:1px solid var(--line);background:#fff;color:#556c78}@media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}@media(max-width:500px){.row2,.customColors,.actions,.saveRow{grid-template-columns:1fr}.placementRow{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<section class="hero">
-  <div class="kicker">STATIONHEAD / STATION GUIDE <span style="display:inline-block;margin-left:6px;padding:2px 7px;border-radius:999px;background:#d8f2ff;color:#4d788b;letter-spacing:0">V8</span></div>
-  <h1>Station紹介カードメーカー</h1>
-  <p class="lead">タイトル・時間・重点曲・補足・タグを保存して呼び出し。カードカラーも配信の種類やメンバーカラーに合わせて切り替えられます。</p>
-</section>
-
+<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V9</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。アクセント画像は文字とは別の安全な位置にだけ置けます。</p></section>
 <div class="grid">
 <section class="card">
-  <div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
+<div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
+<div class="row2"><div class="field"><label for="station">Station名<span class="req">必須</span></label><input id="station" type="text" maxlength="28" placeholder="例：snowind"></div><div class="field"><label for="handle">@ID / 呼び名</label><input id="handle" type="text" maxlength="28" placeholder="例：@snowind / まど"></div></div>
+<div class="filebox"><div class="field" style="margin:0"><label for="iconInput">Stationheadアイコン</label><input id="iconInput" type="file" accept="image/*"><div class="hint">丸く切り抜いて表示します。縮小してこの端末に保存できます。</div></div><div class="imagePreviewLine"><img id="iconThumb" class="iconThumb" alt=""><button type="button" id="removeIcon" class="miniBtn hidden">アイコンを外す</button></div><div id="iconControls" class="hidden"><div class="rangeLine"><span>横位置</span><input id="iconX" type="range" min="0" max="100" value="50"><b id="iconXVal">50</b></div><div class="rangeLine"><span>縦位置</span><input id="iconY" type="range" min="0" max="100" value="50"><b id="iconYVal">50</b></div></div></div>
 
-  <div class="row2">
-    <div class="field">
-      <label for="station">Station名<span class="req">必須</span></label>
-      <input id="station" type="text" maxlength="28" placeholder="例：snowind">
-    </div>
-    <div class="field">
-      <label for="handle">@ID / 呼び名</label>
-      <input id="handle" type="text" maxlength="28" placeholder="例：@snowind / まど">
-    </div>
-  </div>
+<div class="sectionHead"><h2>カードの色</h2><small>用途ごとに使い分け</small></div>
+<div class="colorGroup"><div class="colorGroupTitle">FSSブルー</div><div class="themeRow"><button type="button" class="themeBtn" id="fssTheme"><span class="swatch" style="background:#d6f4ff"></span>FSS</button></div></div>
+<div class="colorGroup"><div class="colorGroupTitle">自由枠</div><div id="customThemes" class="themeRow"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"></label></div><div class="customThemeSave"><input id="themeName" type="text" maxlength="20" placeholder="例：朝配信 / 寝落ち / 重点曲"><button type="button" id="saveTheme" class="saveMini">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></div>
+<div class="colorGroup"><div class="colorGroupTitle">メンバーカラー</div><div id="memberThemes" class="themeRow"></div></div>
+<button type="button" id="saveProfile" class="secondary" style="width:100%;margin-top:10px">基本情報を保存</button>
 
-  <div class="filebox">
-    <div class="field" style="margin:0">
-      <label for="iconInput">Stationheadアイコン</label>
-      <input id="iconInput" type="file" accept="image/*">
-      <div class="hint">カードでは丸く切り抜きます。縮小してこの端末に保存できます。</div>
-    </div>
-    <div class="imagePreviewLine">
-      <img id="iconThumb" class="iconThumb" alt="">
-      <button type="button" id="removeIcon" class="miniBtn hidden">アイコンを外す</button>
-    </div>
-    <div id="iconControls" class="hidden">
-      <div class="rangeLine"><span>横位置</span><input id="iconX" type="range" min="0" max="100" value="50"><b id="iconXVal">50</b></div>
-      <div class="rangeLine"><span>縦位置</span><input id="iconY" type="range" min="0" max="100" value="50"><b id="iconYVal">50</b></div>
-    </div>
-  </div>
+<div class="sectionHead"><h2>今回のカード</h2><small>保存候補から呼び出せます</small></div>
 
-  <div class="field">
-    <label>カードカラー</label>
+<div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="例：定常配信 / 寝落ちバンザイ"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
+<div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="例：平日朝7:00過ぎ〜12:00頃"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
+<div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><input id="focus" type="text" maxlength="44" placeholder="例：AMENITY中心 / グッタイム多め"><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
+<div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="例：日替わりでなんとなくテーマに沿った配信です。"></textarea><button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button></div><div class="recallRow"><select id="memosSelect" data-kind="memos" data-target="memo"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">削除</button></div></div>
+<div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録"><button type="button" class="saveMini" id="addTag">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div>
 
-    <div class="colorGroup">
-      <div class="colorGroupTitle">
-        <span>FSSブルー・自由テーマ</span>
-        <span style="font-size:9px;font-weight:700;color:var(--muted)">自由テーマは追加できます</span>
-      </div>
-      <div class="themeRow" id="topThemeRow"></div>
+<div class="filebox"><div class="field" style="margin:0"><label for="accentImageInput">アクセント画像 <span style="font-size:10px;color:#71818b;font-weight:700">任意</span></label><input id="accentImageInput" type="file" accept="image/*"><div class="hint">ロゴ・イラストなどを小さく添える用途です。文字の上には重ならない位置だけ選べます。</div></div><div class="imagePreviewLine"><img id="accentThumb" class="accentThumb" alt=""><button type="button" id="removeAccent" class="miniBtn hidden">画像を外す</button></div><div id="accentControls" class="hidden"><div class="placementRow"><button type="button" data-place="top" class="active">右上</button><button type="button" data-place="middle">右中</button><button type="button" data-place="bottom">右下</button></div><div class="rangeLine"><span>大きさ</span><input id="accentScale" type="range" min="55" max="120" value="85"><b id="accentScaleVal">85</b></div><div class="rangeLine"><span>濃さ</span><input id="accentOpacity" type="range" min="25" max="100" value="100"><b id="accentOpacityVal">100</b></div></div></div>
 
-      <div class="customThemeEditor">
-        <input id="customThemeName" type="text" maxlength="18" placeholder="自由テーマ名 例：朝配信">
-        <button type="button" id="saveCustomTheme">現在の色で追加</button>
-      </div>
-
-      <div class="customColors">
-        <label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label>
-        <label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label>
-        <label class="colorField">文字<input id="textColor" type="color" value="#263640"></label>
-      </div>
-      <div class="hint">背景・アクセント・文字色を調整 → 名前を付けて追加すると、上の自由テーマに保存されます。</div>
-    </div>
-
-    <div class="colorGroup">
-      <div class="colorGroupTitle"><span>メンバーカラー</span><span>9色</span></div>
-      <div class="memberPalette" id="memberPalette"></div>
-    </div>
-  </div>
-
-  <button type="button" id="saveProfile" class="secondary" style="width:100%">基本情報を保存</button>
-
-  <div class="sectionHead"><h2>今回のカード</h2><small>必要なものだけ選ぶ</small></div>
-
-  <div class="field">
-    <label for="title">配信タイトル</label>
-    <div class="libraryRow">
-      <input id="title" type="text" maxlength="48" placeholder="例：定常配信 / 寝落ちバンザイ / グッタイムナイト">
-      <button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button>
-    </div>
-    <div class="recallRow">
-      <select id="titlesSelect" data-kind="titles" data-target="title">
-        <option value="">保存済みから選ぶ</option>
-      </select>
-      <button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">選択候補を削除</button>
-    </div>
-    
-  </div>
-
-  <div class="field">
-    <label for="time">時間</label>
-    <div class="libraryRow">
-      <input id="time" type="text" maxlength="36" placeholder="例：平日朝7:00過ぎ〜12:00頃">
-      <button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button>
-    </div>
-    <div class="recallRow">
-      <select id="timesSelect" data-kind="times" data-target="time">
-        <option value="">保存済みから選ぶ</option>
-      </select>
-      <button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">選択候補を削除</button>
-    </div>
-    
-  </div>
-
-  <div class="field">
-    <label for="focus">重点曲・配信軸</label>
-    <div class="libraryRow">
-      <input id="focus" type="text" maxlength="44" placeholder="例：AMENITY中心 / グッタイム多め">
-      <button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button>
-    </div>
-    <div class="recallRow">
-      <select id="focusesSelect" data-kind="focuses" data-target="focus">
-        <option value="">保存済みから選ぶ</option>
-      </select>
-      <button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">選択候補を削除</button>
-    </div>
-    
-  </div>
-
-  <div class="field">
-    <label for="memo">補足・今回だけ伝えたいこと</label>
-    <div class="libraryRow">
-      <textarea id="memo" maxlength="190" placeholder="例：日替わりでなんとなくテーマに沿った配信です。
-ゲリラで内容が変わることもあります。"></textarea>
-      <button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button>
-    </div>
-    <div class="recallRow">
-      <select id="memosSelect" data-kind="memos" data-target="memo">
-        <option value="">保存済みから選ぶ</option>
-      </select>
-      <button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">選択候補を削除</button>
-    </div>
-    <div class="hint">補足も何種類でも保存できます。定型文を呼び出して、その日だけ書き換えてもOKです。</div>
-  </div>
-
-  <div class="field">
-    <label for="tagInput">タグ</label>
-    <div class="libraryRow">
-      <input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録">
-      <button type="button" class="saveMini" id="addTag">登録</button>
-    </div>
-    <div class="hint">登録済みタグをタップすると、このカードへの使用ON/OFFを切り替えます。</div>
-    <div class="savedArea tagLibrary" id="tagsLibrary"></div>
-  </div>
-
-  <div class="filebox">
-    <div class="field" style="margin:0">
-      <label for="mainImageInput">アクセント画像 <span style="font-size:10px;color:#71818b;font-weight:700">任意</span></label>
-      <input id="mainImageInput" type="file" accept="image/*">
-      <div class="hint">ロゴ・イラスト・装飾画像など。枠には入れず、そのままカード上へ配置します。透明PNGにも対応します。</div>
-    </div>
-    <div class="imagePreviewLine">
-      <img id="mainThumb" class="mainThumb" alt="">
-      <button type="button" id="removeMainImage" class="miniBtn hidden">画像を外す</button>
-    </div>
-    <div id="mainImageControls" class="hidden">
-      <div class="rangeLine"><span>横位置</span><input id="mainX" type="range" min="0" max="100" value="80"><b id="mainXVal">80</b></div>
-      <div class="rangeLine"><span>縦位置</span><input id="mainY" type="range" min="0" max="100" value="74"><b id="mainYVal">74</b></div>
-      <div class="rangeLine"><span>大きさ</span><input id="mainScale" type="range" min="10" max="48" value="26"><b id="mainScaleVal">26</b></div>
-      <div class="rangeLine"><span>濃さ</span><input id="mainOpacity" type="range" min="20" max="100" value="100"><b id="mainOpacityVal">100</b></div>
-    </div>
-  </div>
-
-  <div class="actions">
-    <button type="button" id="makePng" class="primary">PNGを作る</button>
-    <button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button>
-  </div>
-  <p class="note">基本情報・保存した部品・現在の下書きは、この端末のブラウザ内だけに保存します。</p>
+<div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button></div><p class="note">基本情報・色テーマ・保存候補・下書きはこの端末のブラウザ内だけに保存します。</p>
 </section>
 
-<section class="card previewWrap">
-  <div class="previewHead"><h2>プレビュー</h2><small>1600 × 900 / 16:9</small></div>
-  <div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div>
-  <p class="note">保存済み候補から必要な文言を呼び出して組み合わせます。アクセント画像は枠なしで位置・大きさ・濃さを調整できます。</p>
-</section>
-</div>
-</main>
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small>1600 × 900 / 16:9</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">文字を主役にしています。アクセント画像は右側の安全域に小さく添えるだけです。</p></section>
+</div></main>
 
-<div class="modal" id="outputModal" aria-hidden="true">
-  <div class="modalCard">
-    <div class="modalTop">
-      <strong>完成画像</strong>
-      <button type="button" class="closeBtn" id="closeModal">×</button>
-    </div>
-    <img id="outputImg" class="outputImg" alt="完成したStation紹介カード">
-    <div class="saveRow">
-      <a id="downloadLink" download="station-card.png">PNGを保存</a>
-      <button type="button" id="saveHint">iPhoneでの保存方法</button>
-    </div>
-  </div>
-</div>
+<div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
 
 <script>
-(() => {
-'use strict';
-const $=id=>document.getElementById(id);
-const canvas=$('preview'),ctx=canvas.getContext('2d');
-
-const PROFILE_KEY='fssStationProfileV3';
-const LIB_KEY='fssStationLibrariesV3';
-const DRAFT_KEY='fssStationDraftV3';
-
-const THEME_KEY='fssStationColorThemesV1';
-
-const FSS_THEME={
-  id:'fss',
-  name:'FSSブルー',
-  bg:'#f5fbff',
-  accent:'#8fcfe9',
-  text:'#263640'
-};
-
-const MEMBER_THEMES=[
-  {id:'hikaru',name:'岩本',bg:'#fffcef',accent:'#e8cc43',text:'#332f20'},
-  {id:'fukka',name:'深澤',bg:'#f8f3fc',accent:'#9b73c8',text:'#30273a'},
-  {id:'raul',name:'ラウール',bg:'#ffffff',accent:'#d6dce3',text:'#2d3338'},
-  {id:'shota',name:'渡辺',bg:'#f1f8ff',accent:'#4d9fe8',text:'#22374a'},
-  {id:'koji',name:'向井',bg:'#fff7ee',accent:'#f0a04a',text:'#3b3023'},
-  {id:'abe',name:'阿部',bg:'#f1faf3',accent:'#62b878',text:'#25382a'},
-  {id:'meguro',name:'目黒',bg:'#f3f4f5',accent:'#343a40',text:'#17191c'},
-  {id:'date',name:'宮舘',bg:'#fff2f2',accent:'#df5858',text:'#3b2525'},
-  {id:'sakuma',name:'佐久間',bg:'#fff3f8',accent:'#eb88b3',text:'#3c2731'}
+(()=>{'use strict';
+const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
+const PROFILE_KEY='fssStationProfileV9',LIB_KEY='fssStationLibrariesV9',DRAFT_KEY='fssStationDraftV9';
+const FSS={name:'FSSブルー',bg:'#f5fbff',accent:'#7fc8e8',text:'#263640'};
+const MEMBERS=[
+{name:'岩本',bg:'#fffbea',accent:'#f0cf45',text:'#37331f'},
+{name:'深澤',bg:'#f8f2ff',accent:'#8e6ac1',text:'#322a3c'},
+{name:'ラウール',bg:'#f7f8fa',accent:'#d6dbe2',text:'#30343a'},
+{name:'渡辺',bg:'#eff8ff',accent:'#5ea7df',text:'#253645'},
+{name:'向井',bg:'#fff5e9',accent:'#ef963a',text:'#403024'},
+{name:'阿部',bg:'#effaf3',accent:'#56b878',text:'#263a2e'},
+{name:'目黒',bg:'#f1f2f3',accent:'#35383d',text:'#202225'},
+{name:'宮舘',bg:'#fff0f0',accent:'#d95555',text:'#412727'},
+{name:'佐久間',bg:'#fff1f7',accent:'#ef8bb7',text:'#432b36'}
 ];
-
-let iconImage=null,iconData='';
-let mainImage=null;
-let selectedTags=[];
-
-function read(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'')||fallback}catch(_){return fallback}}
+let iconImage=null,iconData='',accentImage=null,accentPlace='top',selectedTags=[],activeThemeName='FSSブルー';
+function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(_){return fallback}}
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}}
-function libraries(){
-  const raw=read(LIB_KEY,null)||{};
-  return {
-    titles:Array.isArray(raw.titles)?raw.titles:[],
-    times:Array.isArray(raw.times)?raw.times:[],
-    focuses:Array.isArray(raw.focuses)?raw.focuses:[],
-    memos:Array.isArray(raw.memos)?raw.memos:[],
-    tags:Array.isArray(raw.tags)?raw.tags:[]
-  };
-}
-function saveLibraries(v){write(LIB_KEY,v);renderLibraries()}
-function uniquePush(arr,value){
-  const v=String(value||'').trim();
-  if(!v)return arr;
-  return [v,...arr.filter(x=>x!==v)].slice(0,30);
-}
-function removeItem(kind,value){
-  const lib=libraries();
-  lib[kind]=lib[kind].filter(x=>x!==value);
-  if(kind==='tags')selectedTags=selectedTags.filter(x=>x!==value);
-  saveLibraries(lib);saveDraft();render();
-}
-function addLibraryValue(kind,inputId){
-  const v=$(inputId).value.trim();
-  if(!v){alert('保存する内容を入力してください。');return}
-  const lib=libraries();
-  lib[kind]=uniquePush(lib[kind],v);
-  saveLibraries(lib);
-  const select=$(kind+'Select');
-  if(select)select.value=v;
-}
-function renderScalarSelect(kind,selectId){
-  const select=$(selectId),lib=libraries();
-  if(!select)return;
-  const current=select.value;
-  select.innerHTML='<option value="">保存済みから選ぶ</option>';
-  lib[kind].forEach(value=>{
-    const o=document.createElement('option');
-    o.value=value;o.textContent=value;
-    select.appendChild(o);
-  });
-  if(lib[kind].includes(current))select.value=current;
-}
-function renderTags(){
-  const root=$('tagsLibrary'),lib=libraries();root.innerHTML='';
-  lib.tags.forEach(value=>{
-    const chip=document.createElement('span');chip.className='savedChip'+(selectedTags.includes(value)?' active':'');
-    const pick=document.createElement('button');pick.type='button';pick.className='pick';pick.textContent='#'+value;
-    pick.onclick=()=>{
-      selectedTags=selectedTags.includes(value)?selectedTags.filter(x=>x!==value):[...selectedTags,value];
-      saveDraft();renderTags();render();
-    };
-    const x=document.createElement('button');x.type='button';x.className='remove';x.textContent='×';
-    x.onclick=e=>{e.stopPropagation();removeItem('tags',value)};
-    chip.append(pick,x);root.append(chip);
-  });
-}
-function renderLibraries(){
-  renderScalarSelect('titles','titlesSelect');
-  renderScalarSelect('times','timesSelect');
-  renderScalarSelect('focuses','focusesSelect');
-  renderScalarSelect('memos','memosSelect');
-  renderTags();
-}
-
-function rr(x,y,w,h,r){
-  const q=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+q,y);ctx.arcTo(x+w,y,x+w,y+h,q);
-  ctx.arcTo(x+w,y+h,x,y+h,q);ctx.arcTo(x,y+h,x,y,q);ctx.arcTo(x,y,x+w,y,q);ctx.closePath()
-}
-function rgba(hex,a){
-  let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');
-  const n=parseInt(h,16);return Number.isNaN(n)?`rgba(0,0,0,${a})`:`rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;
-}
-function fit(text,max,start,min,weight=800){
-  let s=start;while(s>min){ctx.font=`${weight} ${s}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    if(ctx.measureText(text).width<=max)break;s-=2}return s
-}
-function wrap(text,max,font){
-  ctx.font=font;let line='';const lines=[];
-  for(const ch of [...String(text||'')]){const t=line+ch;if(line&&ctx.measureText(t).width>max){lines.push(line);line=ch}else line=t}
-  if(line)lines.push(line);return lines
-}
-function drawIcon(cx,cy,r,accent,text){
-  ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=rgba(accent,.17);ctx.fillRect(cx-r,cy-r,r*2,r*2);
-  if(iconImage){
-    const iw=iconImage.naturalWidth||iconImage.width,ih=iconImage.naturalHeight||iconImage.height;
-    const sc=Math.max(r*2/iw,r*2/ih),dw=iw*sc,dh=ih*sc,px=+$('iconX').value/100,py=+$('iconY').value/100;
-    ctx.drawImage(iconImage,cx-r+(r*2-dw)*px,cy-r+(r*2-dh)*py,dw,dh);
-  }else{
-    ctx.fillStyle=rgba(text,.55);ctx.font='900 44px -apple-system,BlinkMacSystemFont,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText((($('station').value.trim()||'S')[0]||'S').toUpperCase(),cx,cy+2);ctx.textAlign='left';ctx.textBaseline='alphabetic';
-  }
-  ctx.restore();ctx.strokeStyle=rgba(text,.12);ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke()
-}
-function drawAccentImage(){
-  if(!mainImage)return;
-
-  const iw=mainImage.naturalWidth||mainImage.width;
-  const ih=mainImage.naturalHeight||mainImage.height;
-  const scalePct=+$('mainScale').value/100;
-
-  const boxW=1600*scalePct;
-  const boxH=900*scalePct;
-  const sc=Math.min(boxW/iw,boxH/ih);
-  const dw=iw*sc;
-  const dh=ih*sc;
-
-  const px=+$('mainX').value/100;
-  const py=+$('mainY').value/100;
-  let x=px*1600-dw/2;
-  let y=py*900-dh/2;
-
-  x=Math.max(24,Math.min(1600-dw-24,x));
-  y=Math.max(24,Math.min(900-dh-24,y));
-
-  ctx.save();
-  ctx.globalAlpha=+$('mainOpacity').value/100;
-  ctx.drawImage(mainImage,x,y,dw,dh);
-  ctx.restore();
-}
-function drawIconVisual(x,y,w,h,accent,text){
-  const cx=x+w/2,cy=y+h/2;
-  ctx.save();
-  ctx.globalAlpha=.34;
-  [1,.76,.54].forEach((m,i)=>{
-    ctx.beginPath();
-    ctx.arc(cx,cy,Math.min(w,h)*.38*m,0,Math.PI*2);
-    ctx.fillStyle=rgba(accent,.045+i*.022);
-    ctx.fill();
-  });
-  ctx.restore();
-  drawIcon(cx,cy,Math.min(w,h)*.16,accent,text);
-}
-function drawMeta(label,value,x,y,w,accent,text){
-  const labelW=170;
-  ctx.fillStyle=accent;
-  ctx.font='900 27px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-  ctx.fillText(label,x,y+35);
-
-  const valueX=x+labelW;
-  const valueW=w-labelW;
-  let size=42;
-  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrap(value,valueW,font);
-  while(lines.length>2 && size>30){
-    size-=2;
-    font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines=wrap(value,valueW,font);
-  }
-  ctx.fillStyle=text;
-  ctx.font=font;
-  lines.slice(0,2).forEach((line,i)=>ctx.fillText(line,valueX,y+36+i*(size*1.15)));
-
-  const rowH=lines.length>1 ? 96 : 66;
-  ctx.fillStyle=rgba(text,.10);
-  ctx.fillRect(x,y+rowH,Math.min(w,720),2);
-  return y+rowH+24
-}
-function drawTags(x,y,maxW,accent,text){
-  let cx=x,cy=y;
-  ctx.font='800 29px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-  selectedTags.forEach(raw=>{
-    const label='#'+raw,w=ctx.measureText(label).width+40;
-    if(cx+w>x+maxW){cx=x;cy+=54}
-    ctx.fillStyle=rgba(accent,.18);
-    rr(cx,cy,w,44,22);
-    ctx.fill();
-    ctx.fillStyle=text;
-    ctx.fillText(label,cx+20,cy+31);
-    cx+=w+11;
-  });
-}
-
-function render(){
-  const bg=$('bgColor').value,accent=$('accentColor').value,text=$('textColor').value;
-  const station=$('station').value.trim()||'Station name',handle=$('handle').value.trim();
-  const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
-
-  ctx.clearRect(0,0,1600,900);
-  ctx.fillStyle=bg;ctx.fillRect(0,0,1600,900);
-
-  ctx.fillStyle=rgba(accent,.065);
-  ctx.beginPath();ctx.arc(1500,20,235,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=rgba(accent,.04);
-  ctx.beginPath();ctx.arc(1510,900,330,0,Math.PI*2);ctx.fill();
-
-  const margin=78;
-  const iconR=50;
-
-  drawIcon(margin+iconR,72+iconR,iconR,accent,text);
-
-  const stationX=margin+iconR*2+25;
-  const stationSize=fit(station,880,62,42,900);
-  ctx.fillStyle=text;
-  ctx.font=`900 ${stationSize}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  ctx.fillText(station,stationX,130);
-
-  if(handle){
-    ctx.fillStyle=rgba(text,.58);
-    ctx.font='730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-    ctx.fillText(handle,stationX,167);
-  }
-
-  // no accent image: station icon only as a soft decoration
-  if(!mainImage && iconImage){
-    drawIconVisual(1210,550,260,220,accent,text);
-  }
-
-  const textW=1040;
-  let y=265;
-
-  if(title){
-    const ts=fit(title,textW,78,50,900);
-    const font=`900 ${ts}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrap(title,textW,font).slice(0,2);
-    ctx.fillStyle=text;ctx.font=font;
-    lines.forEach(line=>{
-      ctx.fillText(line,margin,y);
-      y+=ts*1.10;
-    });
-    y+=28;
-  }
-
-  if(time){
-    y=drawMeta('配信時間',time,margin,y,textW,accent,text);
-  }
-
-  if(focus){
-    y=drawMeta('重点曲',focus,margin,y,textW,accent,text);
-  }
-
-  if(memo){
-    y+=2;
-    let fs=36,lines=[];
-    while(fs>=27){
-      const font=`650 ${fs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-      lines=wrap(memo,textW,font);
-      if(lines.length<=5)break;
-      fs--;
-    }
-    ctx.fillStyle=rgba(text,.80);
-    ctx.font=`650 ${fs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines.slice(0,5).forEach(line=>{
-      ctx.fillText(line,margin,y);
-      y+=fs*1.42;
-    });
-    y+=16;
-  }
-
-  if(selectedTags.length){
-    drawTags(margin,Math.min(y,804),textW,accent,text);
-  }
-
-  drawAccentImage();
-
-  ctx.fillStyle=rgba(text,.28);
-  ctx.font='700 15px -apple-system,BlinkMacSystemFont,sans-serif';
-  ctx.textAlign='right';
-  ctx.fillText('STATIONHEAD / STATION GUIDE',1518,856);
-  ctx.textAlign='left';
-}
-function resizeData(file,maxSide=360,q=.86){
-  return new Promise((resolve,reject)=>{
-    const r=new FileReader();r.onerror=reject;r.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{
-      const sc=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*sc),h=Math.round(img.naturalHeight*sc);
-      const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',q))
-    };img.src=r.result};r.readAsDataURL(file)
-  })
-}
-function loadDataImage(data,cb){if(!data){cb(null);return}const img=new Image();img.onload=()=>cb(img);img.onerror=()=>cb(null);img.src=data}
-function profile(){
-  return {station:$('station').value,handle:$('handle').value,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData}
-}
-function applyProfile(p){
-  if(!p)return;['station','handle','bgColor','accentColor','textColor','iconX','iconY'].forEach(id=>{if(p[id]!=null)$(id).value=p[id]});
-  iconData=p.iconData||'';loadDataImage(iconData,img=>{iconImage=img;
-    if(iconData){$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden')}
-    sync();render()
-  })
-}
-function saveDraft(){
-  write(DRAFT_KEY,{title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags,mainX:$('mainX').value,mainY:$('mainY').value,mainScale:$('mainScale').value,mainOpacity:$('mainOpacity').value})
-}
-function sync(){
-  $('iconXVal').textContent=$('iconX').value;
-  $('iconYVal').textContent=$('iconY').value;
-  $('mainXVal').textContent=$('mainX').value;
-  $('mainYVal').textContent=$('mainY').value;
-  $('mainScaleVal').textContent=$('mainScale').value;
-  $('mainOpacityVal').textContent=$('mainOpacity').value;
-}
-function customThemes(){
-  const raw=read(THEME_KEY,[]);
-  return Array.isArray(raw)?raw:[];
-}
-function saveCustomThemes(items){
-  write(THEME_KEY,items);
-  buildPalette();
-}
-function sameColor(a,b){
-  return String(a||'').toLowerCase()===String(b||'').toLowerCase();
-}
-function currentThemeMatches(theme){
-  return sameColor($('bgColor').value,theme.bg)
-    && sameColor($('accentColor').value,theme.accent)
-    && sameColor($('textColor').value,theme.text);
-}
-function applyTheme(theme){
-  $('bgColor').value=theme.bg;
-  $('accentColor').value=theme.accent;
-  $('textColor').value=theme.text;
-  saveDraft();
-  buildPalette();
-  render();
-}
-function themeItem(theme,{deletable=false}={}){
-  const wrap=document.createElement('div');
-  wrap.className='themeItem';
-
-  const pick=document.createElement('button');
-  pick.type='button';
-  pick.className='themePick'+(currentThemeMatches(theme)?' active':'');
-  pick.title=theme.name;
-
-  const swatch=document.createElement('span');
-  swatch.className='themeSwatch';
-  swatch.style.background=`linear-gradient(135deg,${theme.bg} 0 55%,${theme.accent} 55% 100%)`;
-
-  const name=document.createElement('span');
-  name.className='themeName';
-  name.textContent=theme.name;
-
-  pick.append(swatch,name);
-  pick.onclick=()=>applyTheme(theme);
-  wrap.appendChild(pick);
-
-  if(deletable){
-    const del=document.createElement('button');
-    del.type='button';
-    del.className='themeDelete';
-    del.textContent='×';
-    del.title='この自由テーマを削除';
-    del.onclick=e=>{
-      e.stopPropagation();
-      if(!confirm(`「${theme.name}」を削除しますか？`))return;
-      saveCustomThemes(customThemes().filter(item=>item.id!==theme.id));
-    };
-    wrap.appendChild(del);
-  }
-
-  return wrap;
-}
-function buildPalette(){
-  const top=$('topThemeRow');
-  const members=$('memberPalette');
-  if(!top||!members)return;
-
-  top.innerHTML='';
-  members.innerHTML='';
-
-  top.appendChild(themeItem(FSS_THEME));
-
-  customThemes().forEach(theme=>{
-    top.appendChild(themeItem(theme,{deletable:true}));
-  });
-
-  MEMBER_THEMES.forEach(theme=>{
-    members.appendChild(themeItem(theme));
-  });
-}
-
-
-
-$('saveCustomTheme').onclick=()=>{
-  const name=$('customThemeName').value.trim();
-  if(!name){
-    alert('自由テーマ名を入力してください。');
-    $('customThemeName').focus();
-    return;
-  }
-
-  const themes=customThemes();
-  const existing=themes.find(item=>item.name===name);
-
-  const item={
-    id:existing?existing.id:('custom_'+Date.now().toString(36)),
-    name,
-    bg:$('bgColor').value,
-    accent:$('accentColor').value,
-    text:$('textColor').value
-  };
-
-  let next;
-  if(existing){
-    if(!confirm(`「${name}」は登録済みです。現在の色で上書きしますか？`))return;
-    next=themes.map(theme=>theme.id===existing.id?item:theme);
-  }else{
-    next=[...themes,item];
-  }
-
-  $('customThemeName').value='';
-  saveCustomThemes(next);
-};
-
-document.querySelectorAll('select[data-kind][data-target]').forEach(select=>{
-  select.addEventListener('change',()=>{
-    if(!select.value)return;
-    $(select.dataset.target).value=select.value;
-    saveDraft();
-    render();
-  });
-});
-document.querySelectorAll('[data-delete-kind]').forEach(button=>{
-  button.addEventListener('click',()=>{
-    const select=$(button.dataset.select);
-    const value=select&&select.value;
-    if(!value){alert('削除する保存済み候補を選んでください。');return}
-    if(!confirm('この保存済み候補を削除しますか？'))return;
-    removeItem(button.dataset.deleteKind,value);
-  });
-});
-document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>addLibraryValue(b.dataset.save,b.dataset.input));
-$('addTag').onclick=()=>{
-  const v=$('tagInput').value.trim().replace(/^#+/,'');if(!v)return;
-  const lib=libraries();lib.tags=uniquePush(lib.tags,v);if(!selectedTags.includes(v))selectedTags.push(v);
-  $('tagInput').value='';saveLibraries(lib);saveDraft();render()
-};
-$('tagInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('addTag').click()}});
-
-['station','handle','bgColor','accentColor','textColor','iconX','iconY','title','time','focus','memo','mainX','mainY','mainScale','mainOpacity'].forEach(id=>{
-  $(id).addEventListener('input',()=>{
-    sync();
-    saveDraft();
-    if(id==='bgColor'||id==='accentColor'||id==='textColor')buildPalette();
-    render();
-  })
-});
-
-$('saveProfile').onclick=()=>{
-  if(!$('station').value.trim()){alert('Station名を入力してください。');return}
-  if(write(PROFILE_KEY,profile()))alert('基本情報を保存しました。');else alert('保存できませんでした。')
-};
-
-$('iconInput').addEventListener('change',async e=>{
-  const file=e.target.files&&e.target.files[0];if(!file)return;
-  try{iconData=await resizeData(file);loadDataImage(iconData,img=>{iconImage=img;$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden');render()})}
-  catch(_){alert('アイコン画像を読み込めませんでした。')}
-});
-$('removeIcon').onclick=()=>{iconData='';iconImage=null;$('iconInput').value='';$('iconThumb').style.display='none';$('removeIcon').classList.add('hidden');$('iconControls').classList.add('hidden');render()};
-
-$('mainImageInput').addEventListener('change',e=>{
-  const file=e.target.files&&e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{mainImage=img;$('mainThumb').src=r.result;$('mainThumb').style.display='block';$('removeMainImage').classList.remove('hidden');$('mainImageControls').classList.remove('hidden');render()};img.src=r.result};r.readAsDataURL(file)
-});
-$('removeMainImage').onclick=()=>{mainImage=null;$('mainImageInput').value='';$('mainThumb').style.display='none';$('removeMainImage').classList.add('hidden');$('mainImageControls').classList.add('hidden');render()};
-
-$('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];mainImage=null;$('mainImageInput').value='';$('mainThumb').style.display='none';$('removeMainImage').classList.add('hidden');$('mainImageControls').classList.add('hidden');saveDraft();renderTags();render()};
-
-$('makePng').onclick=()=>{
-  if(!$('station').value.trim()){alert('Station名を入力してください。');return}
-  render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;
-  $('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';
-  $('outputModal').classList.add('show')
-};
-$('closeModal').onclick=()=>$('outputModal').classList.remove('show');
-$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
-
-buildPalette();
-applyProfile(read(PROFILE_KEY,null));
-const d=read(DRAFT_KEY,null);
-if(d){
-  ['title','time','focus','memo'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});
-  selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];
-  if(d.mainX!=null)$('mainX').value=d.mainX;if(d.mainY!=null)$('mainY').value=d.mainY;if(d.mainScale!=null)$('mainScale').value=d.mainScale;if(d.mainOpacity!=null)$('mainOpacity').value=d.mainOpacity
-}
-renderLibraries();sync();render();
+function libs(){const r=read(LIB_KEY,{})||{};return{titles:Array.isArray(r.titles)?r.titles:[],times:Array.isArray(r.times)?r.times:[],focuses:Array.isArray(r.focuses)?r.focuses:[],memos:Array.isArray(r.memos)?r.memos:[],tags:Array.isArray(r.tags)?r.tags:[],themes:Array.isArray(r.themes)?r.themes:[]}}
+function saveLibs(v){write(LIB_KEY,v);renderLibraries();renderThemes()}
+function unique(arr,v){v=String(v||'').trim();return v?[v,...arr.filter(x=>x!==v)].slice(0,40):arr}
+function rr(x,y,w,h,r){const q=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+q,y);ctx.arcTo(x+w,y,x+w,y+h,q);ctx.arcTo(x+w,y+h,x,y+h,q);ctx.arcTo(x,y+h,x,y,q);ctx.arcTo(x,y,x+w,y,q);ctx.closePath()}
+function rgba(hex,a){let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16);return Number.isNaN(n)?`rgba(0,0,0,${a})`:`rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
+function wrap(text,max,font){ctx.font=font;let line='';const out=[];for(const ch of [...String(text||'')]){const t=line+ch;if(line&&ctx.measureText(t).width>max){out.push(line);line=ch}else line=t}if(line)out.push(line);return out}
+function fit(text,max,start,min,weight=800){let s=start;while(s>min){ctx.font=`${weight} ${s}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;if(ctx.measureText(text).width<=max)break;s-=2}return s}
+function resizeData(file,maxSide=360,q=.86){return new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=reject;r.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const sc=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*sc),h=Math.round(img.naturalHeight*sc);const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',q))};img.src=r.result};r.readAsDataURL(file)})}
+function loadData(data,cb){if(!data){cb(null);return}const i=new Image();i.onload=()=>cb(i);i.onerror=()=>cb(null);i.src=data}
+function drawIcon(cx,cy,r,accent,text){ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=rgba(accent,.16);ctx.fillRect(cx-r,cy-r,r*2,r*2);if(iconImage){const iw=iconImage.naturalWidth||iconImage.width,ih=iconImage.naturalHeight||iconImage.height,sc=Math.max(r*2/iw,r*2/ih),dw=iw*sc,dh=ih*sc,px=+$('iconX').value/100,py=+$('iconY').value/100;ctx.drawImage(iconImage,cx-r+(r*2-dw)*px,cy-r+(r*2-dh)*py,dw,dh)}else{ctx.fillStyle=rgba(text,.55);ctx.font='900 42px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((($('station').value.trim()||'S')[0]||'S').toUpperCase(),cx,cy+1);ctx.textAlign='left';ctx.textBaseline='alphabetic'}ctx.restore();ctx.strokeStyle=rgba(text,.12);ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke()}
+function drawMeta(label,value,x,y,w,accent,text){ctx.fillStyle=accent;ctx.font='900 28px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(label,x,y+34);const valueX=x+185,valueW=w-185;let size=42,font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`,lines=wrap(value,valueW,font);while(lines.length>2&&size>30){size-=2;font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrap(value,valueW,font)}ctx.fillStyle=text;ctx.font=font;lines.slice(0,2).forEach((line,i)=>ctx.fillText(line,valueX,y+36+i*(size*1.12)));const rowH=lines.length>1?96:68;ctx.fillStyle=rgba(text,.09);ctx.fillRect(x,y+rowH,Math.min(w,880),2);return y+rowH+22}
+function drawTags(x,y,maxW,accent,text){let cx=x,cy=y;ctx.font='800 28px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';selectedTags.forEach(raw=>{const label='#'+raw,w=ctx.measureText(label).width+38;if(cx+w>x+maxW){cx=x;cy+=52}ctx.fillStyle=rgba(accent,.17);rr(cx,cy,w,42,21);ctx.fill();ctx.fillStyle=text;ctx.fillText(label,cx+19,cy+30);cx+=w+10})}
+function drawAccent(){if(!accentImage)return;const boxes={top:{x:1130,y:205,w:360,h:220},middle:{x:1130,y:365,w:360,h:220},bottom:{x:1130,y:555,w:360,h:220}},b=boxes[accentPlace]||boxes.top,iw=accentImage.naturalWidth||accentImage.width,ih=accentImage.naturalHeight||accentImage.height,base=Math.min(b.w/iw,b.h/ih),scale=base*(+$('accentScale').value/100),dw=iw*scale,dh=ih*scale,x=b.x+(b.w-dw)/2,y=b.y+(b.h-dh)/2;ctx.save();ctx.globalAlpha=+$('accentOpacity').value/100;ctx.drawImage(accentImage,x,y,dw,dh);ctx.restore()}
+function render(){const bg=$('bgColor').value,accent=$('accentColor').value,text=$('textColor').value,station=$('station').value.trim()||'Station name',handle=$('handle').value.trim(),title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();ctx.clearRect(0,0,1600,900);ctx.fillStyle=bg;ctx.fillRect(0,0,1600,900);ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(1500,20,230,0,Math.PI*2);ctx.fill();ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(1510,900,320,0,Math.PI*2);ctx.fill();const margin=78,iconR=50;text&&(drawIcon(margin+iconR,72+iconR,iconR,accent,text));const stationX=margin+iconR*2+25,ss=fit(station,820,62,42,900);ctx.fillStyle=text;ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;ctx.fillText(station,stationX,130);if(handle){ctx.fillStyle=rgba(text,.58);ctx.font='730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(handle,stationX,167)}const textW=990;let y=270;if(title){const ts=fit(title,textW,82,52,900),font=`900 ${ts}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`,lines=wrap(title,textW,font).slice(0,2);ctx.fillStyle=text;ctx.font=font;lines.forEach(line=>{ctx.fillText(line,margin,y);y+=ts*1.08});y+=30}if(time)y=drawMeta('配信時間',time,margin,y,textW,accent,text);if(focus)y=drawMeta('重点曲',focus,margin,y,textW,accent,text);if(memo){y+=4;let fs=36,lines=[];while(fs>=28){const font=`650 ${fs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrap(memo,textW,font);if(lines.length<=5)break;fs--}ctx.fillStyle=rgba(text,.8);ctx.font=`650 ${fs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines.slice(0,5).forEach(line=>{ctx.fillText(line,margin,y);y+=fs*1.42});y+=14}if(selectedTags.length)drawTags(margin,Math.min(y,804),textW,accent,text);drawAccent();ctx.fillStyle=rgba(text,.28);ctx.font='700 15px -apple-system,sans-serif';ctx.textAlign='right';ctx.fillText('STATIONHEAD / STATION GUIDE',1518,856);ctx.textAlign='left'}
+function renderSelect(kind,id){const s=$(id),l=libs(),cur=s.value;s.innerHTML='<option value="">保存済みから選ぶ</option>';l[kind].forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)});if(l[kind].includes(cur))s.value=cur}
+function renderTags(){const root=$('tagsLibrary'),l=libs();root.innerHTML='';l.tags.forEach(v=>{const chip=document.createElement('span');chip.className='savedChip'+(selectedTags.includes(v)?' active':'');const pick=document.createElement('button');pick.type='button';pick.className='pick';pick.textContent='#'+v;pick.onclick=()=>{selectedTags=selectedTags.includes(v)?selectedTags.filter(x=>x!==v):[...selectedTags,v];saveDraft();renderTags();render()};const x=document.createElement('button');x.type='button';x.className='remove';x.textContent='×';x.onclick=e=>{e.stopPropagation();const l2=libs();l2.tags=l2.tags.filter(x=>x!==v);selectedTags=selectedTags.filter(x=>x!==v);saveLibs(l2);saveDraft();render()};chip.append(pick,x);root.appendChild(chip)})}
+function renderLibraries(){renderSelect('titles','titlesSelect');renderSelect('times','timesSelect');renderSelect('focuses','focusesSelect');renderSelect('memos','memosSelect');renderTags()}
+function applyTheme(t,name){$('bgColor').value=t.bg;$('accentColor').value=t.accent;$('textColor').value=t.text;activeThemeName=name||t.name||'';renderThemes();saveDraft();render()}
+function renderThemes(){const memberRoot=$('memberThemes'),customRoot=$('customThemes'),l=libs();memberRoot.innerHTML='';MEMBERS.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;b.append(sw,document.createTextNode(t.name));b.onclick=()=>applyTheme(t,t.name);memberRoot.appendChild(b)});customRoot.innerHTML='';if(!l.themes.length){const em=document.createElement('span');em.className='hint';em.textContent='まだ自由テーマはありません';customRoot.appendChild(em)}else l.themes.forEach(t=>{const item=document.createElement('span');item.className='customThemeItem';const a=document.createElement('button');a.type='button';a.className='applyTheme';const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;a.append(sw,document.createTextNode(t.name));a.onclick=()=>applyTheme(t,t.name);const x=document.createElement('button');x.type='button';x.className='removeTheme';x.textContent='×';x.onclick=()=>{if(!confirm(`「${t.name}」を削除しますか？`))return;const l2=libs();l2.themes=l2.themes.filter(v=>v.name!==t.name);saveLibs(l2)};item.append(a,x);customRoot.appendChild(item)});$('fssTheme').classList.toggle('active',activeThemeName==='FSSブルー')}
+function saveProfile(){return write(PROFILE_KEY,{station:$('station').value,handle:$('handle').value,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData,activeThemeName})}
+function applyProfile(p){if(!p)return;['station','handle','bgColor','accentColor','textColor','iconX','iconY'].forEach(id=>{if(p[id]!=null)$(id).value=p[id]});activeThemeName=p.activeThemeName||'';iconData=p.iconData||'';loadData(iconData,img=>{iconImage=img;if(iconData){$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden')}sync();renderThemes();render()})}
+function saveDraft(){write(DRAFT_KEY,{title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags,accentPlace,accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName})}
+function sync(){$('iconXVal').textContent=$('iconX').value;$('iconYVal').textContent=$('iconY').value;$('accentScaleVal').textContent=$('accentScale').value;$('accentOpacityVal').textContent=$('accentOpacity').value}
+function addCandidate(kind,inputId){const v=$(inputId).value.trim();if(!v){alert('保存する内容を入力してください。');return}const l=libs();l[kind]=unique(l[kind],v);saveLibs(l);const s=$(kind+'Select');if(s)s.value=v}
+document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>addCandidate(b.dataset.save,b.dataset.input));document.querySelectorAll('select[data-kind]').forEach(s=>s.onchange=()=>{if(!s.value)return;$(s.dataset.target).value=s.value;saveDraft();render()});document.querySelectorAll('[data-delete-kind]').forEach(b=>b.onclick=()=>{const s=$(b.dataset.select),v=s.value;if(!v){alert('削除する候補を選んでください。');return}if(!confirm('この保存済み候補を削除しますか？'))return;const l=libs();l[b.dataset.deleteKind]=l[b.dataset.deleteKind].filter(x=>x!==v);saveLibs(l)});
+$('addTag').onclick=()=>{const v=$('tagInput').value.trim().replace(/^#+/,'');if(!v)return;const l=libs();l.tags=unique(l.tags,v);if(!selectedTags.includes(v))selectedTags.push(v);$('tagInput').value='';saveLibs(l);saveDraft();render()};$('tagInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('addTag').click()}};
+$('fssTheme').onclick=()=>applyTheme(FSS,'FSSブルー');$('saveTheme').onclick=()=>{const name=$('themeName').value.trim();if(!name){alert('自由テーマの名前を入力してください。');return}const l=libs(),t={name,bg:$('bgColor').value,accent:$('accentColor').value,text:$('textColor').value};const old=l.themes.find(x=>x.name===name);if(old&&!confirm(`「${name}」を上書きしますか？`))return;l.themes=[t,...l.themes.filter(x=>x.name!==name)];activeThemeName=name;saveLibs(l);$('themeName').value='';saveDraft();render()};
+['station','handle','bgColor','accentColor','textColor','iconX','iconY','title','time','focus','memo','accentScale','accentOpacity'].forEach(id=>$(id).addEventListener('input',()=>{sync();saveDraft();render()}));
+$('saveProfile').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}alert(saveProfile()?'基本情報を保存しました。':'保存できませんでした。')};
+$('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{iconData=await resizeData(f);loadData(iconData,img=>{iconImage=img;$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden');render()})}catch(_){alert('アイコン画像を読み込めませんでした。')}};$('removeIcon').onclick=()=>{iconData='';iconImage=null;$('iconInput').value='';$('iconThumb').style.display='none';$('removeIcon').classList.add('hidden');$('iconControls').classList.add('hidden');render()};
+$('accentImageInput').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{accentImage=img;$('accentThumb').src=r.result;$('accentThumb').style.display='block';$('removeAccent').classList.remove('hidden');$('accentControls').classList.remove('hidden');render()};img.src=r.result};r.readAsDataURL(f)};$('removeAccent').onclick=()=>{accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');render()};document.querySelectorAll('[data-place]').forEach(b=>b.onclick=()=>{accentPlace=b.dataset.place;document.querySelectorAll('[data-place]').forEach(x=>x.classList.toggle('active',x.dataset.place===accentPlace));saveDraft();render()});
+$('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();render()};
+$('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
+renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null));const d=read(DRAFT_KEY,null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlace=d.accentPlace||'top';if(d.accentScale!=null)$('accentScale').value=d.accentScale;if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;activeThemeName=d.activeThemeName||activeThemeName}document.querySelectorAll('[data-place]').forEach(x=>x.classList.toggle('active',x.dataset.place===accentPlace));sync();renderLibraries();renderThemes();render();
 })();
 </script>
-</body>
-</html>
-
+</body></html>
