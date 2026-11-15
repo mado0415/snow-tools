@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eef9ff">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Station紹介カードメーカー V14</title>
+<title>Station紹介カードメーカー V15</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
@@ -14,7 +14,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V14</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列、アクセント画像は本文の下に配置します。内容量に合わせてカードの高さが自動で伸びます。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V15</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列のまま、入力内容の量に合わせてカードの横幅・高さ・文字サイズを自動調整します。アクセント画像は本文の下に配置します。</p></section>
 <div class="grid">
 <section class="card">
 <div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
@@ -40,7 +40,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button></div><p class="note">基本情報・色テーマ・保存候補・下書きはこの端末のブラウザ内だけに保存します。</p>
 </section>
 
-<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">文字情報は上から順に縦一列で表示します。アクセント画像は本文の下に、元画像の縦横比を保って配置します。</p></section>
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">入力情報が少ないときはカードをコンパクトに・文字を大きく、多いときは横幅と高さを広げて自動調整します。アクセント画像は本文の下に配置します。</p></section>
 </div></main>
 
 <div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
@@ -48,7 +48,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
-const PROFILE_KEY='fssStationProfileV14',LIB_KEY='fssStationLibrariesV14',DRAFT_KEY='fssStationDraftV14';
+const PROFILE_KEY='fssStationProfileV15',LIB_KEY='fssStationLibrariesV15',DRAFT_KEY='fssStationDraftV15';
 const FSS={name:'FSSブルー',bg:'#f5fbff',accent:'#7fc8e8',text:'#263640'};
 const MEMBERS=[
 {name:'黄',bg:'#fffbea',accent:'#f0cf45',text:'#37331f'},
@@ -64,7 +64,7 @@ const MEMBERS=[
 let iconImage=null,iconData='',accentImage=null,selectedTags=[],activeThemeName='FSSブルー';
 function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(_){return fallback}}
 function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}}
-function libs(){const r=read(LIB_KEY,null)||read('fssStationLibrariesV13',null)||read('fssStationLibrariesV12',null)||read('fssStationLibrariesV11',null)||read('fssStationLibrariesV10',{})||{};return{titles:Array.isArray(r.titles)?r.titles:[],times:Array.isArray(r.times)?r.times:[],focuses:Array.isArray(r.focuses)?r.focuses:[],memos:Array.isArray(r.memos)?r.memos:[],tags:Array.isArray(r.tags)?r.tags:[],themes:Array.isArray(r.themes)?r.themes:[]}}
+function libs(){const r=read(LIB_KEY,null)||read('fssStationLibrariesV14',null)||read('fssStationLibrariesV13',null)||read('fssStationLibrariesV12',null)||read('fssStationLibrariesV11',null)||read('fssStationLibrariesV10',{})||{};return{titles:Array.isArray(r.titles)?r.titles:[],times:Array.isArray(r.times)?r.times:[],focuses:Array.isArray(r.focuses)?r.focuses:[],memos:Array.isArray(r.memos)?r.memos:[],tags:Array.isArray(r.tags)?r.tags:[],themes:Array.isArray(r.themes)?r.themes:[]}}
 function saveLibs(v){write(LIB_KEY,v);renderLibraries();renderThemes()}
 function unique(arr,v){v=String(v||'').trim();return v?[v,...arr.filter(x=>x!==v)].slice(0,40):arr}
 function renderScalarSelect(kind,selectId){
@@ -125,76 +125,29 @@ function fit(text,max,start,min,weight=800){let s=start;while(s>min){ctx.font=`$
 function resizeData(file,maxSide=360,q=.86){return new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=reject;r.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const sc=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*sc),h=Math.round(img.naturalHeight*sc);const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',q))};img.src=r.result};r.readAsDataURL(file)})}
 function loadData(data,cb){if(!data){cb(null);return}const i=new Image();i.onload=()=>cb(i);i.onerror=()=>cb(null);i.src=data}
 function drawIcon(cx,cy,r,accent,text){ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=rgba(accent,.16);ctx.fillRect(cx-r,cy-r,r*2,r*2);if(iconImage){const iw=iconImage.naturalWidth||iconImage.width,ih=iconImage.naturalHeight||iconImage.height,sc=Math.max(r*2/iw,r*2/ih),dw=iw*sc,dh=ih*sc,px=+$('iconX').value/100,py=+$('iconY').value/100;ctx.drawImage(iconImage,cx-r+(r*2-dw)*px,cy-r+(r*2-dh)*py,dw,dh)}else{ctx.fillStyle=rgba(text,.55);ctx.font='900 42px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((($('station').value.trim()||'S')[0]||'S').toUpperCase(),cx,cy+1);ctx.textAlign='left';ctx.textBaseline='alphabetic'}ctx.restore();ctx.strokeStyle=rgba(text,.12);ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke()}
-function drawMeta(label,value,x,y,w,accent,text){
-  ctx.fillStyle=accent;
-  ctx.font='900 26px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-  ctx.fillText(label,x,y+28);
-
-  let size=44;
-  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrap(value,w,font);
-  while(lines.length>3&&size>31){
-    size-=2;
-    font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines=wrap(value,w,font);
-  }
-
-  ctx.fillStyle=text;
-  ctx.font=font;
-  let yy=y+76;
-  lines.forEach(line=>{
-    ctx.fillText(line,x,yy);
-    yy+=size*1.18;
-  });
-  return yy+22;
+function layoutMode(){
+  const title=$('title').value.trim();
+  const time=$('time').value.trim();
+  const focus=$('focus').value.trim();
+  const memo=$('memo').value.trim();
+  const fieldCount=[title,time,focus,memo].filter(Boolean).length+(selectedTags.length?1:0);
+  const chars=title.length+time.length+focus.length+memo.length+selectedTags.reduce((n,v)=>n+v.length,0);
+  if(chars<=72&&fieldCount<=4)return 'sparse';
+  if(chars>=210||memo.length>=120||selectedTags.length>=6)return 'dense';
+  return 'normal';
 }
-function metaHeight(value,w){
-  let size=44;
-  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrap(value,w,font);
-  while(lines.length>3&&size>31){
-    size-=2;
-    font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines=wrap(value,w,font);
-  }
-  return 28+48+lines.length*size*1.18+22;
+function metrics(){
+  const mode=layoutMode();
+  if(mode==='sparse')return {mode,station:72,title:98,label:31,value:56,memo:43,tag:34,gap:42,minInner:790,minH:620};
+  if(mode==='dense')return {mode,station:58,title:72,label:24,value:40,memo:31,tag:26,gap:24,minInner:1120,minH:760};
+  return {mode,station:64,title:84,label:27,value:47,memo:36,tag:30,gap:32,minInner:940,minH:690};
 }
-
-function drawTags(x,y,maxW,accent,text){
-  let cx=x,cy=y;
-  ctx.font='800 29px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-  selectedTags.forEach(raw=>{
-    const label='#'+raw,w=ctx.measureText(label).width+40;
-    if(cx+w>x+maxW){cx=x;cy+=54}
-    ctx.fillStyle=rgba(accent,.18);
-    rr(cx,cy,w,44,22);ctx.fill();
-    ctx.fillStyle=text;ctx.fillText(label,cx+20,cy+31);
-    cx+=w+11;
-  });
-  return cy+48;
+function textWidth(value,font){if(!value)return 0;ctx.font=font;return ctx.measureText(value).width}
+function widestMemoLine(value,font){
+  if(!value)return 0;
+  return String(value).split(/\n+/).reduce((m,line)=>Math.max(m,textWidth(line,font)),0);
 }
-function accentWidth(){
-  const pct=Math.max(50,Math.min(100,+$('accentScale').value||100));
-  return Math.round(1424*pct/100);
-}
-function accentHeight(){
-  if(!accentImage)return 0;
-  const iw=accentImage.naturalWidth||accentImage.width||1;
-  const ih=accentImage.naturalHeight||accentImage.height||1;
-  return Math.round(accentWidth()*ih/iw);
-}
-function drawAccent(y){
-  if(!accentImage)return y;
-  const width=accentWidth();
-  const height=accentHeight();
-  const x=88+(1424-width)/2;
-  ctx.save();
-  ctx.globalAlpha=+$('accentOpacity').value/100;
-  ctx.drawImage(accentImage,x,y,width,height);
-  ctx.restore();
-  return y+height;
-}
-function measureTextBlock(){
+function desiredInnerWidth(m){
   const station=$('station').value.trim()||'Station name';
   const handle=$('handle').value.trim();
   const title=$('title').value.trim();
@@ -202,124 +155,149 @@ function measureTextBlock(){
   const focus=$('focus').value.trim();
   const memo=$('memo').value.trim();
   let widest=0;
-
-  const measure=(value,font)=>{
-    if(!value)return 0;
-    ctx.font=font;
-    return ctx.measureText(value).width;
-  };
-
-  widest=Math.max(widest,220+measure(station,'900 64px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
-  if(handle)widest=Math.max(widest,220+measure(handle,'730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
-  if(title)widest=Math.max(widest,measure(title,'900 82px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
-  if(time)widest=Math.max(widest,measure(time,'850 44px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
-  if(focus)widest=Math.max(widest,measure(focus,'850 44px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
-  if(memo){
-    memo.split(/\\n+/).forEach(line=>{
-      widest=Math.max(widest,measure(line,'650 36px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
-    });
-  }
+  widest=Math.max(widest,130+textWidth(station,`900 ${m.station}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
+  if(handle)widest=Math.max(widest,130+textWidth(handle,'730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif'));
+  if(title)widest=Math.max(widest,textWidth(title,`900 ${m.title}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
+  if(time)widest=Math.max(widest,textWidth(time,`850 ${m.value}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
+  if(focus)widest=Math.max(widest,textWidth(focus,`850 ${m.value}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
+  widest=Math.max(widest,widestMemoLine(memo,`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`));
   if(selectedTags.length){
-    ctx.font='800 29px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-    const tagsW=selectedTags.reduce((sum,raw)=>sum+ctx.measureText('#'+raw).width+51,0);
-    widest=Math.max(widest,Math.min(tagsW,1180));
+    ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    const tagLine=selectedTags.reduce((n,v)=>n+ctx.measureText('#'+v).width+54,0);
+    widest=Math.max(widest,Math.min(tagLine,1424));
   }
-
-  const width=Math.max(760,Math.min(1424,Math.ceil(widest+40)));
-  return {width,x:Math.round((1600-width)/2)};
+  return Math.max(m.minInner,Math.min(1424,Math.ceil(widest+70)));
 }
-function measureCard(){
-  const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
-  const block=measureTextBlock(),textW=block.width;
-  let y=255;
-
-  if(title){
-    const ts=fit(title,textW,82,52,900);
-    const font=`900 ${ts}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrap(title,textW,font).slice(0,3);
-    y+=lines.length*ts*1.1+28;
+function wrapLines(value,maxW,font,maxLines=99){
+  const paras=String(value||'').split(/\n/);
+  const out=[];
+  ctx.font=font;
+  for(const para of paras){
+    if(para===''){out.push('');continue}
+    let line='';
+    for(const ch of [...para]){
+      const t=line+ch;
+      if(line&&ctx.measureText(t).width>maxW){out.push(line);line=ch;if(out.length>=maxLines)return out}
+      else line=t;
+    }
+    if(line)out.push(line);
+    if(out.length>=maxLines)return out;
   }
-  if(time)y+=metaHeight(time,textW)+18;
-  if(focus)y+=metaHeight(focus,textW)+18;
+  return out;
+}
+function drawMeta(label,value,x,y,w,accent,text,m){
+  ctx.fillStyle=accent;
+  ctx.font=`900 ${m.label}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  ctx.fillText(label,x,y+m.label);
+  const maxSize=m.value;
+  let size=maxSize;
+  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  let lines=wrapLines(value,w,font,4);
+  while(lines.length>3&&size>30){size-=2;font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(value,w,font,4)}
+  ctx.fillStyle=text;ctx.font=font;
+  let yy=y+m.label+48;
+  lines.forEach(line=>{ctx.fillText(line,x,yy);yy+=size*1.18});
+  return yy;
+}
+function metaHeight(value,w,m){
+  let size=m.value;
+  let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  let lines=wrapLines(value,w,font,4);
+  while(lines.length>3&&size>30){size-=2;font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(value,w,font,4)}
+  return m.label+48+lines.length*size*1.18;
+}
+function drawTags(x,y,maxW,accent,text,m){
+  let cx=x,cy=y;
+  ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+  selectedTags.forEach(raw=>{
+    const label='#'+raw,w=ctx.measureText(label).width+42;
+    if(cx+w>x+maxW){cx=x;cy+=m.tag+28}
+    ctx.fillStyle=rgba(accent,.18);rr(cx,cy,w,m.tag+18,(m.tag+18)/2);ctx.fill();
+    ctx.fillStyle=text;ctx.fillText(label,cx+21,cy+m.tag+3);
+    cx+=w+12;
+  });
+  return cy+m.tag+20;
+}
+function accentWidth(cardW){
+  const pct=Math.max(50,Math.min(100,+$('accentScale').value||100));
+  return Math.round((cardW-176)*pct/100);
+}
+function accentHeight(cardW){
+  if(!accentImage)return 0;
+  const iw=accentImage.naturalWidth||accentImage.width||1;
+  const ih=accentImage.naturalHeight||accentImage.height||1;
+  return Math.round(accentWidth(cardW)*ih/iw);
+}
+function drawAccent(y,cardW){
+  if(!accentImage)return y;
+  const width=accentWidth(cardW),height=accentHeight(cardW),x=(cardW-width)/2;
+  ctx.save();ctx.globalAlpha=+$('accentOpacity').value/100;ctx.drawImage(accentImage,x,y,width,height);ctx.restore();
+  return y+height;
+}
+function measureLayout(){
+  const m=metrics();
+  const innerW=desiredInnerWidth(m);
+  const cardW=innerW+176;
+  const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
+  let y=235;
+  if(title){
+    let size=m.title;let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;let lines=wrapLines(title,innerW,font,4);
+    while(lines.length>3&&size>48){size-=2;font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(title,innerW,font,4)}
+    y+=lines.length*size*1.08+m.gap;
+  }
+  if(time)y+=metaHeight(time,innerW,m)+m.gap;
+  if(focus)y+=metaHeight(focus,innerW,m)+m.gap;
   if(memo){
-    const fs=36,font=`650 ${fs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrap(memo,textW,font);
-    y+=lines.length*fs*1.42+28;
+    const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    const lines=wrapLines(memo,innerW,font,99);
+    y+=Math.max(1,lines.length)*m.memo*1.42+m.gap;
   }
   if(selectedTags.length){
-    ctx.font='800 29px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-    let cx=block.x,rows=1;
-    selectedTags.forEach(raw=>{
-      const w=ctx.measureText('#'+raw).width+40;
-      if(cx+w>block.x+textW){rows++;cx=block.x}
-      cx+=w+11;
-    });
-    y+=rows*54+18;
+    ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    let cx=0,rows=1;
+    selectedTags.forEach(raw=>{const w=ctx.measureText('#'+raw).width+54;if(cx&&cx+w>innerW){rows++;cx=0}cx+=w+12});
+    y+=rows*(m.tag+28)+m.gap;
   }
-  if(accentImage)y+=34+accentHeight()+30;
-  return Math.max(720,Math.ceil(y+90));
+  if(accentImage)y+=24+accentHeight(cardW)+34;
+  const cardH=Math.max(m.minH,Math.ceil(y+70));
+  return {m,innerW,cardW,cardH};
 }
 function render(){
   const bg=$('bgColor').value,accent=$('accentColor').value,text=$('textColor').value;
   const station=$('station').value.trim()||'Station name',handle=$('handle').value.trim();
   const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
+  const L=measureLayout(),m=L.m,margin=88,textW=L.innerW;
+  if(canvas.width!==L.cardW)canvas.width=L.cardW;
+  if(canvas.height!==L.cardH)canvas.height=L.cardH;
+  $('previewSize').textContent=`${L.cardW} × ${L.cardH}`;
+  ctx.clearRect(0,0,L.cardW,L.cardH);ctx.fillStyle=bg;ctx.fillRect(0,0,L.cardW,L.cardH);
+  ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,Math.min(220,L.cardW*.16),0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,Math.min(300,L.cardW*.2),0,Math.PI*2);ctx.fill();
 
-  const cardH=measureCard();
-  if(canvas.height!==cardH)canvas.height=cardH;
-  $('previewSize').textContent=`1600 × ${cardH}`;
+  const iconR=m.mode==='sparse'?56:50;
+  drawIcon(margin+iconR,66+iconR,iconR,accent,text);
+  const stationX=margin+iconR*2+24;
+  const stationAvail=L.cardW-margin-stationX;
+  const ss=fit(station,stationAvail,m.station,42,900);
+  ctx.fillStyle=text;ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;ctx.fillText(station,stationX,126);
+  if(handle){ctx.fillStyle=rgba(text,.58);ctx.font='730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';ctx.fillText(handle,stationX,164)}
 
-  ctx.clearRect(0,0,1600,cardH);
-  ctx.fillStyle=bg;ctx.fillRect(0,0,1600,cardH);
-
-  ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(1500,20,230,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(1510,cardH,320,0,Math.PI*2);ctx.fill();
-
-  const block=measureTextBlock(),margin=block.x,textW=block.width,iconR=50;
-  drawIcon(margin+iconR,72+iconR,iconR,accent,text);
-
-  const stationX=margin+iconR*2+25;
-  const ss=fit(station,Math.max(420,textW-(stationX-margin)),64,44,900);
-  ctx.fillStyle=text;
-  ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  ctx.fillText(station,stationX,132);
-  if(handle){
-    ctx.fillStyle=rgba(text,.58);
-    ctx.font='730 24px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif';
-    ctx.fillText(handle,stationX,170);
-  }
-
-  let y=265;
+  let y=235;
   if(title){
-    const ts=fit(title,textW,82,52,900);
-    const font=`900 ${ts}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrap(title,textW,font).slice(0,3);
-    ctx.fillStyle=text;ctx.font=font;
-    lines.forEach(line=>{ctx.fillText(line,margin,y);y+=ts*1.10});
-    y+=28;
+    let size=m.title;let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;let lines=wrapLines(title,textW,font,4);
+    while(lines.length>3&&size>48){size-=2;font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;lines=wrapLines(title,textW,font,4)}
+    ctx.fillStyle=text;ctx.font=font;lines.forEach(line=>{ctx.fillText(line,margin,y);y+=size*1.08});y+=m.gap;
   }
-
-  if(time)y=drawMeta('配信時間',time,margin,y,textW,accent,text)+18;
-  if(focus)y=drawMeta('重点曲・配信軸',focus,margin,y,textW,accent,text)+18;
-
+  if(time){y=drawMeta('配信時間',time,margin,y,textW,accent,text,m)+m.gap}
+  if(focus){y=drawMeta('重点曲・配信軸',focus,margin,y,textW,accent,text,m)+m.gap}
   if(memo){
-    const fs=36,font=`650 ${fs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrap(memo,textW,font);
-    ctx.fillStyle=rgba(text,.80);ctx.font=font;
-    lines.forEach(line=>{ctx.fillText(line,margin,y);y+=fs*1.42});
-    y+=28;
+    const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;const lines=wrapLines(memo,textW,font,99);
+    ctx.fillStyle=rgba(text,.80);ctx.font=font;lines.forEach(line=>{ctx.fillText(line,margin,y);y+=m.memo*1.42});y+=m.gap;
   }
-  if(selectedTags.length)y=drawTags(margin,y,textW,accent,text)+18;
+  if(selectedTags.length){y=drawTags(margin,y,textW,accent,text,m)+m.gap}
+  if(accentImage){y+=18;drawAccent(y,L.cardW)}
 
-  if(accentImage){
-    y+=34;
-    drawAccent(y);
-  }
-
-  ctx.fillStyle=rgba(text,.28);
-  ctx.font='700 15px -apple-system,sans-serif';
-  ctx.textAlign='right';
-  ctx.fillText('STATIONHEAD / STATION GUIDE',1512,cardH-34);
-  ctx.textAlign='left';
+  ctx.fillStyle=rgba(text,.28);ctx.font='700 14px -apple-system,sans-serif';ctx.textAlign='right';ctx.fillText('STATIONHEAD / STATION GUIDE',L.cardW-40,L.cardH-28);ctx.textAlign='left';
 }
 function applyTheme(t,name){$('bgColor').value=t.bg;$('accentColor').value=t.accent;$('textColor').value=t.text;activeThemeName=name||t.name||'';renderThemes();saveDraft();render()}
 function renderThemes(){const memberRoot=$('memberThemes'),customRoot=$('customThemes'),l=libs();memberRoot.innerHTML='';MEMBERS.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;b.append(sw,document.createTextNode(t.name));b.onclick=()=>applyTheme(t,t.name);memberRoot.appendChild(b)});customRoot.innerHTML='';if(!l.themes.length){const em=document.createElement('span');em.className='hint';em.textContent='まだ自由テーマはありません';customRoot.appendChild(em)}else l.themes.forEach(t=>{const item=document.createElement('span');item.className='customThemeItem';const a=document.createElement('button');a.type='button';a.className='applyTheme';const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;a.append(sw,document.createTextNode(t.name));a.onclick=()=>applyTheme(t,t.name);const x=document.createElement('button');x.type='button';x.className='removeTheme';x.textContent='×';x.onclick=()=>{if(!confirm(`「${t.name}」を削除しますか？`))return;const l2=libs();l2.themes=l2.themes.filter(v=>v.name!==t.name);saveLibs(l2)};item.append(a,x);customRoot.appendChild(item)});$('fssTheme').classList.toggle('active',activeThemeName==='FSSブルー')}
@@ -337,7 +315,7 @@ $('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!
 $('accentImageInput').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{accentImage=img;$('accentThumb').src=r.result;$('accentThumb').style.display='block';$('removeAccent').classList.remove('hidden');$('accentControls').classList.remove('hidden');render()};img.src=r.result};r.readAsDataURL(f)};$('removeAccent').onclick=()=>{accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');render()};
 $('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();render()};
 $('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
-renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;activeThemeName=MEMBERS.some(t=>t.name===d.activeThemeName)||d.activeThemeName==='FSSブルー'?d.activeThemeName:''}sync();renderLibraries();renderThemes();render();
+renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;activeThemeName=MEMBERS.some(t=>t.name===d.activeThemeName)||d.activeThemeName==='FSSブルー'?d.activeThemeName:''}sync();renderLibraries();renderThemes();render();
 })();
 </script>
 </body></html>
