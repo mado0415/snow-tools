@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eef9ff">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Station紹介カードメーカー V19</title>
+<title>Station紹介カードメーカー V21</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
@@ -14,7 +14,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V19</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字サイズを保ちながら、入力内容に応じて余白とカードの高さを調整します。画像は本文の下または右側に配置できます。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V21</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字サイズを保ちながら、入力内容に応じて余白とカードの高さを調整します。画像は本文の下または右側に配置できます。</p></section>
 <div class="grid">
 <section class="card">
 <div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
@@ -255,27 +255,14 @@ function drawAccentRight(cardW,cardH){
   ctx.drawImage(accentImage,x,y,w,h);ctx.restore();
 }
 function drawEmptyAccentArea(cardW,cardH,accent){
-  ctx.save();
-  const panelX=Math.round(cardW*0.56),panelY=48,panelW=Math.round(cardW*0.32),panelH=Math.max(280,cardH-96);
-  const grad=ctx.createLinearGradient(panelX,0,panelX+panelW,0);
+  // 図形や境界線を作らず、カード全面に連続する淡い横グラデーション。
+  const grad=ctx.createLinearGradient(cardW*.38,0,cardW,0);
   grad.addColorStop(0,rgba(accent,0));
-  grad.addColorStop(.18,rgba(accent,.045));
-  grad.addColorStop(.68,rgba(accent,.085));
-  grad.addColorStop(1,rgba(accent,.12));
-  ctx.fillStyle=grad;rr(panelX,panelY,panelW,panelH,48);ctx.fill();
-
-  const glow=ctx.createRadialGradient(cardW-140,150,20,cardW-140,150,220);
-  glow.addColorStop(0,rgba(accent,.11));
-  glow.addColorStop(1,rgba(accent,0));
-  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(cardW-140,150,220,0,Math.PI*2);ctx.fill();
-
-  const lower=ctx.createRadialGradient(cardW-120,cardH-110,30,cardW-120,cardH-110,260);
-  lower.addColorStop(0,rgba(accent,.09));
-  lower.addColorStop(1,rgba(accent,0));
-  ctx.fillStyle=lower;ctx.beginPath();ctx.arc(cardW-120,cardH-110,260,0,Math.PI*2);ctx.fill();
-
-  ctx.fillStyle=rgba('#ffffff',.18);rr(cardW-230,84,86,cardH-168,44);ctx.fill();
-  ctx.restore();
+  grad.addColorStop(.32,rgba(accent,.035));
+  grad.addColorStop(.68,rgba(accent,.105));
+  grad.addColorStop(1,rgba(accent,.19));
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,cardW,cardH);
 }
 // 計測と描画の双方が同じテキスト幅・折り返しを使用する。
 function titleLines(title,w,m){
@@ -333,9 +320,12 @@ function render(){
   $('previewSize').textContent=`${L.cardW} × ${L.cardH}`;
   ctx.clearRect(0,0,L.cardW,L.cardH);
   ctx.fillStyle=bg;ctx.fillRect(0,0,L.cardW,L.cardH);
-  ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,220,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,300,0,Math.PI*2);ctx.fill();
-  if(!accentImage)drawEmptyAccentArea(L.cardW,L.cardH,accent);
+  if(!accentImage){
+    drawEmptyAccentArea(L.cardW,L.cardH,accent);
+  }else{
+    ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,220,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,300,0,Math.PI*2);ctx.fill();
+  }
   if(accentImage&&accentPlacement==='right')drawAccentRight(L.cardW,L.cardH);
 
   const iconR=50,stationX=L.bodyX;
