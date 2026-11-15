@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eef9ff">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Station紹介カードメーカー V25</title>
+<title>Station紹介カードメーカー</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
@@ -25,44 +25,61 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 .templateNameRow input,.templateSelectRow select{min-width:0;width:100%;border:1px solid #cbdce5;background:white;border-radius:11px;padding:10px;font-size:12px}
 .templateSelectRow button{padding:9px;font-size:10px}
 @media(max-width:500px){.templateSelectRow{grid-template-columns:minmax(0,1fr) auto auto}}
+
+/* 公開用の画面整理。描画・保存処理には触れない */
+.hero{padding:22px 12px 24px}.hero h1{font-size:clamp(22px,4vw,30px);letter-spacing:-.035em}.hero .lead{max-width:590px;font-size:13px;line-height:1.65}
+.grid{grid-template-columns:minmax(350px,500px) minmax(0,1fr);gap:18px}.card{padding:20px;border-radius:20px}
+.sectionHead{margin-bottom:12px}.sectionHead:not(:first-child){margin-top:26px;border-top:1px solid #e7eff3;padding-top:20px}.sectionHead h2{font-size:18px;letter-spacing:-.025em}
+.field{margin:14px 0}.field label{font-size:13px}.hint{font-size:11px;line-height:1.65}.note{font-size:11px}.colorGroup{margin-top:10px;padding:13px}.colorGroupTitle{font-size:12px}
+.themeRow{gap:8px}.themeBtn{min-width:83px;min-height:74px;padding:9px 7px;font-size:11px;align-content:center}.swatch{width:36px;height:22px}
+.optionalColor summary{cursor:pointer;list-style-position:inside;margin-bottom:0}.optionalColor[open] summary{margin-bottom:10px}
+.presetTagsDetails summary{padding:5px 0}.templateGroup{margin:12px 0 20px;padding:14px;background:#f5fbfe}.templateNameRow{margin-top:14px}
+.templateNameRow input,.templateSelectRow select{font-size:14px}.templateNameRow button,.templateSelectRow button{font-size:12px}
+.libraryRow .saveMini,.recallRow .deleteSaved{font-size:11px}.recallRow select{font-size:12px}
+.layoutSettings summary{font-size:13px}.layoutSettings .tweak{grid-template-columns:90px minmax(0,1fr) 44px}
+.primary{min-height:52px;font-size:15px}.secondary{min-height:48px}
+.backupPanel{margin-top:17px}.backupPanel summary{cursor:pointer}.backupActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 8px}.backupActions button,.backupImportButton{min-height:46px;display:flex;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line);border-radius:12px;padding:9px;font-size:12px;font-weight:850}.backupImportButton{background:#edf9ff;color:#346d86;cursor:pointer}#importBackup{width:100%;font-size:11px;max-width:100%}
+@media(max-width:500px){.backupActions{grid-template-columns:1fr}}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #80c5e6;outline-offset:2px}
+@media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}
+@media(max-width:500px){.wrap{padding:12px 11px 48px}.card{padding:15px;border-radius:19px}.hero{padding:18px 8px 22px}.sectionHead h2{font-size:17px}.themeBtn{min-width:79px;min-height:69px}.actions{grid-template-columns:1fr 1fr}.templateNameRow{grid-template-columns:minmax(0,1fr) auto}.templateNameRow .saveMini{padding:0 9px;white-space:normal;max-width:118px}.templateSelectRow{grid-template-columns:minmax(0,1fr) auto auto}.templateSelectRow button{padding:9px 8px}.saveRow{grid-template-columns:1fr 1fr}.customColors{grid-template-columns:repeat(3,1fr)}.rangeLine{grid-template-columns:62px minmax(0,1fr) 36px}.presetTagForm{grid-template-columns:1fr}.recallRow select,.templateSelectRow select{min-width:0}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V25</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。カード幅や文字・画像の位置を微調整できます。配信内容・色・配置・画像はカードごとに保存できます。文字サイズを保ちながら内容に応じて高さを調整します。画像は本文の下または右側に配置できます。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / FAN-MADE TOOL <span class="version">V27</span></div><h1>Station紹介カードメーカー</h1><p class="lead">配信のお知らせ画像を作れます。Station情報を登録して、配信内容を入力したら、色や画像を選んでPNGに保存。よく使うカードは丸ごと保存できます。</p></section>
 <div class="grid">
 <section class="card">
-<div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
+<div class="sectionHead"><h2>Station情報</h2><small>最初に一度登録</small></div>
 <div class="row2"><div class="field"><label for="station">Station名<span class="req">必須</span></label><input id="station" type="text" maxlength="28" placeholder="Station名を入力"></div><div class="field"><label for="handle">@ID / 呼び名</label><input id="handle" type="text" maxlength="28" placeholder="IDまたは呼び名を入力"></div></div>
-<div class="filebox"><div class="field" style="margin:0"><label for="iconInput">Stationheadアイコン</label><input id="iconInput" type="file" accept="image/*"><div class="hint">丸く切り抜いて表示します。縮小してこの端末に保存できます。</div></div><div class="imagePreviewLine"><img id="iconThumb" class="iconThumb" alt=""><button type="button" id="removeIcon" class="miniBtn hidden">アイコンを外す</button></div><div id="iconControls" class="hidden"><div class="rangeLine"><span>横位置</span><input id="iconX" type="range" min="0" max="100" value="50"><b id="iconXVal">50</b></div><div class="rangeLine"><span>縦位置</span><input id="iconY" type="range" min="0" max="100" value="50"><b id="iconYVal">50</b></div></div></div>
+<div class="filebox"><div class="field" style="margin:0"><label for="iconInput">アイコン画像</label><input id="iconInput" type="file" accept="image/*"><div class="hint">丸く切り抜いて表示します。</div></div><div class="imagePreviewLine"><img id="iconThumb" class="iconThumb" alt=""><button type="button" id="removeIcon" class="miniBtn hidden">アイコンを外す</button></div><div id="iconControls" class="hidden"><div class="rangeLine"><span>横位置</span><input id="iconX" type="range" min="0" max="100" value="50"><b id="iconXVal">50</b></div><div class="rangeLine"><span>縦位置</span><input id="iconY" type="range" min="0" max="100" value="50"><b id="iconYVal">50</b></div></div></div>
 
 <button type="button" id="saveProfile" class="secondary" style="width:100%;margin-top:10px">基本情報を保存</button>
 
-<div class="sectionHead"><h2>今回のカード</h2><small>保存候補から呼び出せます</small></div>
-<div class="sectionHead"><h2>カードの色</h2><small>用途ごとに使い分け</small></div>
-<div class="colorGroup"><div class="colorGroupTitle">FSSブルー・共通カラー × 4</div>
-<div class="themeRow"><button type="button" class="themeBtn" id="fssTheme"><span class="swatch" style="background:#d6f4ff"></span>FSS</button><div id="sharedThemes" class="themeRow"></div></div>
-<details class="presetTagsDetails" id="presetTagsDetails"><summary>この5色の用途タグを設定 <span class="mutedSmall">（色名とは別の目印）</span></summary>
-<div class="hint">色を選ぶと編集対象も切り替わります。登録したタグは色ボタンの下に表示されます（画像には入りません）。</div>
-<div class="presetTagForm"><select id="presetTagTheme" aria-label="用途タグを付ける色"></select><div class="presetTagEntry"><input id="presetTagInput" type="text" maxlength="22" placeholder="用途タグ（例：定常配信）"><button type="button" id="presetTagAdd" class="saveMini">追加</button></div></div>
-<div class="savedArea" id="presetTagList"></div></details></div>
-<div class="colorGroup"><div class="colorGroupTitle">自由枠</div><div id="customThemes" class="themeRow"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"></label></div><div class="customThemeSave"><input id="themeName" type="text" maxlength="20" placeholder="色テーマ名を入力"><button type="button" id="saveTheme" class="saveMini">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></div>
-<div class="colorGroup"><div class="colorGroupTitle">メンカラ × 9</div><div id="memberThemes" class="themeRow"></div></div>
-
-
-
-
-<div class="colorGroup templateGroup"><div class="colorGroupTitle">カードを丸ごと保存・呼び出し</div>
-<div class="hint">配信内容・タグ・色・配置・画像をセットで保存します。あとから読み込んで変更できます。</div>
+<div class="sectionHead"><h2>配信カードを作る</h2><small>必要な項目だけ入力</small></div><div class="colorGroup templateGroup"><div class="colorGroupTitle">保存済みのカードを使う・新しく保存</div>
+<div class="hint">同じ配信のカードを再利用できます。保存後も内容を変えられます。</div>
 <div class="templateNameRow"><input id="templateName" type="text" maxlength="36" placeholder="保存名（例：朝の定常配信）"><button type="button" id="saveTemplate" class="saveMini">このカードを保存</button></div>
 <div class="templateSelectRow"><select id="templateSelect" aria-label="保存済みカード"><option value="">保存済みカードを選択</option></select><button type="button" id="loadTemplate" class="miniBtn">呼び出す</button><button type="button" id="deleteTemplate" class="deleteSaved">削除</button></div>
-<div class="hint">この端末のブラウザ内に保存します。大きな画像を多数保存すると容量制限に達することがあります。</div></div>
+<div class="hint">保存済みカードは端末内に保存されます。端末変更時は下のバックアップを使ってください。</div></div>
 <div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
 <div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="配信時間を入力"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
 <div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><input id="focus" type="text" maxlength="44" placeholder="重点曲や配信テーマを入力"><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
 <div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="補足文を入力"></textarea><button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button></div><div class="recallRow"><select id="memosSelect" data-kind="memos" data-target="memo"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">削除</button></div></div>
 <div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録"><button type="button" class="saveMini" id="addTag">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div>
 
+<div class="sectionHead"><h2>カードの色</h2><small>選ぶだけで反映</small></div>
+<div class="colorGroup"><div class="colorGroupTitle">FSSブルー・共通カラー</div>
+<div class="themeRow"><button type="button" class="themeBtn" id="fssTheme"><span class="swatch" style="background:#d6f4ff"></span>FSS</button><div id="sharedThemes" class="themeRow"></div></div>
+<details class="presetTagsDetails" id="presetTagsDetails"><summary>この5色の用途タグを設定 <span class="mutedSmall">（色名とは別の目印）</span></summary>
+<div class="hint">色を選ぶと編集対象も切り替わります。登録したタグは色ボタンの下に表示されます（画像には入りません）。</div>
+<div class="presetTagForm"><select id="presetTagTheme" aria-label="用途タグを付ける色"></select><div class="presetTagEntry"><input id="presetTagInput" type="text" maxlength="22" placeholder="用途タグ（例：定常配信）"><button type="button" id="presetTagAdd" class="saveMini">追加</button></div></div>
+<div class="savedArea" id="presetTagList"></div></details></div>
+<div class="colorGroup"><div class="colorGroupTitle">メンカラ × 9</div><div id="memberThemes" class="themeRow"></div></div>
+
+
+
+
+<details class="colorGroup optionalColor"><summary class="colorGroupTitle">自由色を作る・保存する</summary><div id="customThemes" class="themeRow"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"></label></div><div class="customThemeSave"><input id="themeName" type="text" maxlength="20" placeholder="色テーマ名を入力"><button type="button" id="saveTheme" class="saveMini">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></details>
 <div class="filebox"><div class="field" style="margin:0"><label for="accentImageInput">アクセント画像 <span style="font-size:10px;color:#71818b;font-weight:700">任意</span></label><input id="accentImageInput" type="file" accept="image/*"><div class="hint">「下」は本文の後ろに続けて配置し、「右」は文字より背面に置くアクセントとして重ねます。どちらも元画像の縦横比を保ちます。</div></div><div class="imagePreviewLine"><img id="accentThumb" class="accentThumb" alt=""><button type="button" id="removeAccent" class="miniBtn hidden">画像を外す</button></div><div id="accentControls" class="hidden"><div class="placementRow accentPlacementRow"><button type="button" data-accent-place="bottom" class="active">下に配置</button><button type="button" data-accent-place="right">右に重ねる</button></div><div class="rangeLine"><span>大きさ</span><input id="accentScale" type="range" min="50" max="100" value="100"><b id="accentScaleVal">100</b></div><div class="rangeLine"><span>濃さ</span><input id="accentOpacity" type="range" min="25" max="100" value="100"><b id="accentOpacityVal">100</b></div></div></div>
 
 
@@ -78,10 +95,16 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <div class="rangeLine tweak"><span>画像の上下</span><input id="layoutImageY" type="range" min="-100" max="100" step="10" value="0"><b id="layoutImageYVal">0</b></div>
 <button type="button" class="miniBtn" id="resetLayout" style="margin-top:12px">配置を初期値に戻す</button>
 </details>
-<div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button></div><p class="note">基本情報・色テーマ・保存候補・カードの保存データ・下書きはこの端末のブラウザ内だけに保存します。</p>
+<details class="colorGroup backupPanel" id="backupPanel"><summary class="colorGroupTitle">設定のバックアップ・端末引き継ぎ</summary>
+<div class="hint">保存済みカード・アイコンやアクセント画像・色テーマ・タグ・保存候補・現在の編集中カードをまとめて引き継ぎます。</div>
+<div class="backupActions"><button type="button" id="exportBackup" class="secondary">バックアップを書き出す</button><label class="backupImportButton" for="importBackup">バックアップを読み込む</label></div>
+<input id="importBackup" type="file" accept=".json,application/json" aria-label="バックアップJSONファイルを選択">
+<div class="hint">読み込み時はこの端末の保存済みデータが置き換わります。必要なら先に書き出してください。バックアップには画像やStation情報が含まれるため、ファイルの共有先にご注意ください。</div>
+</details>
+<div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">入力内容をクリア</button></div><p class="note">入力内容と保存済みカードは、このブラウザ内に保存されます。公開・共有されることはありません。</p>
 </section>
 
-<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">文字サイズを大きく変えずに、情報量に合わせて高さを自動調整します。画像がないときは右側に淡い背景演出を入れて、余白感をやわらげます。</p></section>
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">入力するとプレビューが更新されます。カード幅や配置は「微調整」から変更できます。</p></section>
 </div></main>
 
 <div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
@@ -485,6 +508,76 @@ function setupWholeCardLibrary(){
   $('loadTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('呼び出すカードを選択してください。');return}const c=wholeCards().find(v=>v.name===name);if(c){loadWholeCard(c);$('templateName').value=name;}};
   $('deleteTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('削除するカードを選択してください。');return}if(!confirm('「'+name+'」を削除しますか？'))return;if(write(CARD_LIBRARY_KEY,wholeCards().filter(c=>c.name!==name))){renderWholeCards();if($('templateName').value===name)$('templateName').value='';}};
 }
+// JSONバックアップ。既存キーをそのまま使用し、他サイトのデータにはアクセスしない。
+const BACKUP_KEYS=[PROFILE_KEY,LIB_KEY,DRAFT_KEY,PRESET_TAG_KEY,CARD_LIBRARY_KEY];
+const BACKUP_FORMAT='station-card-maker-backup';
+function backupPayload(){
+  const stored={};
+  for(const key of BACKUP_KEYS){const raw=localStorage.getItem(key);stored[key]=raw===null?null:JSON.parse(raw)}
+  // 旧バージョンのキーから読み込まれていた保存候補もバックアップに含める。
+  stored[LIB_KEY]=libs();
+  stored[PRESET_TAG_KEY]=presetTags();
+  stored[CARD_LIBRARY_KEY]=wholeCards();
+  // 未保存の変更や画像も引き継げるよう、画面の現在値を優先して格納する。
+  stored[PROFILE_KEY]={station:$('station').value,handle:$('handle').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData};
+  stored[DRAFT_KEY]={title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags:[...selectedTags],accentPlacement,
+    accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,
+    accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName,
+    layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))};
+  return {format:BACKUP_FORMAT,version:1,createdAt:new Date().toISOString(),stored,currentCard:wholeCardData()};
+}
+function checkBackup(data){
+  if(!data||typeof data!=='object'||Array.isArray(data)||data.format!==BACKUP_FORMAT||data.version!==1||
+     !data.stored||typeof data.stored!=='object'||Array.isArray(data.stored))throw Error('このツールのバックアップ形式ではありません。');
+  for(const key of BACKUP_KEYS){
+    if(!Object.prototype.hasOwnProperty.call(data.stored,key))throw Error('バックアップに必要なデータがありません。');
+    const v=data.stored[key];
+    if(key===CARD_LIBRARY_KEY){
+      if(v!==null&&(!Array.isArray(v)||v.length>500||v.some(c=>!c||typeof c.name!=='string'||c.name.length>100||!c.data||typeof c.data!=='object')))throw Error('カード一覧の形式が正しくありません。');
+    }else if(v!==null&&(typeof v!=='object'||Array.isArray(v)))throw Error('設定データの形式が正しくありません。');
+  }
+  if(!data.currentCard||typeof data.currentCard!=='object'||Array.isArray(data.currentCard))throw Error('編集中カードの情報がありません。');
+  for(const key of ['iconData','accentData']){
+    const v=data.currentCard[key];
+    if(v!=null&&typeof v!=='string')throw Error('画像データが正しくありません。');
+  }
+  return true;
+}
+function setupBackup(){
+  $('exportBackup').onclick=()=>{
+    try{
+      const payload=backupPayload();
+      const blob=new Blob([JSON.stringify(payload)],{type:'application/json;charset=utf-8'});
+      const url=URL.createObjectURL(blob),a=document.createElement('a');
+      const d=new Date(),stamp=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('');
+      a.href=url;a.download='station-card-backup-'+stamp+'.json';document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),60000);
+    }catch(e){alert('バックアップを作れませんでした：'+e.message)}
+  };
+  $('importBackup').onchange=async e=>{
+    const file=e.target.files?.[0];if(!file)return;
+    try{
+      if(file.size>20*1024*1024)throw Error('ファイルが大きすぎます（上限20MB）。');
+      const data=JSON.parse(await file.text());checkBackup(data);
+      const count=(data.stored[CARD_LIBRARY_KEY]||[]).length;
+      if(!confirm('バックアップ内の保存済みカード '+count+' 件と設定を復元します。\nこの端末に保存しているカード・候補・色設定は置き換わります。続けますか？'))return;
+      const before={};for(const k of BACKUP_KEYS)before[k]=localStorage.getItem(k);
+      try{
+        for(const k of BACKUP_KEYS){
+          const v=data.stored[k];if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));
+        }
+      }catch(err){
+        for(const k of BACKUP_KEYS){try{if(before[k]===null)localStorage.removeItem(k);else localStorage.setItem(k,before[k])}catch(_){}}
+        throw Error('保存容量が不足している可能性があります。既存データはできる限り元に戻しました。');
+      }
+      // 復元した一覧を再描画し、編集中カードの状態も再現する。
+      renderLibraries();renderWholeCards();renderThemes();drawPresetTagList();
+      loadWholeCard({data:data.currentCard});saveProfile();
+      alert('バックアップを復元しました。カード一覧とプレビューを確認してください。');
+    }catch(err){alert('バックアップを読み込めませんでした：'+err.message)}
+    finally{e.target.value=''}
+  };
+}
 function applyTheme(t,name){$('bgColor').value=t.bg;$('accentColor').value=t.accent;$('textColor').value=t.text;activeThemeName=name||t.name||'';if([FSS,...SHARED].some(v=>v.name===activeThemeName)){$('presetTagTheme').value=activeThemeName;drawPresetTagList();}renderThemes();saveDraft();render()}
 function renderThemes(){const memberRoot=$('memberThemes'),customRoot=$('customThemes'),sharedRoot=$('sharedThemes'),l=libs();sharedRoot.innerHTML='';SHARED.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;b.append(sw,document.createTextNode(t.name));const tags=presetTagValues(t.name);if(tags.length){const tlabel=document.createElement('span');tlabel.className='presetThemeTag';tlabel.textContent=tags.map(v=>'#'+v).join(' ');tlabel.title=tlabel.textContent;b.appendChild(tlabel)}b.onclick=()=>applyTheme(t,t.name);sharedRoot.appendChild(b)});memberRoot.innerHTML='';MEMBERS.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;b.append(sw,document.createTextNode(t.name));b.onclick=()=>applyTheme(t,t.name);memberRoot.appendChild(b)});customRoot.innerHTML='';if(!l.themes.length){const em=document.createElement('span');em.className='hint';em.textContent='まだ自由テーマはありません';customRoot.appendChild(em)}else l.themes.forEach(t=>{const item=document.createElement('span');item.className='customThemeItem';const a=document.createElement('button');a.type='button';a.className='applyTheme';const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;a.append(sw,document.createTextNode(t.name));a.onclick=()=>applyTheme(t,t.name);const x=document.createElement('button');x.type='button';x.className='removeTheme';x.textContent='×';x.onclick=()=>{if(!confirm(`「${t.name}」を削除しますか？`))return;const l2=libs();l2.themes=l2.themes.filter(v=>v.name!==t.name);saveLibs(l2)};item.append(a,x);customRoot.appendChild(item)});const fb=$('fssTheme');fb.classList.toggle('active',activeThemeName==='FSSブルー');fb.querySelectorAll('.presetThemeTag').forEach(x=>x.remove());const ft=presetTagValues('FSSブルー');if(ft.length){const s=document.createElement('span');s.className='presetThemeTag';s.textContent=ft.map(x=>'#'+x).join(' ');s.title=s.textContent;fb.appendChild(s)}}
 function saveProfile(){return write(PROFILE_KEY,{station:$('station').value,handle:$('handle').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData})}
@@ -504,7 +597,7 @@ $('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!
 $('accentImageInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const data=await resizeData(f,1100,.86);setAccentFromData(data)}catch(_){alert('画像を読み込めませんでした。')}};$('removeAccent').onclick=()=>{accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');render()};
 $('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();render()};
 $('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
-setupPresetTagEditor();setupWholeCardLibrary();renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=d.accentPlacement==='right'?'right':'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));sync();renderLibraries();renderThemes();render();
+setupPresetTagEditor();setupWholeCardLibrary();setupBackup();renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=d.accentPlacement==='right'?'right':'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));sync();renderLibraries();renderThemes();render();
 })();
 </script>
 </body></html>
