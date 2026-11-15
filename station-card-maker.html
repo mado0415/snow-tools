@@ -40,7 +40,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button></div><p class="note">基本情報・色テーマ・保存候補・下書きはこの端末のブラウザ内だけに保存します。</p>
 </section>
 
-<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">文字サイズを大きく変えずに、情報量に合わせて高さを自動調整します。右側の画像は文章と重なりにくい位置に配置します。</p></section>
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">文字サイズを大きく変えずに、情報量に合わせて高さを自動調整します。画像がないときは右側に淡い背景演出を入れて、余白感をやわらげます。</p></section>
 </div></main>
 
 <div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
@@ -254,6 +254,29 @@ function drawAccentRight(cardW,cardH){
   ctx.save();ctx.globalAlpha=+$('accentOpacity').value/100;
   ctx.drawImage(accentImage,x,y,w,h);ctx.restore();
 }
+function drawEmptyAccentArea(cardW,cardH,accent){
+  ctx.save();
+  const panelX=Math.round(cardW*0.56),panelY=48,panelW=Math.round(cardW*0.32),panelH=Math.max(280,cardH-96);
+  const grad=ctx.createLinearGradient(panelX,0,panelX+panelW,0);
+  grad.addColorStop(0,rgba(accent,0));
+  grad.addColorStop(.18,rgba(accent,.045));
+  grad.addColorStop(.68,rgba(accent,.085));
+  grad.addColorStop(1,rgba(accent,.12));
+  ctx.fillStyle=grad;rr(panelX,panelY,panelW,panelH,48);ctx.fill();
+
+  const glow=ctx.createRadialGradient(cardW-140,150,20,cardW-140,150,220);
+  glow.addColorStop(0,rgba(accent,.11));
+  glow.addColorStop(1,rgba(accent,0));
+  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(cardW-140,150,220,0,Math.PI*2);ctx.fill();
+
+  const lower=ctx.createRadialGradient(cardW-120,cardH-110,30,cardW-120,cardH-110,260);
+  lower.addColorStop(0,rgba(accent,.09));
+  lower.addColorStop(1,rgba(accent,0));
+  ctx.fillStyle=lower;ctx.beginPath();ctx.arc(cardW-120,cardH-110,260,0,Math.PI*2);ctx.fill();
+
+  ctx.fillStyle=rgba('#ffffff',.18);rr(cardW-230,84,86,cardH-168,44);ctx.fill();
+  ctx.restore();
+}
 // 計測と描画の双方が同じテキスト幅・折り返しを使用する。
 function titleLines(title,w,m){
   let size=m.title, font='',lines=[];
@@ -283,9 +306,11 @@ function layoutBlocks(w,m){
 function measureLayout(){
   const m=metrics(),cardW=m.cardW;
   const hasRight=!!accentImage&&accentPlacement==='right';
-  const contentX=140, iconR=50,bodyX=contentX+124;
-  // 右に画像がある場合は文字を専用の左側領域に収める。
-  const bodyW=hasRight?560:cardW-bodyX-140;
+  const hasBottom=!!accentImage&&accentPlacement==='bottom';
+  const noAccent=!accentImage;
+  const contentX=hasRight?112:(noAccent?102:108), iconR=50,bodyX=contentX+124;
+  // 右に画像がある場合は文字を専用の左側領域に収める。画像がない時は少し左へ寄せる。
+  const bodyW=hasRight?580:cardW-bodyX-(noAccent?128:136);
   const blocks=layoutBlocks(bodyW,m);
   const gap=blocks.length>3?18:24;
   const bodyTop=214;
@@ -310,6 +335,7 @@ function render(){
   ctx.fillStyle=bg;ctx.fillRect(0,0,L.cardW,L.cardH);
   ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,220,0,Math.PI*2);ctx.fill();
   ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,300,0,Math.PI*2);ctx.fill();
+  if(!accentImage)drawEmptyAccentArea(L.cardW,L.cardH,accent);
   if(accentImage&&accentPlacement==='right')drawAccentRight(L.cardW,L.cardH);
 
   const iconR=50,stationX=L.bodyX;
