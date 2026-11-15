@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eef9ff">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Station紹介カードメーカー V18</title>
+<title>Station紹介カードメーカー V19</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
@@ -14,7 +14,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V18</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列のまま、入力内容の量に合わせてカードの横幅・高さ・文字サイズを自動調整します。アクセント画像は本文の下に配置します。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V19</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字サイズを保ちながら、入力内容に応じて余白とカードの高さを調整します。画像は本文の下または右側に配置できます。</p></section>
 <div class="grid">
 <section class="card">
 <div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
@@ -40,7 +40,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button></div><p class="note">基本情報・色テーマ・保存候補・下書きはこの端末のブラウザ内だけに保存します。</p>
 </section>
 
-<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">カード横幅は一定、文字サイズも大きく変えず、内容が少ないときは高さをコンパクトにします。アクセント画像は「下」なら本文後、「右」なら文字より背面に配置します。</p></section>
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">文字サイズを大きく変えずに、情報量に合わせて高さを自動調整します。右側の画像は文章と重なりにくい位置に配置します。</p></section>
 </div></main>
 
 <div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
@@ -146,7 +146,7 @@ function metrics(){
     memo:29,
     tag:24,
     gap:22,
-    minH:680,
+    minH:440,
     cardW:1600,
     contentW:1320,
     accentW:1424
@@ -183,8 +183,8 @@ function drawMeta(label,value,x,y,w,accent,text,m){
   let size=m.value;
   const valueW=Math.max(220,w-labelW);
   let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrapLines(value,valueW,font,3);
-  while(lines.length>2&&size>28){
+  let lines=wrapLines(value,valueW,font,99);
+  while(lines.length>3&&size>28){
     size-=2;
     font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
     lines=wrapLines(value,valueW,font,3);
@@ -192,7 +192,7 @@ function drawMeta(label,value,x,y,w,accent,text,m){
   ctx.fillStyle=text;
   ctx.font=font;
   let yy=y+size;
-  lines.slice(0,2).forEach((line,i)=>ctx.fillText(line,x+labelW,yy+i*size*1.18));
+  lines.forEach((line,i)=>ctx.fillText(line,x+labelW,yy+i*size*1.18));
   const h=Math.max(m.value+10,lines.length*size*1.18+8);
   return y+h;
 }
@@ -201,8 +201,8 @@ function metaHeight(value,w,m){
   const valueW=Math.max(220,w-labelW);
   let size=m.value;
   let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrapLines(value,valueW,font,3);
-  while(lines.length>2&&size>28){
+  let lines=wrapLines(value,valueW,font,99);
+  while(lines.length>3&&size>28){
     size-=2;
     font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
     lines=wrapLines(value,valueW,font,3);
@@ -223,7 +223,7 @@ function drawTags(x,y,maxW,accent,text,m){
 }
 function accentBottomWidth(cardW){
   const pct=Math.max(50,Math.min(100,+$('accentScale').value||100));
-  return Math.round(1424*pct/100);
+  return Math.round(Math.min(cardW-240,1040)*pct/100);
 }
 function accentBottomHeight(cardW){
   if(!accentImage)return 0;
@@ -241,129 +241,108 @@ function accentRightSize(cardW,cardH){
   const pct=Math.max(50,Math.min(100,+$('accentScale').value||100));
   const iw=accentImage?.naturalWidth||accentImage?.width||1;
   const ih=accentImage?.naturalHeight||accentImage?.height||1;
-  const maxW=320+(pct-50)/50*420;
-  const maxH=Math.max(220,cardH-140);
+  const maxW=360+(pct-50)/50*300;
+  const maxH=Math.max(240,cardH-110);
   const sc=Math.min(maxW/iw,maxH/ih);
   return {w:iw*sc,h:ih*sc};
 }
 function drawAccentRight(cardW,cardH){
   if(!accentImage)return;
   const {w,h}=accentRightSize(cardW,cardH);
-  const x=cardW-72-w;
-  const y=Math.max(70,(cardH-h)/2);
-  ctx.save();
-  ctx.globalAlpha=+$('accentOpacity').value/100;
-  ctx.drawImage(accentImage,x,y,w,h);
-  ctx.restore();
+  const x=cardW-90-w;
+  const y=Math.max(45,(cardH-h)/2);
+  ctx.save();ctx.globalAlpha=+$('accentOpacity').value/100;
+  ctx.drawImage(accentImage,x,y,w,h);ctx.restore();
 }
-function measureLayout(){
-  const m=metrics();
+// 計測と描画の双方が同じテキスト幅・折り返しを使用する。
+function titleLines(title,w,m){
+  let size=m.title, font='',lines=[];
+  do{
+    font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
+    lines=wrapLines(title,w,font,99);
+    if(lines.length<=2||size<=44)break;
+    size-=2;
+  }while(true);
+  return {size,font,lines};
+}
+function layoutBlocks(w,m){
   const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
-  const bodyW=m.contentW;
-  let y=225;
-
-  if(title){
-    let size=m.title;
-    let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    let lines=wrapLines(title,bodyW,font,4);
-    while(lines.length>2&&size>50){
-      size-=2;
-      font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-      lines=wrapLines(title,bodyW,font,4);
-    }
-    y+=lines.length*size*1.08+m.gap;
-  }
-  if(time)y+=metaHeight(time,bodyW,m)+m.gap;
-  if(focus)y+=metaHeight(focus,bodyW,m)+m.gap;
-  if(memo){
-    const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrapLines(memo,bodyW,font,99);
-    y+=Math.max(1,lines.length)*m.memo*1.42+m.gap;
-  }
+  const blocks=[];
+  if(title){const t=titleLines(title,w,m);blocks.push({kind:'title',...t,h:t.lines.length*t.size*1.12});}
+  if(time)blocks.push({kind:'meta',label:'配信時間',value:time,h:metaHeight(time,w,m)});
+  if(focus)blocks.push({kind:'meta',label:'重点曲・配信軸',value:focus,h:metaHeight(focus,w,m)});
+  if(memo){const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;const lines=wrapLines(memo,w,font);blocks.push({kind:'memo',font,lines,h:Math.max(1,lines.length)*m.memo*1.42});}
   if(selectedTags.length){
     ctx.font=`800 ${m.tag}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    let cx=0,rows=1;
-    selectedTags.forEach(raw=>{
-      const w=ctx.measureText('#'+raw).width+54;
-      if(cx&&cx+w>bodyW){rows++;cx=0}
-      cx+=w+12;
-    });
-    y+=rows*(m.tag+28)+m.gap;
+    let used=0,rows=1;
+    selectedTags.forEach(raw=>{const width=ctx.measureText('#'+raw).width+42;if(used&&used+width>w){rows++;used=0;}used+=width+12;});
+    blocks.push({kind:'tags',h:rows*(m.tag+28)});
   }
-  if(accentImage&&accentPlacement==='bottom')y+=24+accentBottomHeight(m.cardW)+38;
-  const cardH=Math.max(m.minH,Math.ceil(y+58));
-  return {m,cardW:m.cardW,cardH,bodyW};
+  return blocks;
+}
+function measureLayout(){
+  const m=metrics(),cardW=m.cardW;
+  const hasRight=!!accentImage&&accentPlacement==='right';
+  const contentX=140, iconR=50,bodyX=contentX+124;
+  // 右に画像がある場合は文字を専用の左側領域に収める。
+  const bodyW=hasRight?560:cardW-bodyX-140;
+  const blocks=layoutBlocks(bodyW,m);
+  const gap=blocks.length>3?18:24;
+  const bodyTop=214;
+  const bodyH=blocks.reduce((sum,b)=>sum+b.h,0)+Math.max(0,blocks.length-1)*gap;
+  const bottomImage=!!accentImage&&accentPlacement==='bottom';
+  const bottomGap=bottomImage?30:0;
+  const bottomH=bottomImage?accentBottomHeight(cardW):0;
+  const contentEnd=blocks.length?bodyTop+bodyH:170;
+  const imageEnd=bottomImage?contentEnd+bottomGap+bottomH:contentEnd;
+  // 上下に適度な余裕を確保する。描画内容そのものを高さの基準にする。
+  const cardH=Math.max(m.minH,Math.ceil(imageEnd+(bottomImage?72:94)));
+  return {m,cardW,cardH,contentX,bodyX,bodyW,blocks,gap,bodyTop,bodyH,bottomImage,bottomGap};
 }
 function render(){
   const bg=$('bgColor').value,accent=$('accentColor').value,text=$('textColor').value;
   const station=$('station').value.trim()||'Station name',handle=$('handle').value.trim();
-  const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
   const L=measureLayout(),m=L.m;
-
   if(canvas.width!==L.cardW)canvas.width=L.cardW;
   if(canvas.height!==L.cardH)canvas.height=L.cardH;
   $('previewSize').textContent=`${L.cardW} × ${L.cardH}`;
-
   ctx.clearRect(0,0,L.cardW,L.cardH);
   ctx.fillStyle=bg;ctx.fillRect(0,0,L.cardW,L.cardH);
   ctx.fillStyle=rgba(accent,.055);ctx.beginPath();ctx.arc(L.cardW-40,20,220,0,Math.PI*2);ctx.fill();
   ctx.fillStyle=rgba(accent,.035);ctx.beginPath();ctx.arc(L.cardW-30,L.cardH,300,0,Math.PI*2);ctx.fill();
-
   if(accentImage&&accentPlacement==='right')drawAccentRight(L.cardW,L.cardH);
 
-  const contentX=(L.cardW-m.contentW)/2;
-  const iconR=50;
-  const stationX=contentX+iconR*2+24;
-  drawIcon(contentX+iconR,54+iconR,iconR,accent,text);
-
-  const stationAvail=contentX+m.contentW-stationX;
+  const iconR=50,stationX=L.bodyX;
+  drawIcon(L.contentX+iconR,54+iconR,iconR,accent,text);
+  const stationAvail=(accentImage&&accentPlacement==='right'?L.bodyW:L.cardW-stationX-140);
   const ss=fit(station,stationAvail,m.station,42,900);
   ctx.fillStyle=text;
   ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
   ctx.fillText(station,stationX,112);
-
   if(handle){
     ctx.fillStyle=rgba(text,.62);
     const hs=fit(handle,stationAvail,m.handle,22,730);
     ctx.font=`730 ${hs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
     ctx.fillText(handle,stationX,150);
   }
-
-  let y=225;
-  const bodyX=stationX;
-  const bodyW=contentX+m.contentW-bodyX;
-
-  if(title){
-    let size=m.title;
-    let font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    let lines=wrapLines(title,bodyW,font,4);
-    while(lines.length>2&&size>50){
-      size-=2;
-      font=`900 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-      lines=wrapLines(title,bodyW,font,4);
+  let y=L.bodyTop;
+  L.blocks.forEach((b,i)=>{
+    if(b.kind==='title'){
+      ctx.fillStyle=text;ctx.font=b.font;
+      b.lines.forEach(line=>{ctx.fillText(line,L.bodyX,y);y+=b.size*1.12;});
+    }else if(b.kind==='meta'){
+      y=drawMeta(b.label,b.value,L.bodyX,y,L.bodyW,accent,text,m);
+    }else if(b.kind==='memo'){
+      ctx.fillStyle=rgba(text,.80);ctx.font=b.font;
+      b.lines.forEach(line=>{ctx.fillText(line,L.bodyX,y+m.memo);y+=m.memo*1.42;});
+    }else if(b.kind==='tags'){
+      drawTags(L.bodyX,y,L.bodyW,accent,text,m);y+=b.h;
     }
-    ctx.fillStyle=text;ctx.font=font;
-    lines.slice(0,2).forEach(line=>{ctx.fillText(line,bodyX,y);y+=size*1.08});
-    y+=m.gap;
-  }
-  if(time){y=drawMeta('配信時間',time,bodyX,y,bodyW,accent,text,m)+m.gap}
-  if(focus){y=drawMeta('重点曲・配信軸',focus,bodyX,y,bodyW,accent,text,m)+m.gap}
-  if(memo){
-    const font=`650 ${m.memo}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    const lines=wrapLines(memo,bodyW,font,99);
-    ctx.fillStyle=rgba(text,.80);ctx.font=font;
-    lines.forEach(line=>{ctx.fillText(line,bodyX,y);y+=m.memo*1.42});
-    y+=m.gap;
-  }
-  if(selectedTags.length){y=drawTags(bodyX,y,bodyW,accent,text,m)+m.gap}
-
-  if(accentImage&&accentPlacement==='bottom'){
-    y+=18;
-    drawAccentBottom(y,L.cardW);
-  }
-
-  ctx.fillStyle=rgba(text,.28);
-  ctx.font='700 14px -apple-system,sans-serif';
+    if(i<L.blocks.length-1)y+=L.gap;
+  });
+  if(L.bottomImage){y+=L.bottomGap;drawAccentBottom(y,L.cardW);}
+  // フッターはレイアウト幅・最低高さを決める要素にしない。
+  ctx.fillStyle=rgba(text,.28);ctx.font='700 14px -apple-system,sans-serif';
   ctx.textAlign='right';ctx.fillText('STATIONHEAD / STATION GUIDE',L.cardW-40,L.cardH-28);ctx.textAlign='left';
 }
 function applyTheme(t,name){$('bgColor').value=t.bg;$('accentColor').value=t.accent;$('textColor').value=t.text;activeThemeName=name||t.name||'';renderThemes();saveDraft();render()}
