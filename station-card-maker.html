@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#eef9ff">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<title>Station紹介カードメーカー V16</title>
+<title>Station紹介カードメーカー V17</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef9ff 0,#f8fbfd 44%,#fff 100%)}
@@ -14,7 +14,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 </head>
 <body>
 <main class="wrap">
-<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V16</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列のまま、入力内容の量に合わせてカードの横幅・高さ・文字サイズを自動調整します。アクセント画像は本文の下に配置します。</p></section>
+<section class="hero"><div class="kicker">STATIONHEAD / STATION GUIDE <span class="version">V17</span></div><h1>Station紹介カードメーカー</h1><p class="lead">保存しておいたタイトル・時間・重点曲・補足・タグを必要なときに呼び出して組み合わせます。文字情報は縦一列のまま、入力内容の量に合わせてカードの横幅・高さ・文字サイズを自動調整します。アクセント画像は本文の下に配置します。</p></section>
 <div class="grid">
 <section class="card">
 <div class="sectionHead"><h2>Stationの基本情報</h2><small>一度保存すればOK</small></div>
@@ -40,7 +40,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 <div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">今回の内容だけ空に</button></div><p class="note">基本情報・色テーマ・保存候補・下書きはこの端末のブラウザ内だけに保存します。</p>
 </section>
 
-<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">カードの横幅と文字サイズは一定に保ち、入力情報が増えたときだけ高さを自動で伸ばします。アクセント画像は本文の下に配置します。</p></section>
+<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">カード横幅は一定、文字サイズも大きく変えず、内容が少ないときは高さをコンパクトにします。各項目は縦に並べたまま、ラベルと値で横方向も使います。アクセント画像は本文の下に配置します。</p></section>
 </div></main>
 
 <div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
@@ -138,17 +138,17 @@ function layoutMode(){
 }
 function metrics(){
   return {
-    station:56,
-    handle:28,
-    title:68,
+    station:54,
+    handle:26,
+    title:60,
     label:22,
-    value:38,
-    memo:30,
-    tag:25,
-    gap:28,
-    minH:900,
+    value:34,
+    memo:29,
+    tag:24,
+    gap:22,
+    minH:680,
     cardW:1600,
-    contentW:1120,
+    contentW:1320,
     accentW:1424
   };
 }
@@ -175,33 +175,39 @@ function wrapLines(value,maxW,font,maxLines=99){
   return out;
 }
 function drawMeta(label,value,x,y,w,accent,text,m){
+  const labelW=220;
   ctx.fillStyle=accent;
   ctx.font=`900 ${m.label}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  ctx.fillText(label,x,y+m.label);
+  ctx.fillText(label,x,y+m.value);
+
   let size=m.value;
+  const valueW=Math.max(220,w-labelW);
   let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrapLines(value,w,font,4);
-  while(lines.length>3&&size>30){
+  let lines=wrapLines(value,valueW,font,3);
+  while(lines.length>2&&size>28){
     size-=2;
     font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines=wrapLines(value,w,font,4);
+    lines=wrapLines(value,valueW,font,3);
   }
   ctx.fillStyle=text;
   ctx.font=font;
-  let yy=y+m.label+44;
-  lines.forEach(line=>{ctx.fillText(line,x,yy);yy+=size*1.18});
-  return yy;
+  let yy=y+size;
+  lines.slice(0,2).forEach((line,i)=>ctx.fillText(line,x+labelW,yy+i*size*1.18));
+  const h=Math.max(m.value+10,lines.length*size*1.18+8);
+  return y+h;
 }
 function metaHeight(value,w,m){
+  const labelW=220;
+  const valueW=Math.max(220,w-labelW);
   let size=m.value;
   let font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  let lines=wrapLines(value,w,font,4);
-  while(lines.length>3&&size>30){
+  let lines=wrapLines(value,valueW,font,3);
+  while(lines.length>2&&size>28){
     size-=2;
     font=`850 ${size}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    lines=wrapLines(value,w,font,4);
+    lines=wrapLines(value,valueW,font,3);
   }
-  return m.label+44+lines.length*size*1.18;
+  return Math.max(m.value+10,lines.length*size*1.18+8);
 }
 function drawTags(x,y,maxW,accent,text,m){
   let cx=x,cy=y;
@@ -235,7 +241,7 @@ function measureLayout(){
   const m=metrics();
   const title=$('title').value.trim(),time=$('time').value.trim(),focus=$('focus').value.trim(),memo=$('memo').value.trim();
   const bodyW=m.contentW;
-  let y=250;
+  let y=225;
 
   if(title){
     let size=m.title;
@@ -266,7 +272,7 @@ function measureLayout(){
     y+=rows*(m.tag+28)+m.gap;
   }
   if(accentImage)y+=24+accentHeight(m.cardW)+38;
-  const cardH=Math.max(m.minH,Math.ceil(y+70));
+  const cardH=Math.max(m.minH,Math.ceil(y+58));
   return {m,cardW:m.cardW,cardH,bodyW};
 }
 function render(){
@@ -287,22 +293,22 @@ function render(){
   const contentX=(L.cardW-m.contentW)/2;
   const iconR=50;
   const stationX=contentX+iconR*2+24;
-  drawIcon(contentX+iconR,66+iconR,iconR,accent,text);
+  drawIcon(contentX+iconR,54+iconR,iconR,accent,text);
 
   const stationAvail=contentX+m.contentW-stationX;
   const ss=fit(station,stationAvail,m.station,42,900);
   ctx.fillStyle=text;
   ctx.font=`900 ${ss}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-  ctx.fillText(station,stationX,126);
+  ctx.fillText(station,stationX,112);
 
   if(handle){
     ctx.fillStyle=rgba(text,.62);
     const hs=fit(handle,stationAvail,m.handle,22,730);
     ctx.font=`730 ${hs}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;
-    ctx.fillText(handle,stationX,166);
+    ctx.fillText(handle,stationX,150);
   }
 
-  let y=250;
+  let y=225;
   const bodyX=stationX;
   const bodyW=contentX+m.contentW-bodyX;
 
