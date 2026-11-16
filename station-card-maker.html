@@ -44,7 +44,21 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #80c5e6;outline-offset:2px}
 @media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}
 @media(max-width:500px){.wrap{padding:12px 11px 48px}.card{padding:15px;border-radius:19px}.hero{padding:18px 8px 22px}.sectionHead h2{font-size:17px}.themeBtn{min-width:79px;min-height:69px}.actions{grid-template-columns:1fr 1fr}.templateNameRow{grid-template-columns:minmax(0,1fr) auto}.templateNameRow .saveMini{padding:0 9px;white-space:normal;max-width:118px}.templateSelectRow{grid-template-columns:minmax(0,1fr) auto auto}.templateSelectRow button{padding:9px 8px}.saveRow{grid-template-columns:1fr 1fr}.customColors{grid-template-columns:repeat(3,1fr)}.rangeLine{grid-template-columns:62px minmax(0,1fr) 36px}.presetTagForm{grid-template-columns:1fr}.recallRow select,.templateSelectRow select{min-width:0}}
-#time{min-height:66px;height:auto}\n</style>
+#time{min-height:66px;height:auto}\n
+/* カードカラーは全体を畳み、開いた時は自由色の編集欄も見せる。 */
+.cardColorPanel{margin:20px 0 14px;border:1px solid var(--line);border-radius:15px;background:#f9fcfd;overflow:hidden}
+.cardColorPanel>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;padding:14px 15px;list-style:none}
+.cardColorPanel>summary::-webkit-details-marker{display:none}
+.cardColorPanel>summary::after{content:'⌄';font-size:20px;font-weight:800;color:#527d91;line-height:1;transition:transform .15s}
+.cardColorPanel[open]>summary::after{transform:rotate(180deg)}
+.cardColorLabel{font-size:17px;font-weight:900;letter-spacing:-.02em}
+.cardColorHelp{margin-left:auto;text-align:right;color:var(--muted);font-size:10px;line-height:1.5}
+.cardColorContents{padding:0 12px 13px}
+.cardColorContents>.colorGroup:first-child{margin-top:0}
+.cardColorContents .optionalColor{background:#f0f9fe;border-color:#bcdbe9}
+.cardColorContents .optionalColor>summary{font-size:13px;color:#2d667f}
+@media(max-width:500px){.cardColorPanel>summary{padding:13px 12px}.cardColorHelp{max-width:145px}}
+</style>
 </head>
 <body>
 <main class="wrap">
@@ -76,7 +90,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="補足文を入力"></textarea><button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button></div><div class="recallRow"><select id="memosSelect" data-kind="memos" data-target="memo"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">削除</button></div></div>
 <div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録"><button type="button" class="saveMini" id="addTag">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div>
 
-<div class="sectionHead"><h2>カードの色</h2><small>選ぶだけで反映</small></div>
+<details class="cardColorPanel" id="cardColorPanel"><summary><span class="cardColorLabel">カードの色</span><span class="cardColorHelp">タップして色を選ぶ・自由色を作る</span></summary><div class="cardColorContents">
 <div class="colorGroup"><div class="colorGroupTitle">FSSブルー・共通カラー</div>
 <div class="themeRow"><button type="button" class="themeBtn" id="fssTheme"><span class="swatch" style="background:#d6f4ff"></span>FSS</button><div id="sharedThemes" class="themeRow"></div></div>
 <details class="presetTagsDetails" id="presetTagsDetails"><summary>この9色の用途タグを設定 <span class="mutedSmall">（色名とは別の目印）</span></summary>
@@ -88,7 +102,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 
 
-<details class="colorGroup optionalColor"><summary class="colorGroupTitle">自由色を作る・保存する</summary><div id="customThemes" class="themeRow"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"></label></div><div class="customThemeSave"><input id="themeName" type="text" maxlength="20" placeholder="色テーマ名を入力"><button type="button" id="saveTheme" class="saveMini">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></details>
+<details class="colorGroup optionalColor" open><summary class="colorGroupTitle">自由色を作る・保存する</summary><div id="customThemes" class="themeRow"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"></label></div><div class="customThemeSave"><input id="themeName" type="text" maxlength="20" placeholder="色テーマ名を入力"><button type="button" id="saveTheme" class="saveMini">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></details>
+</div></details>
 <div class="filebox"><div class="field" style="margin:0"><label for="accentImageInput">アクセント画像 <span style="font-size:10px;color:#71818b;font-weight:700">任意</span></label><input id="accentImageInput" type="file" accept="image/*"><div class="hint">画像を本文の下または右に配置できます。「背面」は文字の後ろに重ねます。画像の縦横比は維持します。</div></div><div class="imagePreviewLine"><img id="accentThumb" class="accentThumb" alt=""><button type="button" id="removeAccent" class="miniBtn hidden">画像を外す</button></div><details id="accentLibraryPanel" class="accentLibrary"><summary>保存済みの画像から選ぶ</summary><div class="hint">保存済みカードで使用したアクセント画像を表示します。同じ画像は1つにまとめます。選ぶだけで現在のカードに反映され、保存済みカードは変更されません。</div><div id="accentGallery" class="accentGallery"></div></details><div id="accentControls" class="hidden"><div class="placementRow accentPlacementRow"><button type="button" data-accent-place="bottom" class="active">下に配置</button><button type="button" data-accent-place="side">右に配置</button><button type="button" data-accent-place="right">右背面</button><button type="button" data-accent-place="bottomBack">下背面</button></div><div class="rangeLine"><span>大きさ</span><input id="accentScale" type="range" min="50" max="100" value="100"><b id="accentScaleVal">100</b></div><div class="rangeLine"><span>濃さ</span><input id="accentOpacity" type="range" min="25" max="100" value="100"><b id="accentOpacityVal">100</b></div></div></div>
 
 
@@ -265,7 +280,8 @@ function rr(x,y,w,h,r){const q=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+
 function rgba(hex,a){let h=String(hex||'').replace('#','');if(h.length===3)h=h.split('').map(c=>c+c).join('');const n=parseInt(h,16);return Number.isNaN(n)?`rgba(0,0,0,${a})`:`rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
 function wrap(text,max,font){ctx.font=font;let line='';const out=[];for(const ch of [...String(text||'')]){const t=line+ch;if(line&&ctx.measureText(t).width>max){out.push(line);line=ch}else line=t}if(line)out.push(line);return out}
 function fit(text,max,start,min,weight=800){let s=start;while(s>min){ctx.font=`${weight} ${s}px -apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif`;if(ctx.measureText(text).width<=max)break;s-=2}return s}
-function resizeData(file,maxSide=360,q=.86){return new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=reject;r.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const sc=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*sc),h=Math.round(img.naturalHeight*sc);const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL(file.type==='image/png'?'image/png':'image/jpeg',q))};img.src=r.result};r.readAsDataURL(file)})}
+function isPngUpload(file){return /^image\/png(?:\s*;|$)/i.test(String(file.type||''))||/\.png$/i.test(String(file.name||''))}
+function resizeData(file,maxSide=360,q=.86){return new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=reject;r.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const sc=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*sc),h=Math.round(img.naturalHeight*sc);const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL(isPngUpload(file)?'image/png':'image/jpeg',q))};img.src=r.result};r.readAsDataURL(file)})}
 function loadData(data,cb){if(!data){cb(null);return}const i=new Image();i.onload=()=>cb(i);i.onerror=()=>cb(null);i.src=data}
 function drawIcon(cx,cy,r,accent,text){ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();ctx.fillStyle=rgba(accent,.16);ctx.fillRect(cx-r,cy-r,r*2,r*2);if(iconImage){const iw=iconImage.naturalWidth||iconImage.width,ih=iconImage.naturalHeight||iconImage.height,sc=Math.max(r*2/iw,r*2/ih),dw=iw*sc,dh=ih*sc,px=+$('iconX').value/100,py=+$('iconY').value/100;ctx.drawImage(iconImage,cx-r+(r*2-dw)*px,cy-r+(r*2-dh)*py,dw,dh)}else{ctx.fillStyle=rgba(text,.55);ctx.font='900 42px -apple-system,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText((($('station').value.trim()||'S')[0]||'S').toUpperCase(),cx,cy+1);ctx.textAlign='left';ctx.textBaseline='alphabetic'}ctx.restore();ctx.strokeStyle=rgba(text,.12);ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke()}
 function layoutMode(){
