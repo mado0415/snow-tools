@@ -44,7 +44,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #80c5e6;outline-offset:2px}
 @media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}
 @media(max-width:500px){.wrap{padding:12px 11px 48px}.card{padding:15px;border-radius:19px}.hero{padding:18px 8px 22px}.sectionHead h2{font-size:17px}.themeBtn{min-width:79px;min-height:69px}.actions{grid-template-columns:1fr 1fr}.templateNameRow{grid-template-columns:minmax(0,1fr) auto}.templateNameRow .saveMini{padding:0 9px;white-space:normal;max-width:118px}.templateSelectRow{grid-template-columns:minmax(0,1fr) auto auto}.templateSelectRow button{padding:9px 8px}.saveRow{grid-template-columns:1fr 1fr}.customColors{grid-template-columns:repeat(3,1fr)}.rangeLine{grid-template-columns:62px minmax(0,1fr) 36px}.presetTagForm{grid-template-columns:1fr}.recallRow select,.templateSelectRow select{min-width:0}}
-</style>
+#time{min-height:66px;height:auto}\n</style>
 </head>
 <body>
 <main class="wrap">
@@ -71,7 +71,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="storagePanel" id="storagePanel"><div class="storageHead"><span>このツールの保存データ</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div><div class="storageMeta">※5MBは一般的な目安で、正確な空き容量ではありません。</div><button type="button" id="jumpImageManage" class="miniBtn storageJump">画像の整理・保存方式の最適化へ ↓</button>
 </div>
 <div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
-<div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="配信時間を入力"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
+<div class="field"><label for="time">時間</label><div class="libraryRow"><textarea id="time" rows="2" maxlength="80" placeholder="配信時間を入力（改行できます）"></textarea><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
 <div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><textarea id="focus" rows="3" maxlength="220" placeholder="例：&#10;グッタイム&#10;AMENITY&#10;YUME"></textarea><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="hint">1行に1曲ずつ入力できます。改行した位置がカードにも反映されます。</div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
 <div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="補足文を入力"></textarea><button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button></div><div class="recallRow"><select id="memosSelect" data-kind="memos" data-target="memo"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">削除</button></div></div>
 <div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録"><button type="button" class="saveMini" id="addTag">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div>
@@ -217,7 +217,7 @@ function renderScalarSelect(kind,selectId){
   select.innerHTML='<option value="">保存済みから選ぶ</option>';
   (l[kind]||[]).forEach(value=>{
     const o=document.createElement('option');
-    o.value=value;o.textContent=kind==='focuses'?value.replace(/\s*\n\s*/g,' / '):value;
+    o.value=value;o.textContent=(kind==='focuses'||kind==='times')?value.replace(/\s*\n\s*/g,' / '):value;
     select.appendChild(o);
   });
   if((l[kind]||[]).includes(current))select.value=current;
