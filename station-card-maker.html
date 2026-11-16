@@ -39,6 +39,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 .layoutSettings summary{font-size:13px}.layoutSettings .tweak{grid-template-columns:90px minmax(0,1fr) 44px}
 .primary{min-height:52px;font-size:15px}.secondary{min-height:48px}
 .backupPanel{margin-top:17px}.backupPanel summary{cursor:pointer}.backupActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 8px}.backupActions button,.backupImportButton{min-height:46px;display:flex;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line);border-radius:12px;padding:9px;font-size:12px;font-weight:850}.backupImportButton{background:#edf9ff;color:#346d86;cursor:pointer}#importBackup{width:100%;font-size:11px;max-width:100%}
+.storagePanel{margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#f8fbfc}.storageHead{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;font-weight:900;margin-bottom:8px}.storageMeta{font-size:11px;color:var(--muted);line-height:1.5}.storageBar{height:10px;border-radius:999px;background:#eaf0f4;overflow:hidden;margin:8px 0 6px}.storageFill{height:100%;width:0%;background:linear-gradient(90deg,#9ad7ec,#5ea7df)}.storageStatus{font-size:11px;font-weight:800;color:#4f6673}.storageStatus.warn{color:#9b6c22}.storageStatus.danger{color:#b44b4b}.bulkManage,.imageManage{margin-top:12px}.bulkManage summary,.imageManage summary{cursor:pointer;font-weight:850;font-size:12px}.bulkActions{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.bulkCardList{max-height:260px;overflow:auto;border:1px solid var(--line);background:#fff;border-radius:12px}.bulkCardList label{display:flex;align-items:center;gap:9px;padding:10px 12px;font-size:12px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.bulkCardList label:last-child{border-bottom:none}.bulkCardList input{width:18px;height:18px;flex:none}.bulkEmpty{font-size:11px;color:var(--muted);padding:12px}
 @media(max-width:500px){.backupActions{grid-template-columns:1fr}}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #80c5e6;outline-offset:2px}
 @media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}
@@ -60,7 +61,13 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="hint">同じ配信のカードを再利用できます。保存後も内容を変えられます。</div>
 <div class="templateNameRow"><input id="templateName" type="text" maxlength="36" placeholder="保存名（例：朝の定常配信）"><button type="button" id="saveTemplate" class="saveMini">このカードを保存</button></div>
 <div class="templateSelectRow"><select id="templateSelect" aria-label="保存済みカード"><option value="">保存済みカードを選択</option></select><button type="button" id="loadTemplate" class="miniBtn">呼び出す</button><button type="button" id="deleteTemplate" class="deleteSaved">削除</button></div>
-<div class="hint">保存済みカードは端末内に保存されます。端末変更時は下のバックアップを使ってください。</div></div>
+<div class="hint">保存済みカードは端末内に保存されます。端末変更時は下のバックアップを使ってください。</div>
+<details class="bulkManage"><summary>保存済みカードをまとめて整理</summary>
+<div class="hint">削除したいカードを選択してください。現在編集中のカードには影響しません。</div>
+<div class="bulkActions"><button type="button" id="selectAllCards" class="miniBtn">すべて選択</button><button type="button" id="clearCardSelection" class="miniBtn">選択解除</button></div>
+<div id="bulkCardList" class="bulkCardList"></div>
+<div class="bulkActions"><button type="button" id="bulkDeleteCards" class="deleteSaved">選択カードを削除</button><button type="button" id="bulkRemoveAccents" class="miniBtn">選択カードのアクセント画像を外す</button></div>
+</details></div>
 <div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
 <div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="配信時間を入力"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
 <div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><textarea id="focus" rows="3" maxlength="220" placeholder="例：&#10;グッタイム&#10;AMENITY&#10;YUME"></textarea><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="hint">1行に1曲ずつ入力できます。改行した位置がカードにも反映されます。</div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
@@ -100,6 +107,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="backupActions"><button type="button" id="exportBackup" class="secondary">バックアップを書き出す</button><label class="backupImportButton" for="importBackup">バックアップを読み込む</label></div>
 <input id="importBackup" type="file" accept=".json,application/json" aria-label="バックアップJSONファイルを選択">
 <div class="hint">読み込み時はこの端末の保存済みデータが置き換わります。必要なら先に書き出してください。バックアップには画像やStation情報が含まれるため、ファイルの共有先にご注意ください。</div>
+<div class="storagePanel" id="storagePanel"><div class="storageHead"><span>保存容量の目安</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div>
+<details class="imageManage"><summary>画像の整理・保存方式の最適化</summary><div class="hint">「未使用画像を整理」は他のカードが参照していない画像のみを削除します。古いカードの画像を共通化する操作はバックアップ取得後に実行してください。</div>
+<div class="bulkActions"><button type="button" id="cleanUnusedImages" class="miniBtn">未使用画像を整理</button><button type="button" id="optimizeImages" class="secondary">画像の重複を整理</button></div>
+</details></div>
 </details>
 <div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">入力内容をクリア</button></div><p class="note">入力内容と保存済みカードは、このブラウザ内に保存されます。公開・共有されることはありません。</p>
 </section>
@@ -112,7 +123,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
-const PROFILE_KEY='fssStationProfileV16',LIB_KEY='fssStationLibrariesV16',DRAFT_KEY='fssStationDraftV16',PRESET_TAG_KEY='fssStationPresetTagsV24',CARD_LIBRARY_KEY='fssStationWholeCardsV25';
+const PROFILE_KEY='fssStationProfileV16',LIB_KEY='fssStationLibrariesV16',DRAFT_KEY='fssStationDraftV16',PRESET_TAG_KEY='fssStationPresetTagsV24',CARD_LIBRARY_KEY='fssStationWholeCardsV25',IMAGE_STORE_KEY='fssStationImageStoreV33';
 const FSS={name:'FSSブルー',bg:'#f5fbff',accent:'#7fc8e8',text:'#263640'};
 const SHARED=[
 {name:'ディープターコイズ',bg:'#ecfaf7',accent:'#008b81',text:'#174441'},
@@ -138,7 +149,57 @@ const MEMBERS=[
 ];
 let iconImage=null,iconData='',accentImage=null,accentData='',accentPlacement='bottom',selectedTags=[],activeThemeName='FSSブルー';
 function read(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(_){return fallback}}
-function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch(_){return false}}
+function imageStore(){const s=read(IMAGE_STORE_KEY,{});return s&&typeof s==='object'&&!Array.isArray(s)?s:{}}
+function hashString(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24);}return (h>>>0).toString(36)}
+function imageRefForData(data){return data?`img_${hashString(data)}_${data.length}`:''}
+function registerImageData(data,storeOverride){if(!data)return '';const store=storeOverride||imageStore();const ref=imageRefForData(data);if(!store[ref])store[ref]=data;return ref}
+function resolveStoredImage(obj,kind){if(!obj||typeof obj!=='object')return '';const refKey=kind==='icon'?'iconRef':'accentRef';const dataKey=kind==='icon'?'iconData':'accentData';const ref=obj[refKey];const store=imageStore();if(ref&&typeof store[ref]==='string')return store[ref];return typeof obj[dataKey]==='string'?obj[dataKey]:''}
+function compactCardData(data,storeOverride){const d=JSON.parse(JSON.stringify(data||{}));const store=storeOverride||imageStore();if(d.iconData){d.iconRef=registerImageData(d.iconData,store);delete d.iconData}if(d.accentData){d.accentRef=registerImageData(d.accentData,store);delete d.accentData}return d}
+function atomicStorageChanges(changes){
+  // 複数キーの書き換え中に容量不足が起きたら、変更前の値に戻す。
+  const before={};const keys=Object.keys(changes);
+  for(const k of keys)before[k]=localStorage.getItem(k);
+  try{
+    for(const k of keys){if(changes[k]===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(changes[k]));}
+    return true;
+  }catch(err){
+    for(const k of [...keys].reverse()){
+      try{if(before[k]===null)localStorage.removeItem(k);else localStorage.setItem(k,before[k]);}catch(_){/* 容量制限下でも可能な限り復旧 */}
+    }
+    return false;
+  }finally{setTimeout(renderStorageStatus,0)}
+}
+function referencedImageIds(cards){
+  const used=new Set();
+  cards.forEach(c=>{const d=c&&c.data&&typeof c.data==='object'?c.data:{};if(d.iconRef)used.add(d.iconRef);if(d.accentRef)used.add(d.accentRef)});
+  return used;
+}
+function pruneImageStore(cardsOverride){
+  const cards=cardsOverride||wholeCards(),used=referencedImageIds(cards),store=imageStore();let changed=false;
+  const missing=[...used].filter(ref=>typeof store[ref]!=='string');
+  if(missing.length)throw Error('画像の参照先が見つかりません。自動削除を中止しました。');
+  Object.keys(store).forEach(ref=>{if(!used.has(ref)){delete store[ref];changed=true}});
+  return !changed||write(IMAGE_STORE_KEY,store);
+}
+function compactWholeCardLibrary(){
+  // 既存カードの画像は明示操作まで変更しない。移行は保存済みカードが全て読める状態だけ実施。
+  const cards=wholeCards(),store=imageStore();
+  for(const c of cards){
+    const d=c&&c.data||{};
+    for(const kind of ['icon','accent']){
+      const ref=d[kind+'Ref'];if(ref&&typeof store[ref]!=='string')throw Error('参照先の見つからない画像があります。先にバックアップをご確認ください。');
+    }
+  }
+  let count=0;const next=cards.map(c=>{
+    const d={...c.data};if(d.iconData||d.accentData)count++;
+    return {...c,data:compactCardData(d,store)};
+  });
+  if(!count)return 0;
+  if(!atomicStorageChanges({[IMAGE_STORE_KEY]:store,[CARD_LIBRARY_KEY]:next}))throw Error('空き容量が不足したため最適化できませんでした。以前のデータを維持しています。');
+  return count;
+}
+function renderStorageStatus(){const value=$('storageValue'),fill=$('storageFill'),status=$('storageStatus'),meta=$('storageMeta');if(!value||!fill||!status||!meta)return;const LIMIT=5*1024*1024;let bytes=0;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)||'';if(!/^fssStation/.test(k))continue;const v=localStorage.getItem(k)||'';bytes+=new Blob([k]).size+new Blob([v]).size;}const ratio=Math.min(1,bytes/LIMIT);value.textContent=`${(bytes/1024/1024).toFixed(2)}MB / 5MB`;fill.style.width=`${(ratio*100).toFixed(1)}%`;status.className='storageStatus';let msg='かなり余裕があります';if(ratio>=.8){status.classList.add('danger');msg='かなり埋まっています。不要なカード整理やバックアップ後の削除がおすすめです';}else if(ratio>=.55){status.classList.add('warn');msg='やや多めです。早めのバックアップがおすすめです';}status.textContent=msg;meta.textContent=`保存済みカード ${wholeCards().length}件 / 共通化した画像 ${Object.keys(imageStore()).length}点`}
+function write(key,value){try{localStorage.setItem(key,JSON.stringify(value));setTimeout(renderStorageStatus,0);return true}catch(_){return false}}
 function libs(){const r=read(LIB_KEY,null)||read('fssStationLibrariesV14',null)||read('fssStationLibrariesV13',null)||read('fssStationLibrariesV12',null)||read('fssStationLibrariesV11',null)||read('fssStationLibrariesV10',{})||{};return{titles:Array.isArray(r.titles)?r.titles:[],times:Array.isArray(r.times)?r.times:[],focuses:Array.isArray(r.focuses)?r.focuses:[],memos:Array.isArray(r.memos)?r.memos:[],tags:Array.isArray(r.tags)?r.tags:[],themes:Array.isArray(r.themes)?r.themes:[]}}
 function saveLibs(v){write(LIB_KEY,v);renderLibraries();renderThemes()}
 function unique(arr,v){v=String(v||'').trim();return v?[v,...arr.filter(x=>x!==v)].slice(0,40):arr}
@@ -529,9 +590,49 @@ function loadWholeCard(c){
   activeThemeName=d.activeThemeName||'';accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';
   if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null)$(id).value=d.layoutPrefs[id]});
   document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));
-  setIconFromData(d.iconData);setAccentFromData(d.accentData);
+  if((d.iconRef&&!resolveStoredImage(d,'icon'))||(d.accentRef&&!resolveStoredImage(d,'accent'))){alert('保存済みカードの画像が見つかりません。バックアップからの復元を確認してください。');return;}
+  setIconFromData(resolveStoredImage(d,'icon'));setAccentFromData(resolveStoredImage(d,'accent'));
   if([FSS,...SHARED].some(v=>v.name===activeThemeName)){$('presetTagTheme').value=activeThemeName;drawPresetTagList()}
   sync();renderTags();renderThemes();saveDraft();render();
+}
+function selectedCardNames(){return [...document.querySelectorAll('#bulkCardList input[type="checkbox"]:checked')].map(x=>x.value)}
+function renderBulkCards(){
+  const root=$('bulkCardList');root.replaceChildren();
+  const cards=wholeCards();if(!cards.length){const msg=document.createElement('div');msg.className='bulkEmpty';msg.textContent='保存済みカードはありません';root.appendChild(msg);return}
+  for(const card of cards){const label=document.createElement('label'),input=document.createElement('input'),span=document.createElement('span');input.type='checkbox';input.value=card.name;span.textContent=card.name;label.append(input,span);root.appendChild(label)}
+}
+function setupBulkManagement(){
+  renderBulkCards();
+  $('selectAllCards').onclick=()=>document.querySelectorAll('#bulkCardList input[type="checkbox"]').forEach(x=>x.checked=true);
+  $('clearCardSelection').onclick=()=>document.querySelectorAll('#bulkCardList input[type="checkbox"]').forEach(x=>x.checked=false);
+  $('bulkDeleteCards').onclick=()=>{
+    const names=selectedCardNames();if(!names.length){alert('削除するカードを選択してください。');return}
+    if(!confirm(`${names.length}件の保存済みカードを削除します。元に戻すにはバックアップが必要です。続けますか？`))return;
+    const next=wholeCards().filter(c=>!names.includes(c.name));
+    if(!write(CARD_LIBRARY_KEY,next)){alert('削除結果を保存できませんでした。');return}
+    renderWholeCards();renderBulkCards();renderStorageStatus();
+  };
+  $('bulkRemoveAccents').onclick=()=>{
+    const names=selectedCardNames();if(!names.length){alert('カードを選択してください。');return}
+    if(!confirm(`選択した${names.length}件の保存済みカードからアクセント画像を外します。アイコン画像と編集中のカードは変更しません。続けますか？`))return;
+    const next=wholeCards().map(c=>names.includes(c.name)?{...c,data:{...c.data,accentData:'',accentRef:''}}:c);
+    if(!write(CARD_LIBRARY_KEY,next)){alert('保存できませんでした。');return}
+    renderWholeCards();renderBulkCards();renderStorageStatus();alert('選択カードのアクセント画像を外しました。未使用になった画像は「未使用画像を整理」で削除できます。');
+  };
+  $('cleanUnusedImages').onclick=()=>{
+    const cards=wholeCards(),store=imageStore(),used=referencedImageIds(cards),unused=Object.keys(store).filter(k=>!used.has(k));
+    if(!unused.length){alert('削除できる未使用画像はありません。');return}
+    if(!confirm(`どの保存済みカードからも使われていない画像${unused.length}点を削除します。続けますか？`))return;
+    try{if(!pruneImageStore(cards))throw Error('保存に失敗しました');renderStorageStatus();alert(`${unused.length}点の未使用画像を整理しました。`)}
+    catch(err){alert('画像整理を中止しました：'+err.message)}
+  };
+  $('optimizeImages').onclick=()=>{
+    const count=wholeCards().filter(c=>c.data&&(c.data.iconData||c.data.accentData)).length;
+    if(!count){alert('共通化が必要な画像はありません。');return}
+    if(!confirm(`${count}件のカード画像を共通化します。先に必ずバックアップJSONを書き出して保管してください。バックアップを保存済みで、最適化を進めますか？`))return;
+    try{const n=compactWholeCardLibrary();renderStorageStatus();alert(`${n}件のカードを最適化しました。カードを呼び出して画像を確認してください。`)}
+    catch(err){alert('最適化できませんでした：'+err.message)}
+  };
 }
 function setupWholeCardLibrary(){
   renderWholeCards();
@@ -539,14 +640,18 @@ function setupWholeCardLibrary(){
     const name=$('templateName').value.trim();if(!name){alert('保存名を入力してください。');return}
     const cards=wholeCards(),existing=cards.find(c=>c.name===name);
     if(existing&&!confirm('同じ名前のカードを上書きしますか？'))return;
-    const next=[{name,data:wholeCardData()},...cards.filter(c=>c.name!==name)];
-    if(write(CARD_LIBRARY_KEY,next)){renderWholeCards(name);alert('カードを保存しました。')}else alert('カードを保存できませんでした。画像が大きすぎる、またはブラウザの保存容量が不足している可能性があります。');
+    const store=imageStore();
+    const next=[{name,data:compactCardData(wholeCardData(),store)},...cards.filter(c=>c.name!==name)];
+    if(atomicStorageChanges({[IMAGE_STORE_KEY]:store,[CARD_LIBRARY_KEY]:next})){
+      renderWholeCards(name);renderBulkCards();renderStorageStatus();alert('カードを保存しました。');
+    }else alert('カードを保存できませんでした。容量不足などの可能性があります。保存済みデータは変更前に戻す処理を行いました。');
   };
   $('loadTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('呼び出すカードを選択してください。');return}const c=wholeCards().find(v=>v.name===name);if(c){loadWholeCard(c);$('templateName').value=name;}};
-  $('deleteTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('削除するカードを選択してください。');return}if(!confirm('「'+name+'」を削除しますか？'))return;if(write(CARD_LIBRARY_KEY,wholeCards().filter(c=>c.name!==name))){renderWholeCards();if($('templateName').value===name)$('templateName').value='';}};
+  $('deleteTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('削除するカードを選択してください。');return}if(!confirm('「'+name+'」を削除しますか？'))return;const next=wholeCards().filter(c=>c.name!==name);if(write(CARD_LIBRARY_KEY,next)){renderWholeCards();renderBulkCards();renderStorageStatus();if($('templateName').value===name)$('templateName').value='';}};
 }
 // JSONバックアップ。既存キーをそのまま使用し、他サイトのデータにはアクセスしない。
-const BACKUP_KEYS=[PROFILE_KEY,LIB_KEY,DRAFT_KEY,PRESET_TAG_KEY,CARD_LIBRARY_KEY];
+const BACKUP_KEYS=[PROFILE_KEY,LIB_KEY,DRAFT_KEY,PRESET_TAG_KEY,CARD_LIBRARY_KEY,IMAGE_STORE_KEY];
+const REQUIRED_BACKUP_KEYS=[PROFILE_KEY,LIB_KEY,DRAFT_KEY,PRESET_TAG_KEY,CARD_LIBRARY_KEY];
 const BACKUP_FORMAT='station-card-maker-backup';
 function backupPayload(){
   const stored={};
@@ -555,19 +660,23 @@ function backupPayload(){
   stored[LIB_KEY]=libs();
   stored[PRESET_TAG_KEY]=presetTags();
   stored[CARD_LIBRARY_KEY]=wholeCards();
+  stored[IMAGE_STORE_KEY]=imageStore();
   // 未保存の変更や画像も引き継げるよう、画面の現在値を優先して格納する。
   stored[PROFILE_KEY]={station:$('station').value,handle:$('handle').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData};
   stored[DRAFT_KEY]={title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags:[...selectedTags],accentPlacement,
     accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,
     accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName,
     layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))};
-  return {format:BACKUP_FORMAT,version:1,createdAt:new Date().toISOString(),stored,currentCard:wholeCardData()};
+  return {format:BACKUP_FORMAT,version:2,createdAt:new Date().toISOString(),stored,currentCard:wholeCardData()};
 }
 function checkBackup(data){
-  if(!data||typeof data!=='object'||Array.isArray(data)||data.format!==BACKUP_FORMAT||data.version!==1||
+  if(!data||typeof data!=='object'||Array.isArray(data)||data.format!==BACKUP_FORMAT||![1,2].includes(data.version)||
      !data.stored||typeof data.stored!=='object'||Array.isArray(data.stored))throw Error('このツールのバックアップ形式ではありません。');
-  for(const key of BACKUP_KEYS){
+  for(const key of REQUIRED_BACKUP_KEYS){
     if(!Object.prototype.hasOwnProperty.call(data.stored,key))throw Error('バックアップに必要なデータがありません。');
+  }
+  for(const key of BACKUP_KEYS){
+    if(!Object.prototype.hasOwnProperty.call(data.stored,key))continue;
     const v=data.stored[key];
     if(key===CARD_LIBRARY_KEY){
       if(v!==null&&(!Array.isArray(v)||v.length>500||v.some(c=>!c||typeof c.name!=='string'||c.name.length>100||!c.data||typeof c.data!=='object')))throw Error('カード一覧の形式が正しくありません。');
@@ -598,17 +707,10 @@ function setupBackup(){
       const data=JSON.parse(await file.text());checkBackup(data);
       const count=(data.stored[CARD_LIBRARY_KEY]||[]).length;
       if(!confirm('バックアップ内の保存済みカード '+count+' 件と設定を復元します。\nこの端末に保存しているカード・候補・色設定は置き換わります。続けますか？'))return;
-      const before={};for(const k of BACKUP_KEYS)before[k]=localStorage.getItem(k);
-      try{
-        for(const k of BACKUP_KEYS){
-          const v=data.stored[k];if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));
-        }
-      }catch(err){
-        for(const k of BACKUP_KEYS){try{if(before[k]===null)localStorage.removeItem(k);else localStorage.setItem(k,before[k])}catch(_){}}
-        throw Error('保存容量が不足している可能性があります。既存データはできる限り元に戻しました。');
-      }
+      const changes={};for(const k of BACKUP_KEYS){changes[k]=Object.prototype.hasOwnProperty.call(data.stored,k)?data.stored[k]:null}
+      if(!atomicStorageChanges(changes))throw Error('復元中に保存できませんでした。以前のデータへ戻す処理を行いました。');
       // 復元した一覧を再描画し、編集中カードの状態も再現する。
-      renderLibraries();renderWholeCards();renderThemes();drawPresetTagList();
+      renderLibraries();renderWholeCards();renderBulkCards();renderThemes();drawPresetTagList();renderStorageStatus();
       loadWholeCard({data:data.currentCard});saveProfile();
       alert('バックアップを復元しました。カード一覧とプレビューを確認してください。');
     }catch(err){alert('バックアップを読み込めませんでした：'+err.message)}
@@ -634,7 +736,7 @@ $('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!
 $('accentImageInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const data=await resizeData(f,1100,.86);setAccentFromData(data)}catch(_){alert('画像を読み込めませんでした。')}};$('removeAccent').onclick=()=>{accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');render()};
 $('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();render()};
 $('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
-setupPresetTagEditor();setupWholeCardLibrary();setupBackup();renderLibraries();renderThemes();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));sync();renderLibraries();renderThemes();render();
+setupPresetTagEditor();setupWholeCardLibrary();setupBulkManagement();setupBackup();renderLibraries();renderThemes();renderStorageStatus();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));sync();renderLibraries();renderThemes();render();
 })();
 </script>
 </body></html>
