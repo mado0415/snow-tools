@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#eef9ff">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#eef9ff" name="theme-color"/>
+<meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
 <title>Station紹介カードメーカー</title>
 <style>
 :root{--ink:#263640;--muted:#71818b;--line:#dbe9f0;--soft:#f7fbfd;--blue:#d8f2ff;--blue3:#5a9cba}
@@ -68,90 +69,122 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .previewSavePanel .previewSaveOverwrite{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin-top:9px}
 .previewSavePanel button{font-size:12px;white-space:normal;min-height:42px}
 @media(max-width:500px){.previewSavePanel .previewSaveNew,.previewSavePanel .previewSaveOverwrite{grid-template-columns:minmax(0,1fr) auto}.previewSavePanel button{max-width:136px}}
+
+/* UI redesign: presentation and navigation only. Canvas renderer and storage keys unchanged. */
+.grid{grid-template-columns:minmax(350px,500px) minmax(0,1fr);align-items:start}
+.editorPanel{order:1}.previewWrap{order:2}
+.editorPanel>.uiSection{margin:0 0 12px}
+.uiSection{border:1px solid #dceaf1;background:#fff;border-radius:16px;overflow:hidden}
+.uiSection>summary{list-style:none;cursor:pointer;position:relative;padding:15px 44px 5px 15px;font-size:15px;font-weight:900;color:#284a5c}
+.uiSection>summary::-webkit-details-marker{display:none}
+.uiSection>summary:after{content:'⌄';position:absolute;right:16px;top:13px;font-size:20px;line-height:1;color:#66899a;transition:transform .15s}
+.uiSection[open]>summary:after{transform:rotate(180deg)}
+.uiSectionHint{margin:0;padding:0 15px 13px;font-size:11px;color:#738892;line-height:1.5;pointer-events:none}
+.uiSectionBody{padding:3px 14px 15px}
+.uiSectionBody>.sectionHead:first-child{display:none}
+.contentSection .field{margin:10px 0 15px}.contentSection .field:last-child{margin-bottom:2px}
+.candidateTools{margin-top:7px;border-top:1px dashed #d8e7ee;padding-top:5px}
+.candidateTools>summary{cursor:pointer;color:#587f92;font-size:11px;font-weight:800;padding:4px 1px;list-style:none}
+.candidateTools>summary:before{content:'＋ ';font-weight:900}.candidateTools[open]>summary:before{content:'− '}
+.candidateInside{padding:7px 0 3px;display:grid;gap:8px}
+.candidateInside>button{justify-self:start;padding:9px 12px}
+.contentSection .libraryRow{display:block}.contentSection .libraryRow>input,.contentSection .libraryRow>textarea{width:100%;min-width:0}
+.contentSection .recallRow{margin:0}
+.savedSection .templateGroup{margin:0 0 12px}.savedSection .storagePanel{margin:12px 0 0}
+.imageSection .filebox{margin:0}.imageSection .imageManage{margin-top:11px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#f9fcfd}
+.imageSection .imageManage>summary{font-size:12px;color:#41677a}
+.imageSection .imageManageGallery{grid-template-columns:repeat(auto-fill,minmax(118px,1fr))}
+#cardColorPanel{padding:0;margin:0 0 12px;background:#fff}
+#cardColorPanel>summary{padding:15px 44px 6px 15px;margin:0}
+#cardColorPanel>summary:after{top:13px}
+#cardColorPanel .cardColorLabel{font-size:15px}
+#cardColorPanel .cardColorHelp{display:block;font-size:11px;font-weight:500;letter-spacing:0;color:#738892;margin-top:3px}
+#cardColorPanel .cardColorContents{padding:0 12px 13px}
+#cardColorPanel .colorGroup{margin-top:10px}
+#layoutSettings{background:#fff;padding:0;margin:0 0 12px}
+#layoutSettings>summary{padding:15px 42px 14px 15px}
+#layoutSettings>.hint,#layoutSettings>.rangeLine,#layoutSettings>button{margin-left:14px;margin-right:14px}
+#layoutSettings>button{margin-bottom:14px}
+#backupPanel{margin:0 0 12px;padding:0;background:#fff}
+#backupPanel>summary{padding:15px 40px 14px 15px;margin:0}
+#backupPanel>.hint,#backupPanel>.backupActions,#backupPanel>#importBackup{margin-left:14px;margin-right:14px;max-width:calc(100% - 28px)}
+#backupPanel>.hint:last-child{margin-bottom:14px}
+.profileSection .row2{gap:6px}.profileSection .filebox{margin-top:7px}
+.previewWrap .previewQuickActions{margin-top:11px}.previewQuickActions .primary{width:100%;min-height:44px}
+.previewWrap .previewSavePanel{margin-top:12px}
+.mobileDock{display:none}
+@media(max-width:840px){
+ .grid{display:flex;flex-direction:column;gap:12px}
+ .previewWrap{order:0;width:100%;position:relative;top:auto}
+ .editorPanel{order:1;width:100%}
+ .previewWrap .canvasFrame{max-width:700px;margin:auto}
+ .previewSavePanel{display:block}
+ .mobileDock{display:grid;position:fixed;bottom:0;left:0;right:0;z-index:100;grid-template-columns:1fr 1fr;gap:8px;padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:rgba(255,255,255,.96);border-top:1px solid var(--line);box-shadow:0 -3px 16px rgba(33,72,93,.12)}
+ .mobileDock button{min-height:42px;font-size:12px}
+ .wrap{padding-bottom:110px}
+ .previewWrap .previewQuickActions{display:none}
+}
+@media(min-width:841px){.previewWrap{position:sticky;top:12px}.previewSavePanel{display:block}}
+@media(max-width:500px){.hero{padding:12px 8px}.hero .lead{font-size:12px}.previewWrap{padding:12px}.previewWrap .previewHead{margin-bottom:7px}.previewWrap .note{margin-top:6px}.editorPanel{padding:12px}.imageSection .imageManageGallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <main class="wrap">
 <section class="hero"><div class="kicker">STATIONHEAD / FAN-MADE TOOL <span class="version">最終更新 2026.11.16</span></div><h1>Station紹介カードメーカー</h1><p class="lead">配信のお知らせ画像を作れます。Station情報を登録して、配信内容を入力したら、色や画像を選んでPNGに保存。よく使うカードは丸ごと保存できます。</p></section>
 <div class="grid">
-<section class="card">
-<div class="sectionHead"><h2>Station情報</h2><small>最初に一度登録</small></div>
-<div class="row2"><div class="field"><label for="station">Station名<span class="req">必須</span></label><input id="station" type="text" maxlength="28" placeholder="Station名を入力"></div><div class="field"><label for="handle">@ID / 呼び名</label><input id="handle" type="text" maxlength="28" placeholder="IDまたは呼び名を入力"></div></div>
-<div class="filebox"><div class="field" style="margin:0"><label for="iconInput">アイコン画像</label><input id="iconInput" type="file" accept="image/*"><div class="hint">丸く切り抜いて表示します。</div></div><div class="imagePreviewLine"><img id="iconThumb" class="iconThumb" alt=""><button type="button" id="removeIcon" class="miniBtn hidden">アイコンを外す</button></div><div id="iconControls" class="hidden"><div class="rangeLine"><span>横位置</span><input id="iconX" type="range" min="0" max="100" value="50"><b id="iconXVal">50</b></div><div class="rangeLine"><span>縦位置</span><input id="iconY" type="range" min="0" max="100" value="50"><b id="iconYVal">50</b></div></div></div>
+<section class="card editorPanel">
 
-<button type="button" id="saveProfile" class="secondary" style="width:100%;margin-top:10px">基本情報を保存</button>
-
-<div class="sectionHead"><h2>配信カードを作る</h2><small>必要な項目だけ入力</small></div><div class="colorGroup templateGroup"><div class="colorGroupTitle">保存済みのカードを使う・新しく保存</div>
+<details class="uiSection contentSection" id="contentSection" open=""><summary>配信内容</summary><p class="uiSectionHint">タイトル・時間・重点曲・補足・タグ</p><div class="uiSectionBody"><div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" maxlength="48" placeholder="配信タイトルを入力" type="text"/></div><details class="candidateTools"><summary>保存した候補を使う・登録する</summary><div class="candidateInside"><button class="saveMini" data-input="title" data-save="titles" type="button">候補に保存</button><div class="recallRow"><select data-kind="titles" data-target="title" id="titlesSelect"><option value="">保存済みから選ぶ</option></select><button class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect" type="button">削除</button></div></div></details></div><div class="field"><label for="time">時間</label><div class="libraryRow"><textarea id="time" maxlength="80" placeholder="配信時間を入力（改行できます）" rows="2"></textarea></div><details class="candidateTools"><summary>保存した候補を使う・登録する</summary><div class="candidateInside"><button class="saveMini" data-input="time" data-save="times" type="button">候補に保存</button><div class="recallRow"><select data-kind="times" data-target="time" id="timesSelect"><option value="">保存済みから選ぶ</option></select><button class="deleteSaved" data-delete-kind="times" data-select="timesSelect" type="button">削除</button></div></div></details></div><div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><textarea id="focus" maxlength="220" placeholder="例：
+グッタイム
+AMENITY
+YUME" rows="3"></textarea></div><div class="hint">1行に1曲ずつ入力できます。改行した位置がカードにも反映されます。</div><details class="candidateTools"><summary>保存した候補を使う・登録する</summary><div class="candidateInside"><button class="saveMini" data-input="focus" data-save="focuses" type="button">候補に保存</button><div class="recallRow"><select data-kind="focuses" data-target="focus" id="focusesSelect"><option value="">保存済みから選ぶ</option></select><button class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect" type="button">削除</button></div></div></details></div><div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="補足文を入力"></textarea></div><details class="candidateTools"><summary>保存した候補を使う・登録する</summary><div class="candidateInside"><button class="saveMini" data-input="memo" data-save="memos" type="button">候補に保存</button><div class="recallRow"><select data-kind="memos" data-target="memo" id="memosSelect"><option value="">保存済みから選ぶ</option></select><button class="deleteSaved" data-delete-kind="memos" data-select="memosSelect" type="button">削除</button></div></div></details></div><div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" maxlength="28" placeholder="1つ入力して登録" type="text"/><button class="saveMini" id="addTag" type="button">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div></div></details><details class="cardColorPanel uiSection" id="cardColorPanel"><summary><span class="cardColorLabel">カードの色</span><span class="cardColorHelp">タップして色を選ぶ・自由色を作る</span></summary><div class="cardColorContents">
+<div class="colorGroup"><div class="colorGroupTitle">FSSブルー・共通カラー</div>
+<div class="themeRow"><button class="themeBtn" id="fssTheme" type="button"><span class="swatch" style="background:#d6f4ff"></span>FSS</button><div class="themeRow" id="sharedThemes"></div></div>
+<details class="presetTagsDetails" id="presetTagsDetails"><summary>この9色の用途タグを設定 <span class="mutedSmall">（色名とは別の目印）</span></summary>
+<div class="hint">色を選ぶと編集対象も切り替わります。登録したタグは色ボタンの下に表示されます（画像には入りません）。</div>
+<div class="presetTagForm"><select aria-label="用途タグを付ける色" id="presetTagTheme"></select><div class="presetTagEntry"><input id="presetTagInput" maxlength="22" placeholder="用途タグ（例：定常配信）" type="text"/><button class="saveMini" id="presetTagAdd" type="button">追加</button></div></div>
+<div class="savedArea" id="presetTagList"></div></details></div>
+<div class="colorGroup"><div class="colorGroupTitle">メンカラ × 9</div><div class="themeRow" id="memberThemes"></div></div>
+<details class="colorGroup optionalColor" open=""><summary class="colorGroupTitle">自由色を作る・保存する</summary><div class="themeRow" id="customThemes"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"/></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"/></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"/></label></div><div class="customThemeSave"><input id="themeName" maxlength="20" placeholder="色テーマ名を入力" type="text"/><button class="saveMini" id="saveTheme" type="button">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></details>
+</div></details><details class="uiSection imageSection" id="imageSection"><summary>アクセント画像</summary><p class="uiSectionHint">アップロード・再利用・画像を見ながら整理</p><div class="uiSectionBody"><div class="filebox"><div class="field" style="margin:0"><label for="accentImageInput">アクセント画像 <span style="font-size:10px;color:#71818b;font-weight:700">任意</span></label><input accept="image/*" id="accentImageInput" type="file"/><div class="hint">画像を本文の下または右に配置できます。「背面」は文字の後ろに重ねます。画像の縦横比は維持します。</div></div><div class="imagePreviewLine"><img alt="" class="accentThumb" id="accentThumb"/><button class="miniBtn hidden" id="removeAccent" type="button">画像を外す</button></div><details class="accentLibrary" id="accentLibraryPanel"><summary>保存済みの画像から選ぶ</summary><div class="hint">保存済みカードで使用したアクセント画像を表示します。同じ画像は1つにまとめます。選ぶだけで現在のカードに反映され、保存済みカードは変更されません。</div><div class="accentGallery" id="accentGallery"></div></details><div class="hidden" id="accentControls"><div class="placementRow accentPlacementRow"><button class="active" data-accent-place="bottom" type="button">下に配置</button><button data-accent-place="side" type="button">右に配置</button><button data-accent-place="right" type="button">右背面</button><button data-accent-place="bottomBack" type="button">下背面</button></div><div class="rangeLine"><span>大きさ</span><input id="accentScale" max="100" min="50" type="range" value="100"/><b id="accentScaleVal">100</b></div><div class="rangeLine"><span>濃さ</span><input id="accentOpacity" max="100" min="25" type="range" value="100"/><b id="accentOpacityVal">100</b></div></div></div><details class="imageManage imageManagerDirect" id="imageManagePanel"><summary>保存済み画像の一覧・削除</summary><div class="hint">「未使用画像を整理」は他のカードが参照していない画像のみを削除します。古いカードの画像を共通化する操作はバックアップ取得後に実行してください。</div>
+<div class="imageManageNotice">画像を見ながら削除できます。使用中の画像を削除すると、その画像は使用中の保存済みカードすべてから外れます。操作前にバックアップをおすすめします。</div><div class="imageManageGallery" id="imageManageGallery"></div><div class="bulkActions"><button class="miniBtn" id="cleanUnusedImages" type="button">未使用画像を整理</button><button class="secondary" id="optimizeImages" type="button">画像の重複を整理</button></div>
+</details></div></details><details class="layoutSettings" id="layoutSettings"><summary>カードの大きさ・配置を微調整</summary>
+<div class="hint">基本は自動調整です。必要な項目だけ動かせます。文字や画像がカードからはみ出さない範囲に制限しています。</div>
+<div class="rangeLine tweak"><span>カード幅</span><input id="layoutWidth" max="1600" min="900" step="50" type="range" value="1200"/><b id="layoutWidthVal">1200</b></div>
+<div class="rangeLine tweak"><span>下余白</span><input id="layoutHeight" max="280" min="0" step="10" type="range" value="0"/><b id="layoutHeightVal">0</b></div>
+<div class="rangeLine tweak"><span>文字の左右</span><input id="layoutX" max="120" min="-40" step="10" type="range" value="0"/><b id="layoutXVal">0</b></div>
+<div class="rangeLine tweak"><span>文字の上下</span><input id="layoutY" max="100" min="-25" step="5" type="range" value="0"/><b id="layoutYVal">0</b></div>
+<div class="rangeLine tweak"><span>項目の間隔</span><input id="layoutGap" max="40" min="-10" step="5" type="range" value="0"/><b id="layoutGapVal">0</b></div>
+<div class="hint">アクセント画像の位置（画像を入れた場合に反映）</div>
+<div class="rangeLine tweak"><span>画像の左右</span><input id="layoutImageX" max="120" min="-120" step="10" type="range" value="0"/><b id="layoutImageXVal">0</b></div>
+<div class="rangeLine tweak"><span>画像の上下</span><input id="layoutImageY" max="100" min="-100" step="10" type="range" value="0"/><b id="layoutImageYVal">0</b></div>
+<button class="miniBtn" id="resetLayout" style="margin-top:12px" type="button">配置を初期値に戻す</button>
+</details><details class="uiSection savedSection" id="savedSection"><summary>保存済みカードの管理</summary><p class="uiSectionHint">呼び出し・上書き・削除・一括整理</p><div class="uiSectionBody"><div class="colorGroup templateGroup"><div class="colorGroupTitle">保存済みのカードを使う・新しく保存</div>
 <div class="hint">同じ配信のカードを再利用できます。保存後も内容を変えられます。</div>
-<div class="templateNameRow"><input id="templateName" type="text" maxlength="36" placeholder="保存名（例：朝の定常配信）"><button type="button" id="saveTemplate" class="saveMini">このカードを保存</button></div>
-<div class="templateSelectRow"><select id="templateSelect" aria-label="保存済みカード"><option value="">保存済みカードを選択</option></select><button type="button" id="loadTemplate" class="miniBtn">呼び出す</button><button type="button" id="deleteTemplate" class="deleteSaved">削除</button></div>
-<div class="templateOverwriteRow"><button type="button" id="overwriteTemplate" class="secondary">選択した保存済みカードに上書き</button></div>
+<div class="templateNameRow"><input id="templateName" maxlength="36" placeholder="保存名（例：朝の定常配信）" type="text"/><button class="saveMini" id="saveTemplate" type="button">名前を付けて保存</button></div>
+<div class="templateSelectRow"><select aria-label="保存済みカード" id="templateSelect"><option value="">保存済みカードを選択</option></select><button class="miniBtn" id="loadTemplate" type="button">呼び出す</button><button class="deleteSaved" id="deleteTemplate" type="button">削除</button></div>
+<div class="templateOverwriteRow"><button class="secondary" id="overwriteTemplate" type="button">選択した保存済みカードに上書き</button></div>
 <div class="hint">上の一覧で上書き先を選び、このボタンを押すと、いま編集中の内容で置き換えます。先に「呼び出す」を押す必要はありません。保存名も上書き先の名前を維持します。</div>
 <div class="hint">保存済みカードは端末内に保存されます。端末変更時は下のバックアップを使ってください。</div>
 <details class="bulkManage"><summary>保存済みカードをまとめて整理</summary>
 <div class="hint">削除したいカードを選択してください。現在編集中のカードには影響しません。</div>
-<div class="bulkActions"><button type="button" id="selectAllCards" class="miniBtn">すべて選択</button><button type="button" id="clearCardSelection" class="miniBtn">選択解除</button></div>
-<div id="bulkCardList" class="bulkCardList"></div>
-<div class="bulkActions"><button type="button" id="bulkDeleteCards" class="deleteSaved">選択カードを削除</button><button type="button" id="bulkRemoveAccents" class="miniBtn">選択カードのアクセント画像を外す</button></div>
-</details></div>
-<div class="storagePanel" id="storagePanel"><div class="storageHead"><span>このツールの保存データ</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div><div class="storageMeta">※5MBは一般的な目安で、正確な空き容量ではありません。</div><button type="button" id="jumpImageManage" class="miniBtn storageJump">画像の整理・保存方式の最適化へ ↓</button>
-</div>
-<div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
-<div class="field"><label for="time">時間</label><div class="libraryRow"><textarea id="time" rows="2" maxlength="80" placeholder="配信時間を入力（改行できます）"></textarea><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
-<div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><textarea id="focus" rows="3" maxlength="220" placeholder="例：&#10;グッタイム&#10;AMENITY&#10;YUME"></textarea><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="hint">1行に1曲ずつ入力できます。改行した位置がカードにも反映されます。</div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
-<div class="field"><label for="memo">補足</label><div class="libraryRow"><textarea id="memo" maxlength="190" placeholder="補足文を入力"></textarea><button type="button" class="saveMini" data-save="memos" data-input="memo">候補に保存</button></div><div class="recallRow"><select id="memosSelect" data-kind="memos" data-target="memo"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="memos" data-select="memosSelect">削除</button></div></div>
-<div class="field"><label for="tagInput">タグ</label><div class="libraryRow"><input id="tagInput" type="text" maxlength="28" placeholder="1つ入力して登録"><button type="button" class="saveMini" id="addTag">登録</button></div><div class="hint">登録済みタグをタップすると、今回使うタグのON/OFFを切り替えます。</div><div class="savedArea tagLibrary" id="tagsLibrary"></div></div>
-
-<details class="cardColorPanel" id="cardColorPanel"><summary><span class="cardColorLabel">カードの色</span><span class="cardColorHelp">タップして色を選ぶ・自由色を作る</span></summary><div class="cardColorContents">
-<div class="colorGroup"><div class="colorGroupTitle">FSSブルー・共通カラー</div>
-<div class="themeRow"><button type="button" class="themeBtn" id="fssTheme"><span class="swatch" style="background:#d6f4ff"></span>FSS</button><div id="sharedThemes" class="themeRow"></div></div>
-<details class="presetTagsDetails" id="presetTagsDetails"><summary>この9色の用途タグを設定 <span class="mutedSmall">（色名とは別の目印）</span></summary>
-<div class="hint">色を選ぶと編集対象も切り替わります。登録したタグは色ボタンの下に表示されます（画像には入りません）。</div>
-<div class="presetTagForm"><select id="presetTagTheme" aria-label="用途タグを付ける色"></select><div class="presetTagEntry"><input id="presetTagInput" type="text" maxlength="22" placeholder="用途タグ（例：定常配信）"><button type="button" id="presetTagAdd" class="saveMini">追加</button></div></div>
-<div class="savedArea" id="presetTagList"></div></details></div>
-<div class="colorGroup"><div class="colorGroupTitle">メンカラ × 9</div><div id="memberThemes" class="themeRow"></div></div>
-
-
-
-
-<details class="colorGroup optionalColor" open><summary class="colorGroupTitle">自由色を作る・保存する</summary><div id="customThemes" class="themeRow"></div><div class="customColors"><label class="colorField">背景<input id="bgColor" type="color" value="#f5fbff"></label><label class="colorField">アクセント<input id="accentColor" type="color" value="#8fcfe9"></label><label class="colorField">文字<input id="textColor" type="color" value="#263640"></label></div><div class="customThemeSave"><input id="themeName" type="text" maxlength="20" placeholder="色テーマ名を入力"><button type="button" id="saveTheme" class="saveMini">現在の色を保存</button></div><div class="hint">好きなだけ名前付きで追加できます。同じ名前なら上書きできます。</div></details>
-</div></details>
-<div class="filebox"><div class="field" style="margin:0"><label for="accentImageInput">アクセント画像 <span style="font-size:10px;color:#71818b;font-weight:700">任意</span></label><input id="accentImageInput" type="file" accept="image/*"><div class="hint">画像を本文の下または右に配置できます。「背面」は文字の後ろに重ねます。画像の縦横比は維持します。</div></div><div class="imagePreviewLine"><img id="accentThumb" class="accentThumb" alt=""><button type="button" id="removeAccent" class="miniBtn hidden">画像を外す</button></div><details id="accentLibraryPanel" class="accentLibrary"><summary>保存済みの画像から選ぶ</summary><div class="hint">保存済みカードで使用したアクセント画像を表示します。同じ画像は1つにまとめます。選ぶだけで現在のカードに反映され、保存済みカードは変更されません。</div><div id="accentGallery" class="accentGallery"></div></details><div id="accentControls" class="hidden"><div class="placementRow accentPlacementRow"><button type="button" data-accent-place="bottom" class="active">下に配置</button><button type="button" data-accent-place="side">右に配置</button><button type="button" data-accent-place="right">右背面</button><button type="button" data-accent-place="bottomBack">下背面</button></div><div class="rangeLine"><span>大きさ</span><input id="accentScale" type="range" min="50" max="100" value="100"><b id="accentScaleVal">100</b></div><div class="rangeLine"><span>濃さ</span><input id="accentOpacity" type="range" min="25" max="100" value="100"><b id="accentOpacityVal">100</b></div></div></div>
-
-
-<details class="layoutSettings" id="layoutSettings"><summary>カードの大きさ・配置を微調整</summary>
-<div class="hint">基本は自動調整です。必要な項目だけ動かせます。文字や画像がカードからはみ出さない範囲に制限しています。</div>
-<div class="rangeLine tweak"><span>カード幅</span><input id="layoutWidth" type="range" min="900" max="1600" step="50" value="1200"><b id="layoutWidthVal">1200</b></div>
-<div class="rangeLine tweak"><span>下余白</span><input id="layoutHeight" type="range" min="0" max="280" step="10" value="0"><b id="layoutHeightVal">0</b></div>
-<div class="rangeLine tweak"><span>文字の左右</span><input id="layoutX" type="range" min="-40" max="120" step="10" value="0"><b id="layoutXVal">0</b></div>
-<div class="rangeLine tweak"><span>文字の上下</span><input id="layoutY" type="range" min="-25" max="100" step="5" value="0"><b id="layoutYVal">0</b></div>
-<div class="rangeLine tweak"><span>項目の間隔</span><input id="layoutGap" type="range" min="-10" max="40" step="5" value="0"><b id="layoutGapVal">0</b></div>
-<div class="hint">アクセント画像の位置（画像を入れた場合に反映）</div>
-<div class="rangeLine tweak"><span>画像の左右</span><input id="layoutImageX" type="range" min="-120" max="120" step="10" value="0"><b id="layoutImageXVal">0</b></div>
-<div class="rangeLine tweak"><span>画像の上下</span><input id="layoutImageY" type="range" min="-100" max="100" step="10" value="0"><b id="layoutImageYVal">0</b></div>
-<button type="button" class="miniBtn" id="resetLayout" style="margin-top:12px">配置を初期値に戻す</button>
-</details>
-<details class="colorGroup backupPanel" id="backupPanel"><summary class="colorGroupTitle">設定のバックアップ・端末引き継ぎ</summary>
+<div class="bulkActions"><button class="miniBtn" id="selectAllCards" type="button">すべて選択</button><button class="miniBtn" id="clearCardSelection" type="button">選択解除</button></div>
+<div class="bulkCardList" id="bulkCardList"></div>
+<div class="bulkActions"><button class="deleteSaved" id="bulkDeleteCards" type="button">選択カードを削除</button><button class="miniBtn" id="bulkRemoveAccents" type="button">選択カードのアクセント画像を外す</button></div>
+</details></div><div class="storagePanel" id="storagePanel"><div class="storageHead"><span>このツールの保存データ</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div><div class="storageMeta">※5MBは一般的な目安で、正確な空き容量ではありません。</div><button class="miniBtn storageJump" id="jumpImageManage" type="button">画像一覧・整理を開く</button>
+</div></div></details><details class="uiSection profileSection" id="profileSection"><summary>Station情報</summary><p class="uiSectionHint">Station名・アイコン・基本設定</p><div class="uiSectionBody"><div class="sectionHead"><h2>Station情報</h2><small>最初に一度登録</small></div><div class="row2"><div class="field"><label for="station">Station名<span class="req">必須</span></label><input id="station" maxlength="28" placeholder="Station名を入力" type="text"/></div><div class="field"><label for="handle">@ID / 呼び名</label><input id="handle" maxlength="28" placeholder="IDまたは呼び名を入力" type="text"/></div></div><div class="filebox"><div class="field" style="margin:0"><label for="iconInput">アイコン画像</label><input accept="image/*" id="iconInput" type="file"/><div class="hint">丸く切り抜いて表示します。</div></div><div class="imagePreviewLine"><img alt="" class="iconThumb" id="iconThumb"/><button class="miniBtn hidden" id="removeIcon" type="button">アイコンを外す</button></div><div class="hidden" id="iconControls"><div class="rangeLine"><span>横位置</span><input id="iconX" max="100" min="0" type="range" value="50"/><b id="iconXVal">50</b></div><div class="rangeLine"><span>縦位置</span><input id="iconY" max="100" min="0" type="range" value="50"/><b id="iconYVal">50</b></div></div></div><button class="secondary" id="saveProfile" style="width:100%;margin-top:10px" type="button">基本情報を保存</button></div></details><details class="colorGroup backupPanel" id="backupPanel"><summary class="colorGroupTitle">設定のバックアップ・端末引き継ぎ</summary>
 <div class="hint">保存済みカード・アイコンやアクセント画像・色テーマ・タグ・保存候補・現在の編集中カードをまとめて引き継ぎます。</div>
-<div class="backupActions"><button type="button" id="exportBackup" class="secondary">バックアップを書き出す</button><label class="backupImportButton" for="importBackup">バックアップを読み込む</label></div>
-<input id="importBackup" type="file" accept=".json,application/json" aria-label="バックアップJSONファイルを選択">
+<div class="backupActions"><button class="secondary" id="exportBackup" type="button">バックアップを書き出す</button><label class="backupImportButton" for="importBackup">バックアップを読み込む</label></div>
+<input accept=".json,application/json" aria-label="バックアップJSONファイルを選択" id="importBackup" type="file"/>
 <div class="hint">読み込み時はこの端末の保存済みデータが置き換わります。必要なら先に書き出してください。バックアップには画像やStation情報が含まれるため、ファイルの共有先にご注意ください。</div>
-<details class="imageManage" id="imageManagePanel"><summary>画像の整理・保存方式の最適化</summary><div class="hint">「未使用画像を整理」は他のカードが参照していない画像のみを削除します。古いカードの画像を共通化する操作はバックアップ取得後に実行してください。</div>
-<div class="imageManageNotice">画像を見ながら削除できます。使用中の画像を削除すると、その画像は使用中の保存済みカードすべてから外れます。操作前にバックアップをおすすめします。</div><div id="imageManageGallery" class="imageManageGallery"></div><div class="bulkActions"><button type="button" id="cleanUnusedImages" class="miniBtn">未使用画像を整理</button><button type="button" id="optimizeImages" class="secondary">画像の重複を整理</button></div>
-</details>
-</details>
-<div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">入力内容をクリア</button></div><p class="note">入力内容と保存済みカードは、このブラウザ内に保存されます。公開・共有されることはありません。</p>
-</section>
-
-<section class="card previewWrap"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas id="preview" width="1600" height="900"></canvas></div><p class="note">入力するとプレビューが更新されます。カード幅や配置は「微調整」から変更できます。</p>
-<div class="previewSavePanel" aria-label="カードの保存"><div class="previewSaveTitle">このカードのデータを保存</div>
-<div class="previewSaveNew"><input id="previewTemplateName" type="text" maxlength="36" placeholder="カードの保存名" aria-label="カードの保存名"><button type="button" class="saveMini" id="previewSaveTemplate">新規保存</button></div>
-<div class="previewSaveOverwrite"><select id="previewTemplateSelect" aria-label="上書き先の保存済みカード"><option value="">上書きするカードを選択</option></select><button type="button" class="secondary" id="previewOverwriteTemplate">上書き保存</button></div>
+</details><div class="actions"><button class="primary" id="makePng" type="button">PNGを作る</button><button class="secondary" id="clearCard" type="button">入力内容をクリア</button></div><p class="note">入力内容と保存済みカードは、このブラウザ内に保存されます。公開・共有されることはありません。</p></section>
+<section class="card previewWrap" id="previewSection"><div class="previewHead"><h2>プレビュー</h2><small id="previewSize">1600 × 900</small></div><div class="canvasFrame"><canvas height="900" id="preview" width="1600"></canvas></div><p class="note">入力するとプレビューが更新されます。カード幅や配置は「微調整」から変更できます。</p>
+<div class="previewQuickActions"><button class="primary" id="previewMakePng" type="button">PNGを作る</button></div><div aria-label="カードの保存" class="previewSavePanel"><div class="previewSaveTitle">このカードのデータを保存</div>
+<div class="previewSaveNew"><input aria-label="カードの保存名" id="previewTemplateName" maxlength="36" placeholder="カードの保存名" type="text"/><button class="saveMini" id="previewSaveTemplate" type="button">新規保存</button></div>
+<div class="previewSaveOverwrite"><select aria-label="上書き先の保存済みカード" id="previewTemplateSelect"><option value="">上書きするカードを選択</option></select><button class="secondary" id="previewOverwriteTemplate" type="button">上書き保存</button></div>
 <div class="hint">保存するのは編集可能なカードデータです。PNG画像の保存は「PNGを作る」から行えます。</div></div></section>
-</div></main>
-
-<div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button type="button" class="closeBtn" id="closeModal">×</button></div><img id="outputImg" class="outputImg" alt="完成したStation紹介カード"><div class="saveRow"><a id="downloadLink" download="station-card.png">PNGを保存</a><button type="button" id="saveHint">iPhoneでの保存方法</button></div></div></div>
-
+</div></main><nav aria-label="編集ショートカット" class="mobileDock"><button class="miniBtn" id="gotoPreview" type="button">プレビューを見る</button><button class="primary" id="dockMakePng" type="button">PNGを作る</button></nav>
+<div class="modal" id="outputModal"><div class="modalCard"><div class="modalTop"><strong>完成画像</strong><button class="closeBtn" id="closeModal" type="button">×</button></div><img alt="完成したStation紹介カード" class="outputImg" id="outputImg"/><div class="saveRow"><a download="station-card.png" id="downloadLink">PNGを保存</a><button id="saveHint" type="button">iPhoneでの保存方法</button></div></div></div>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
@@ -912,13 +945,13 @@ $('fssTheme').onclick=()=>applyTheme(FSS,'FSSブルー');$('saveTheme').onclick=
 ['station','handle','bgColor','accentColor','textColor','iconX','iconY','title','time','focus','memo','accentScale','accentOpacity',...layoutIds].forEach(id=>$(id).addEventListener('input',()=>{sync();saveDraft();render()}));
 $('resetLayout').onclick=()=>{layoutIds.forEach(id=>$(id).value=id==='layoutWidth'?1200:0);sync();saveDraft();render()};
 $('imageManagePanel').addEventListener('toggle',()=>{if($('imageManagePanel').open)renderImageManageGallery()});
-$('jumpImageManage').onclick=()=>{const backup=$('backupPanel'),panel=$('imageManagePanel');backup.open=true;panel.open=true;renderImageManageGallery();panel.scrollIntoView({behavior:'smooth',block:'start'});};
+$('jumpImageManage').onclick=()=>{const section=$('imageSection'),panel=$('imageManagePanel');section.open=true;panel.open=true;renderImageManageGallery();panel.scrollIntoView({behavior:'smooth',block:'start'});};
 $('saveProfile').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}alert(saveProfile()?'基本情報を保存しました。':'保存できませんでした。')};
 $('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{iconData=await resizeData(f);loadData(iconData,img=>{iconImage=img;$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden');render()})}catch(_){alert('アイコン画像を読み込めませんでした。')}};$('removeIcon').onclick=()=>{iconData='';iconImage=null;$('iconInput').value='';$('iconThumb').style.display='none';$('removeIcon').classList.add('hidden');$('iconControls').classList.add('hidden');render()};
 $('accentImageInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const data=await resizeData(f,1100,.86);setAccentFromData(data)}catch(_){alert('画像を読み込めませんでした。')}};$('removeAccent').onclick=()=>{accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');renderAccentGallery();render()};
 $('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();renderAccentGallery();render()};
 $('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
-setupPresetTagEditor();setupWholeCardLibrary();setupBulkManagement();setupBackup();renderLibraries();renderThemes();renderStorageStatus();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){applyFields(d,DRAFT_FIELDS);selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}setAccentPlacementUI();sync();renderLibraries();renderThemes();renderImageManageGallery();render();
+$('previewMakePng').onclick=()=>$('makePng').click();$('dockMakePng').onclick=()=>$('makePng').click();$('gotoPreview').onclick=()=>$('previewSection').scrollIntoView({behavior:'smooth',block:'start'});setupPresetTagEditor();setupWholeCardLibrary();setupBulkManagement();setupBackup();renderLibraries();renderThemes();renderStorageStatus();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){applyFields(d,DRAFT_FIELDS);selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}setAccentPlacementUI();sync();renderLibraries();renderThemes();renderImageManageGallery();render();
 })();
 </script>
 </body></html>
