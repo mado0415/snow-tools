@@ -68,6 +68,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div id="bulkCardList" class="bulkCardList"></div>
 <div class="bulkActions"><button type="button" id="bulkDeleteCards" class="deleteSaved">選択カードを削除</button><button type="button" id="bulkRemoveAccents" class="miniBtn">選択カードのアクセント画像を外す</button></div>
 </details></div>
+<div class="storagePanel" id="storagePanel"><div class="storageHead"><span>このツールの保存データ</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div><div class="storageMeta">※5MBは一般的な目安で、正確な空き容量ではありません。</div>
+</div>
 <div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
 <div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="配信時間を入力"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
 <div class="field"><label for="focus">重点曲・配信軸</label><div class="libraryRow"><textarea id="focus" rows="3" maxlength="220" placeholder="例：&#10;グッタイム&#10;AMENITY&#10;YUME"></textarea><button type="button" class="saveMini" data-save="focuses" data-input="focus">候補に保存</button></div><div class="hint">1行に1曲ずつ入力できます。改行した位置がカードにも反映されます。</div><div class="recallRow"><select id="focusesSelect" data-kind="focuses" data-target="focus"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="focuses" data-select="focusesSelect">削除</button></div></div>
@@ -107,10 +109,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="backupActions"><button type="button" id="exportBackup" class="secondary">バックアップを書き出す</button><label class="backupImportButton" for="importBackup">バックアップを読み込む</label></div>
 <input id="importBackup" type="file" accept=".json,application/json" aria-label="バックアップJSONファイルを選択">
 <div class="hint">読み込み時はこの端末の保存済みデータが置き換わります。必要なら先に書き出してください。バックアップには画像やStation情報が含まれるため、ファイルの共有先にご注意ください。</div>
-<div class="storagePanel" id="storagePanel"><div class="storageHead"><span>保存容量の目安</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div>
 <details class="imageManage"><summary>画像の整理・保存方式の最適化</summary><div class="hint">「未使用画像を整理」は他のカードが参照していない画像のみを削除します。古いカードの画像を共通化する操作はバックアップ取得後に実行してください。</div>
 <div class="bulkActions"><button type="button" id="cleanUnusedImages" class="miniBtn">未使用画像を整理</button><button type="button" id="optimizeImages" class="secondary">画像の重複を整理</button></div>
-</details></div>
+</details>
 </details>
 <div class="actions"><button type="button" id="makePng" class="primary">PNGを作る</button><button type="button" id="clearCard" class="secondary">入力内容をクリア</button></div><p class="note">入力内容と保存済みカードは、このブラウザ内に保存されます。公開・共有されることはありません。</p>
 </section>
