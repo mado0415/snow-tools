@@ -39,7 +39,7 @@ button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.w
 .layoutSettings summary{font-size:13px}.layoutSettings .tweak{grid-template-columns:90px minmax(0,1fr) 44px}
 .primary{min-height:52px;font-size:15px}.secondary{min-height:48px}
 .backupPanel{margin-top:17px}.backupPanel summary{cursor:pointer}.backupActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 8px}.backupActions button,.backupImportButton{min-height:46px;display:flex;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line);border-radius:12px;padding:9px;font-size:12px;font-weight:850}.backupImportButton{background:#edf9ff;color:#346d86;cursor:pointer}#importBackup{width:100%;font-size:11px;max-width:100%}
-.storagePanel{margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#f8fbfc}.storageHead{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;font-weight:900;margin-bottom:8px}.storageMeta{font-size:11px;color:var(--muted);line-height:1.5}.storageBar{height:10px;border-radius:999px;background:#eaf0f4;overflow:hidden;margin:8px 0 6px}.storageFill{height:100%;width:0%;background:linear-gradient(90deg,#9ad7ec,#5ea7df)}.storageStatus{font-size:11px;font-weight:800;color:#4f6673}.storageStatus.warn{color:#9b6c22}.storageStatus.danger{color:#b44b4b}.bulkManage,.imageManage{margin-top:12px}.bulkManage summary,.imageManage summary{cursor:pointer;font-weight:850;font-size:12px}.bulkActions{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.bulkCardList{max-height:260px;overflow:auto;border:1px solid var(--line);background:#fff;border-radius:12px}.bulkCardList label{display:flex;align-items:center;gap:9px;padding:10px 12px;font-size:12px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.bulkCardList label:last-child{border-bottom:none}.bulkCardList input{width:18px;height:18px;flex:none}.bulkEmpty{font-size:11px;color:var(--muted);padding:12px}
+.storageJump{display:block;width:100%;margin-top:11px;background:#fff;color:#346d86;border-color:#a9d5e8;min-height:39px}.storagePanel{margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:#f8fbfc}.storageHead{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;font-weight:900;margin-bottom:8px}.storageMeta{font-size:11px;color:var(--muted);line-height:1.5}.storageBar{height:10px;border-radius:999px;background:#eaf0f4;overflow:hidden;margin:8px 0 6px}.storageFill{height:100%;width:0%;background:linear-gradient(90deg,#9ad7ec,#5ea7df)}.storageStatus{font-size:11px;font-weight:800;color:#4f6673}.storageStatus.warn{color:#9b6c22}.storageStatus.danger{color:#b44b4b}.bulkManage,.imageManage{margin-top:12px}.bulkManage summary,.imageManage summary{cursor:pointer;font-weight:850;font-size:12px}.bulkActions{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.bulkCardList{max-height:260px;overflow:auto;border:1px solid var(--line);background:#fff;border-radius:12px}.bulkCardList label{display:flex;align-items:center;gap:9px;padding:10px 12px;font-size:12px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.bulkCardList label:last-child{border-bottom:none}.bulkCardList input{width:18px;height:18px;flex:none}.bulkEmpty{font-size:11px;color:var(--muted);padding:12px}
 @media(max-width:500px){.backupActions{grid-template-columns:1fr}}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #80c5e6;outline-offset:2px}
 @media(max-width:840px){.grid{grid-template-columns:1fr}.previewWrap{position:static}}
@@ -68,7 +68,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div id="bulkCardList" class="bulkCardList"></div>
 <div class="bulkActions"><button type="button" id="bulkDeleteCards" class="deleteSaved">選択カードを削除</button><button type="button" id="bulkRemoveAccents" class="miniBtn">選択カードのアクセント画像を外す</button></div>
 </details></div>
-<div class="storagePanel" id="storagePanel"><div class="storageHead"><span>このツールの保存データ</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div><div class="storageMeta">※5MBは一般的な目安で、正確な空き容量ではありません。</div>
+<div class="storagePanel" id="storagePanel"><div class="storageHead"><span>このツールの保存データ</span><span id="storageValue">0.00MB / 5MB</span></div><div class="storageBar"><div class="storageFill" id="storageFill"></div></div><div class="storageStatus" id="storageStatus">計測中</div><div class="storageMeta" id="storageMeta">保存済みカード 0件 / 共通化した画像 0点</div><div class="storageMeta">※5MBは一般的な目安で、正確な空き容量ではありません。</div><button type="button" id="jumpImageManage" class="miniBtn storageJump">画像の整理・保存方式の最適化へ ↓</button>
 </div>
 <div class="field"><label for="title">配信タイトル</label><div class="libraryRow"><input id="title" type="text" maxlength="48" placeholder="配信タイトルを入力"><button type="button" class="saveMini" data-save="titles" data-input="title">候補に保存</button></div><div class="recallRow"><select id="titlesSelect" data-kind="titles" data-target="title"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="titles" data-select="titlesSelect">削除</button></div></div>
 <div class="field"><label for="time">時間</label><div class="libraryRow"><input id="time" type="text" maxlength="36" placeholder="配信時間を入力"><button type="button" class="saveMini" data-save="times" data-input="time">候補に保存</button></div><div class="recallRow"><select id="timesSelect" data-kind="times" data-target="time"><option value="">保存済みから選ぶ</option></select><button type="button" class="deleteSaved" data-delete-kind="times" data-select="timesSelect">削除</button></div></div>
@@ -109,7 +109,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="backupActions"><button type="button" id="exportBackup" class="secondary">バックアップを書き出す</button><label class="backupImportButton" for="importBackup">バックアップを読み込む</label></div>
 <input id="importBackup" type="file" accept=".json,application/json" aria-label="バックアップJSONファイルを選択">
 <div class="hint">読み込み時はこの端末の保存済みデータが置き換わります。必要なら先に書き出してください。バックアップには画像やStation情報が含まれるため、ファイルの共有先にご注意ください。</div>
-<details class="imageManage"><summary>画像の整理・保存方式の最適化</summary><div class="hint">「未使用画像を整理」は他のカードが参照していない画像のみを削除します。古いカードの画像を共通化する操作はバックアップ取得後に実行してください。</div>
+<details class="imageManage" id="imageManagePanel"><summary>画像の整理・保存方式の最適化</summary><div class="hint">「未使用画像を整理」は他のカードが参照していない画像のみを削除します。古いカードの画像を共通化する操作はバックアップ取得後に実行してください。</div>
 <div class="bulkActions"><button type="button" id="cleanUnusedImages" class="miniBtn">未使用画像を整理</button><button type="button" id="optimizeImages" class="secondary">画像の重複を整理</button></div>
 </details>
 </details>
@@ -124,6 +124,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id);const canvas=$('preview'),ctx=canvas.getContext('2d');
+// DOM 値の転記を一箇所にまとめ、古い保存形式の欠損フィールドは変更しない。
+function applyFields(data,ids){for(const id of ids)if(data[id]!=null)$(id).value=data[id]}
+function collectFields(ids){return Object.fromEntries(ids.map(id=>[id,$(id).value]))}
+function setAccentPlacementUI(){document.querySelectorAll('[data-accent-place]').forEach(b=>b.classList.toggle('active',b.dataset.accentPlace===accentPlacement))}
+const CARD_FIELDS=['station','handle','iconX','iconY','title','time','focus','memo','bgColor','accentColor','textColor','accentScale','accentOpacity'];
+const DRAFT_FIELDS=['title','time','focus','memo','bgColor','accentColor','textColor'];
 const PROFILE_KEY='fssStationProfileV16',LIB_KEY='fssStationLibrariesV16',DRAFT_KEY='fssStationDraftV16',PRESET_TAG_KEY='fssStationPresetTagsV24',CARD_LIBRARY_KEY='fssStationWholeCardsV25',IMAGE_STORE_KEY='fssStationImageStoreV33';
 const FSS={name:'FSSブルー',bg:'#f5fbff',accent:'#7fc8e8',text:'#263640'};
 const SHARED=[
@@ -563,34 +569,43 @@ function wholeCardData(){
     title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags:[...selectedTags],
     activeThemeName,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,
     accentData,accentPlacement,accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,
-    layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))};
+    layoutPrefs:collectFields(layoutIds)};
 }
 function wholeCards(){const data=read(CARD_LIBRARY_KEY,[]);return Array.isArray(data)?data:[]}
 function renderWholeCards(chosen=''){
-  const sel=$('templateSelect');sel.innerHTML='<option value="">保存済みカードを選択</option>';
-  wholeCards().forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op)});
-  if(chosen&&wholeCards().some(c=>c.name===chosen))sel.value=chosen;
+  const sel=$('templateSelect'),cards=wholeCards();
+  sel.innerHTML='<option value="">保存済みカードを選択</option>';
+  cards.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op)});
+  if(chosen&&cards.some(c=>c.name===chosen))sel.value=chosen;
 }
-function setIconFromData(data){
-  iconData=data||'';iconImage=null;$('iconInput').value='';$('iconThumb').style.display='none';
-  $('removeIcon').classList.add('hidden');$('iconControls').classList.add('hidden');
-  if(!iconData){render();return}
-  loadData(iconData,img=>{iconImage=img;if(img){$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden')}render()});
+// アイコンとアクセント画像の共通 UI 更新。表示タイミング・保存方法は従来どおり。
+function setImageFromData(kind,data){
+  const icon=kind==='icon';
+  const input=$(icon?'iconInput':'accentImageInput');
+  const thumb=$(icon?'iconThumb':'accentThumb');
+  const remove=$(icon?'removeIcon':'removeAccent');
+  const controls=$(icon?'iconControls':'accentControls');
+  const value=data||'';
+  if(icon){iconData=value;iconImage=null}else{accentData=value;accentImage=null}
+  input.value='';thumb.style.display='none';
+  remove.classList.add('hidden');controls.classList.add('hidden');
+  if(!value){render();return}
+  loadData(value,img=>{
+    if(icon){iconImage=img}else{accentImage=img}
+    if(img){thumb.src=value;thumb.style.display='block';remove.classList.remove('hidden');controls.classList.remove('hidden')}
+    render();
+  });
 }
-function setAccentFromData(data){
-  accentData=data||'';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';
-  $('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');
-  if(!accentData){render();return}
-  loadData(accentData,img=>{accentImage=img;if(img){$('accentThumb').src=accentData;$('accentThumb').style.display='block';$('removeAccent').classList.remove('hidden');$('accentControls').classList.remove('hidden')}render()});
-}
+function setIconFromData(data){setImageFromData('icon',data)}
+function setAccentFromData(data){setImageFromData('accent',data)}
 function loadWholeCard(c){
   if(!c||!c.data)return;
   const d=c.data;
-  ['station','handle','iconX','iconY','title','time','focus','memo','bgColor','accentColor','textColor','accentScale','accentOpacity'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});
+  applyFields(d,CARD_FIELDS);
   selectedTags=Array.isArray(d.selectedTags)?[...d.selectedTags]:[];
   activeThemeName=d.activeThemeName||'';accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';
-  if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null)$(id).value=d.layoutPrefs[id]});
-  document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));
+  if(d.layoutPrefs)applyFields(d.layoutPrefs,layoutIds);
+  setAccentPlacementUI();
   if((d.iconRef&&!resolveStoredImage(d,'icon'))||(d.accentRef&&!resolveStoredImage(d,'accent'))){alert('保存済みカードの画像が見つかりません。バックアップからの復元を確認してください。');return;}
   setIconFromData(resolveStoredImage(d,'icon'));setAccentFromData(resolveStoredImage(d,'accent'));
   if([FSS,...SHARED].some(v=>v.name===activeThemeName)){$('presetTagTheme').value=activeThemeName;drawPresetTagList()}
@@ -667,7 +682,7 @@ function backupPayload(){
   stored[DRAFT_KEY]={title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags:[...selectedTags],accentPlacement,
     accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,
     accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName,
-    layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))};
+    layoutPrefs:collectFields(layoutIds)};
   return {format:BACKUP_FORMAT,version:2,createdAt:new Date().toISOString(),stored,currentCard:wholeCardData()};
 }
 function checkBackup(data){
@@ -721,23 +736,24 @@ function setupBackup(){
 function applyTheme(t,name){$('bgColor').value=t.bg;$('accentColor').value=t.accent;$('textColor').value=t.text;activeThemeName=name||t.name||'';if([FSS,...SHARED].some(v=>v.name===activeThemeName)){$('presetTagTheme').value=activeThemeName;drawPresetTagList();}renderThemes();saveDraft();render()}
 function renderThemes(){const memberRoot=$('memberThemes'),customRoot=$('customThemes'),sharedRoot=$('sharedThemes'),l=libs();sharedRoot.innerHTML='';SHARED.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=`linear-gradient(135deg, ${t.bg} 0%, ${t.bg} 42%, ${t.accent} 42%, ${t.accent} 100%)`;b.append(sw,document.createTextNode(t.name));const tags=presetTagValues(t.name);if(tags.length){const tlabel=document.createElement('span');tlabel.className='presetThemeTag';tlabel.textContent=tags.map(v=>'#'+v).join(' ');tlabel.title=tlabel.textContent;b.appendChild(tlabel)}b.onclick=()=>applyTheme(t,t.name);sharedRoot.appendChild(b)});memberRoot.innerHTML='';MEMBERS.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='themeBtn'+(activeThemeName===t.name?' active':'');const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;b.append(sw,document.createTextNode(t.name));b.onclick=()=>applyTheme(t,t.name);memberRoot.appendChild(b)});customRoot.innerHTML='';if(!l.themes.length){const em=document.createElement('span');em.className='hint';em.textContent='まだ自由テーマはありません';customRoot.appendChild(em)}else l.themes.forEach(t=>{const item=document.createElement('span');item.className='customThemeItem';const a=document.createElement('button');a.type='button';a.className='applyTheme';const sw=document.createElement('span');sw.className='swatch';sw.style.background=t.accent;a.append(sw,document.createTextNode(t.name));a.onclick=()=>applyTheme(t,t.name);const x=document.createElement('button');x.type='button';x.className='removeTheme';x.textContent='×';x.onclick=()=>{if(!confirm(`「${t.name}」を削除しますか？`))return;const l2=libs();l2.themes=l2.themes.filter(v=>v.name!==t.name);saveLibs(l2)};item.append(a,x);customRoot.appendChild(item)});const fb=$('fssTheme');fb.classList.toggle('active',activeThemeName==='FSSブルー');fb.querySelectorAll('.presetThemeTag').forEach(x=>x.remove());const ft=presetTagValues('FSSブルー');if(ft.length){const s=document.createElement('span');s.className='presetThemeTag';s.textContent=ft.map(x=>'#'+x).join(' ');s.title=s.textContent;fb.appendChild(s)}}
 function saveProfile(){return write(PROFILE_KEY,{station:$('station').value,handle:$('handle').value,iconX:$('iconX').value,iconY:$('iconY').value,iconData})}
-function applyProfile(p){if(!p)return;['station','handle','iconX','iconY'].forEach(id=>{if(p[id]!=null)$(id).value=p[id]});iconData=p.iconData||'';loadData(iconData,img=>{iconImage=img;if(iconData){$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden')}sync();renderThemes();render()})}
-function saveDraft(){write(DRAFT_KEY,{title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags,accentPlacement,accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName,layoutPrefs:Object.fromEntries(layoutIds.map(id=>[id,$(id).value]))})}
+function applyProfile(p){if(!p)return;applyFields(p,['station','handle','iconX','iconY']);iconData=p.iconData||'';loadData(iconData,img=>{iconImage=img;if(iconData){$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden')}sync();renderThemes();render()})}
+function saveDraft(){write(DRAFT_KEY,{title:$('title').value,time:$('time').value,focus:$('focus').value,memo:$('memo').value,selectedTags,accentPlacement,accentScale:$('accentScale').value,accentOpacity:$('accentOpacity').value,bgColor:$('bgColor').value,accentColor:$('accentColor').value,textColor:$('textColor').value,activeThemeName,layoutPrefs:collectFields(layoutIds)})}
 const layoutIds=['layoutWidth','layoutHeight','layoutX','layoutY','layoutGap','layoutImageX','layoutImageY'];
 function sync(){$('iconXVal').textContent=$('iconX').value;$('iconYVal').textContent=$('iconY').value;$('accentScaleVal').textContent=$('accentScale').value;$('accentOpacityVal').textContent=$('accentOpacity').value;layoutIds.forEach(id=>$(id+'Val').textContent=$(id).value)}
 function addCandidate(kind,inputId){const v=$(inputId).value.trim();if(!v){alert('保存する内容を入力してください。');return}const l=libs();l[kind]=unique(l[kind],v);saveLibs(l);const s=$(kind+'Select');if(s)s.value=v}
 document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>addCandidate(b.dataset.save,b.dataset.input));document.querySelectorAll('select[data-kind]').forEach(s=>s.onchange=()=>{if(!s.value)return;$(s.dataset.target).value=s.value;saveDraft();render()});document.querySelectorAll('[data-delete-kind]').forEach(b=>b.onclick=()=>{const s=$(b.dataset.select),v=s.value;if(!v){alert('削除する候補を選んでください。');return}if(!confirm('この保存済み候補を削除しますか？'))return;const l=libs();l[b.dataset.deleteKind]=l[b.dataset.deleteKind].filter(x=>x!==v);saveLibs(l)});
 $('addTag').onclick=()=>{const v=$('tagInput').value.trim().replace(/^#+/,'');if(!v){alert('タグを入力してください。');return}const l=libs();l.tags=unique(l.tags,v);if(!selectedTags.includes(v))selectedTags.push(v);$('tagInput').value='';write(LIB_KEY,l);renderLibraries();renderThemes();saveDraft();render()};$('tagInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('addTag').click()}};
-document.querySelectorAll('[data-accent-place]').forEach(b=>b.onclick=()=>{accentPlacement=b.dataset.accentPlace;document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));saveDraft();render()});
+document.querySelectorAll('[data-accent-place]').forEach(b=>b.onclick=()=>{accentPlacement=b.dataset.accentPlace;setAccentPlacementUI();saveDraft();render()});
 $('fssTheme').onclick=()=>applyTheme(FSS,'FSSブルー');$('saveTheme').onclick=()=>{const name=$('themeName').value.trim();if(!name){alert('自由テーマの名前を入力してください。');return}if(name==='FSSブルー'||SHARED.some(t=>t.name===name)||MEMBERS.some(t=>t.name===name)){alert('共通カラー・メンカラとは別の名前を入力してください。');return}const l=libs(),t={name,bg:$('bgColor').value,accent:$('accentColor').value,text:$('textColor').value};const old=l.themes.find(x=>x.name===name);if(old&&!confirm(`「${name}」を上書きしますか？`))return;l.themes=[t,...l.themes.filter(x=>x.name!==name)];activeThemeName=name;saveLibs(l);$('themeName').value='';saveDraft();render()};
 ['station','handle','bgColor','accentColor','textColor','iconX','iconY','title','time','focus','memo','accentScale','accentOpacity',...layoutIds].forEach(id=>$(id).addEventListener('input',()=>{sync();saveDraft();render()}));
 $('resetLayout').onclick=()=>{layoutIds.forEach(id=>$(id).value=id==='layoutWidth'?1200:0);sync();saveDraft();render()};
+$('jumpImageManage').onclick=()=>{const backup=$('backupPanel'),panel=$('imageManagePanel');backup.open=true;panel.open=true;panel.scrollIntoView({behavior:'smooth',block:'start'});};
 $('saveProfile').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}alert(saveProfile()?'基本情報を保存しました。':'保存できませんでした。')};
 $('iconInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{iconData=await resizeData(f);loadData(iconData,img=>{iconImage=img;$('iconThumb').src=iconData;$('iconThumb').style.display='block';$('removeIcon').classList.remove('hidden');$('iconControls').classList.remove('hidden');render()})}catch(_){alert('アイコン画像を読み込めませんでした。')}};$('removeIcon').onclick=()=>{iconData='';iconImage=null;$('iconInput').value='';$('iconThumb').style.display='none';$('removeIcon').classList.add('hidden');$('iconControls').classList.add('hidden');render()};
 $('accentImageInput').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;try{const data=await resizeData(f,1100,.86);setAccentFromData(data)}catch(_){alert('画像を読み込めませんでした。')}};$('removeAccent').onclick=()=>{accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');render()};
 $('clearCard').onclick=()=>{$('title').value='';$('time').value='';$('focus').value='';$('memo').value='';selectedTags=[];accentData='';accentImage=null;$('accentImageInput').value='';$('accentThumb').style.display='none';$('removeAccent').classList.add('hidden');$('accentControls').classList.add('hidden');saveDraft();renderTags();render()};
 $('makePng').onclick=()=>{if(!$('station').value.trim()){alert('Station名を入力してください。');return}render();const data=canvas.toDataURL('image/png');$('outputImg').src=data;$('downloadLink').href=data;$('downloadLink').download=($('station').value.trim().replace(/[\\/:*?"<>|]/g,'_')||'station')+'_station-card.png';$('outputModal').classList.add('show')};$('closeModal').onclick=()=>$('outputModal').classList.remove('show');$('saveHint').onclick=()=>alert('iPhoneでは完成画像を長押しして「写真に保存」または「“写真”に追加」を選ぶのが確実です。');
-setupPresetTagEditor();setupWholeCardLibrary();setupBulkManagement();setupBackup();renderLibraries();renderThemes();renderStorageStatus();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){['title','time','focus','memo','bgColor','accentColor','textColor'].forEach(id=>{if(d[id]!=null)$(id).value=d[id]});selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}document.querySelectorAll('[data-accent-place]').forEach(x=>x.classList.toggle('active',x.dataset.accentPlace===accentPlacement));sync();renderLibraries();renderThemes();render();
+setupPresetTagEditor();setupWholeCardLibrary();setupBulkManagement();setupBackup();renderLibraries();renderThemes();renderStorageStatus();applyProfile(read(PROFILE_KEY,null)||read('fssStationProfileV14',null)||read('fssStationProfileV13',null)||read('fssStationProfileV12',null)||read('fssStationProfileV11',null)||read('fssStationProfileV10',null));const d=read(DRAFT_KEY,null)||read('fssStationDraftV14',null)||read('fssStationDraftV13',null)||read('fssStationDraftV12',null)||read('fssStationDraftV11',null)||read('fssStationDraftV10',null);if(d){applyFields(d,DRAFT_FIELDS);selectedTags=Array.isArray(d.selectedTags)?d.selectedTags:[];accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';if(d.accentScale!=null)$('accentScale').value=Math.max(50,Math.min(100,+d.accentScale||100));if(d.accentOpacity!=null)$('accentOpacity').value=d.accentOpacity;if(d.layoutPrefs)layoutIds.forEach(id=>{if(d.layoutPrefs[id]!=null){const inp=$(id);inp.value=Math.max(Number(inp.min),Math.min(Number(inp.max),Number(d.layoutPrefs[id])||0));}});activeThemeName=typeof d.activeThemeName==='string'?d.activeThemeName:''}setAccentPlacementUI();sync();renderLibraries();renderThemes();render();
 })();
 </script>
 </body></html>
