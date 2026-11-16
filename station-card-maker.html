@@ -58,6 +58,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .cardColorContents .optionalColor{background:#f0f9fe;border-color:#bcdbe9}
 .cardColorContents .optionalColor>summary{font-size:13px;color:#2d667f}
 @media(max-width:500px){.cardColorPanel>summary{padding:13px 12px}.cardColorHelp{max-width:145px}}
+.templateOverwriteRow{margin-top:9px}.templateOverwriteRow button{width:100%;min-height:43px;font-size:12px;border-color:#9ac9dc;background:#f1faff;color:#316982}
 </style>
 </head>
 <body>
@@ -75,6 +76,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 <div class="hint">同じ配信のカードを再利用できます。保存後も内容を変えられます。</div>
 <div class="templateNameRow"><input id="templateName" type="text" maxlength="36" placeholder="保存名（例：朝の定常配信）"><button type="button" id="saveTemplate" class="saveMini">このカードを保存</button></div>
 <div class="templateSelectRow"><select id="templateSelect" aria-label="保存済みカード"><option value="">保存済みカードを選択</option></select><button type="button" id="loadTemplate" class="miniBtn">呼び出す</button><button type="button" id="deleteTemplate" class="deleteSaved">削除</button></div>
+<div class="templateOverwriteRow"><button type="button" id="overwriteTemplate" class="secondary">選択した保存済みカードに上書き</button></div>
+<div class="hint">上の一覧で上書き先を選び、このボタンを押すと、いま編集中の内容で置き換えます。先に「呼び出す」を押す必要はありません。保存名も上書き先の名前を維持します。</div>
 <div class="hint">保存済みカードは端末内に保存されます。端末変更時は下のバックアップを使ってください。</div>
 <details class="bulkManage"><summary>保存済みカードをまとめて整理</summary>
 <div class="hint">削除したいカードを選択してください。現在編集中のカードには影響しません。</div>
@@ -710,6 +713,21 @@ function setupWholeCardLibrary(){
     if(atomicStorageChanges({[IMAGE_STORE_KEY]:store,[CARD_LIBRARY_KEY]:next})){
       renderWholeCards(name);renderBulkCards();renderStorageStatus();alert('カードを保存しました。');
     }else alert('カードを保存できませんでした。容量不足などの可能性があります。保存済みデータは変更前に戻す処理を行いました。');
+  };
+  $('overwriteTemplate').onclick=()=>{
+    const name=$('templateSelect').value;
+    if(!name){alert('上書き先の保存済みカードを選択してください。');return}
+    const cards=wholeCards(),index=cards.findIndex(c=>c.name===name);
+    if(index<0){alert('上書き先のカードが見つかりません。一覧を確認してください。');renderWholeCards();return}
+    if(!confirm(`保存済みカード「${name}」を、現在編集中の内容で上書きします。元の内容は戻せません。続けますか？`))return;
+    const store=imageStore();
+    const next=cards.slice();
+    next[index]={...cards[index],name,data:compactCardData(wholeCardData(),store)};
+    if(atomicStorageChanges({[IMAGE_STORE_KEY]:store,[CARD_LIBRARY_KEY]:next})){
+      $('templateName').value=name;
+      renderWholeCards(name);renderBulkCards();renderStorageStatus();
+      alert(`「${name}」を上書き保存しました。`);
+    }else alert('上書き保存できませんでした。容量不足などの可能性があります。保存済みデータは変更前に戻す処理を行いました。');
   };
   $('loadTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('呼び出すカードを選択してください。');return}const c=wholeCards().find(v=>v.name===name);if(c){loadWholeCard(c);$('templateName').value=name;}};
   $('deleteTemplate').onclick=()=>{const name=$('templateSelect').value;if(!name){alert('削除するカードを選択してください。');return}if(!confirm('「'+name+'」を削除しますか？'))return;const next=wholeCards().filter(c=>c.name!==name);if(write(CARD_LIBRARY_KEY,next)){renderWholeCards();renderBulkCards();renderStorageStatus();if($('templateName').value===name)$('templateName').value='';}};
