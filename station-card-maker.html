@@ -781,8 +781,17 @@ function loadWholeCard(c){
   activeThemeName=d.activeThemeName||'';accentPlacement=['right','side','bottom','bottomBack'].includes(d.accentPlacement)?d.accentPlacement:'bottom';
   if(d.layoutPrefs)applyFields(d.layoutPrefs,layoutIds);
   setAccentPlacementUI();
-  if((d.iconRef&&!resolveStoredImage(d,'icon'))||(d.accentRef&&!resolveStoredImage(d,'accent'))){alert('保存済みカードの画像が見つかりません。バックアップからの復元を確認してください。');return;}
-  setIconFromData(resolveStoredImage(d,'icon'));setAccentFromData(resolveStoredImage(d,'accent'));
+  // 画像は独立して復元する。一方の画像参照が壊れていても他方を巻き込まない。
+  const restoredIcon=resolveStoredImage(d,'icon');
+  const restoredAccent=resolveStoredImage(d,'accent');
+  setIconFromData(restoredIcon);
+  setAccentFromData(restoredAccent);
+  const missing=[];
+  if(d.iconRef&&!restoredIcon)missing.push('アイコン');
+  if(d.accentRef&&!restoredAccent)missing.push('アクセント画像');
+  if(missing.length){
+    alert(missing.join('・')+'の保存データが見つかりません。見つかった画像とカード内容は復元しました。上書き保存せず、バックアップを確認してください。');
+  }
   if([FSS,...SHARED].some(v=>v.name===activeThemeName)){$('presetTagTheme').value=activeThemeName;drawPresetTagList()}
   sync();renderTags();renderThemes();saveDraft();render();
 }
